@@ -30,7 +30,6 @@ import java.awt.event.MouseEvent;
 
 public class Login extends JPanel{
 	private JLabel lblTitulo;
-	private JLabel img;
 	private JTextField txtUsuario;
 	private JPasswordField txtContrasenia;
 	
@@ -53,17 +52,12 @@ public class Login extends JPanel{
 		setLayout(null);
 		btnAceptar = new JButton("Entrar");
 		
-		img = new JLabel("");
-		img.setIcon(new ImageIcon(Login.class.getResource("/img/Bib.png")));
-		img.setBounds(493, 80, 171, 177);
-		add(img);
-		
 		lblTitulo = new JLabel("GestaPracticas");
 		lblTitulo.setForeground(new Color(233, 1, 1));
 		lblTitulo.setVerticalAlignment(SwingConstants.TOP);
 		lblTitulo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTitulo.setFont(new Font("Lato", Font.PLAIN, 55));
-		lblTitulo.setBounds(669, 162, 239, 81);
+		lblTitulo.setBounds(507, 168, 446, 81);
 		add(lblTitulo);
 		
 		txtUsuario = new JTextField();

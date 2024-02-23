@@ -74,17 +74,17 @@ public class ConveniosVentana extends JPanel {
 		btnMen.setBounds(32, 24, 79, 37);
 		add(btnMen);
 
-		JLabel lblConsultar = new JLabel("Consultar Convenios");
+		JLabel lblConsultar = new JLabel("Convenios");
 		lblConsultar.setVerticalAlignment(SwingConstants.TOP);
 		lblConsultar.setHorizontalAlignment(SwingConstants.LEFT);
 		lblConsultar.setForeground(new Color(0, 0, 0));
 		lblConsultar.setFont(new Font("Lato", Font.PLAIN, 55));
-		lblConsultar.setBounds(431, 24, 586, 81);
+		lblConsultar.setBounds(414, 24, 586, 81);
 		add(lblConsultar);
 
 		scrollPane = new JScrollPane();
 		scrollPane.setBackground(Color.WHITE);
-		scrollPane.setBounds(32, 160, 1318, 463);
+		scrollPane.setBounds(32, 160, 1029, 463);
 		add(scrollPane);
 
 		// -- AÑADIR SOCIO --
@@ -100,7 +100,7 @@ public class ConveniosVentana extends JPanel {
 		btnNuevoConvenio.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnNuevoConvenio.setBorder(null);
 		btnNuevoConvenio.setBackground(new Color(254, 86, 86));
-		btnNuevoConvenio.setBounds(337, 655, 130, 37);
+		btnNuevoConvenio.setBounds(1134, 258, 130, 37);
 		add(btnNuevoConvenio);
 
 		// -- EDITAR SOCIO --
@@ -124,7 +124,7 @@ public class ConveniosVentana extends JPanel {
 		btnEditarConvenio.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnEditarConvenio.setBorder(null);
 		btnEditarConvenio.setBackground(new Color(254, 86, 86));
-		btnEditarConvenio.setBounds(640, 655, 122, 37);
+		btnEditarConvenio.setBounds(1134, 396, 130, 37);
 		add(btnEditarConvenio);
 
 		// -- BOTÓN ELIMINAR SOCIO --
@@ -150,7 +150,7 @@ public class ConveniosVentana extends JPanel {
 		btnBorrarConvenio.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnBorrarConvenio.setBorder(null);
 		btnBorrarConvenio.setBackground(new Color(254, 86, 86));
-		btnBorrarConvenio.setBounds(948, 655, 116, 37);
+		btnBorrarConvenio.setBounds(1134, 525, 130, 37);
 		add(btnBorrarConvenio);
 
 		// -------------------------- JTABLE --------------------------------------
@@ -176,18 +176,18 @@ public class ConveniosVentana extends JPanel {
 		scrollPane.setViewportView(jtResultados);
 		
 		//poner las columnas necesarias
-		modeloTabla.setColumnIdentifiers(new Object[] { });
-
-		jtResultados.setModel(modeloTabla);
-
-		jtResultados.getColumnModel().getColumn(0).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(1).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(2).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(3).setPreferredWidth(120);
-		jtResultados.getColumnModel().getColumn(4).setPreferredWidth(80);
-		jtResultados.getColumnModel().getColumn(5).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(6).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(7).setPreferredWidth(10);
+//		modeloTabla.setColumnIdentifiers(new Object[] { });
+//
+//		jtResultados.setModel(modeloTabla);
+//
+//		jtResultados.getColumnModel().getColumn(0).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(1).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(2).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(3).setPreferredWidth(120);
+//		jtResultados.getColumnModel().getColumn(4).setPreferredWidth(80);
+//		jtResultados.getColumnModel().getColumn(5).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(6).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(7).setPreferredWidth(10);
 
 		JTableHeader encabezado = jtResultados.getTableHeader();
 		Color violeta = new Color(230, 217, 240);

@@ -74,17 +74,17 @@ public class AdministracionVentana extends JPanel {
 		btnMen.setBounds(32, 24, 79, 37);
 		add(btnMen);
 
-		JLabel lblConsultar = new JLabel("Consultar Usuarios");
+		JLabel lblConsultar = new JLabel("Usuarios");
 		lblConsultar.setVerticalAlignment(SwingConstants.TOP);
 		lblConsultar.setHorizontalAlignment(SwingConstants.LEFT);
 		lblConsultar.setForeground(new Color(0, 0, 0));
 		lblConsultar.setFont(new Font("Lato", Font.PLAIN, 55));
-		lblConsultar.setBounds(431, 24, 586, 81);
+		lblConsultar.setBounds(414, 24, 218, 81);
 		add(lblConsultar);
 
 		scrollPane = new JScrollPane();
 		scrollPane.setBackground(Color.WHITE);
-		scrollPane.setBounds(32, 160, 1318, 463);
+		scrollPane.setBounds(32, 160, 1029, 463);
 		add(scrollPane);
 
 		// -- AÑADIR SOCIO --
@@ -104,7 +104,7 @@ public class AdministracionVentana extends JPanel {
 		btnNuevoUsuario.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnNuevoUsuario.setBorder(null);
 		btnNuevoUsuario.setBackground(new Color(254, 86, 86));
-		btnNuevoUsuario.setBounds(1445, 158, 130, 37);
+		btnNuevoUsuario.setBounds(1134, 258, 130, 37);
 		add(btnNuevoUsuario);
 
 		// -- EDITAR SOCIO --
@@ -128,7 +128,7 @@ public class AdministracionVentana extends JPanel {
 		btnEditarUsuario.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnEditarUsuario.setBorder(null);
 		btnEditarUsuario.setBackground(new Color(254, 86, 86));
-		btnEditarUsuario.setBounds(1445, 358, 122, 37);
+		btnEditarUsuario.setBounds(1134, 396, 130, 37);
 		add(btnEditarUsuario);
 
 		// -- BOTÓN ELIMINAR SOCIO --
@@ -154,7 +154,7 @@ public class AdministracionVentana extends JPanel {
 		btnBorrarUsuario.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnBorrarUsuario.setBorder(null);
 		btnBorrarUsuario.setBackground(new Color(254, 86, 86));
-		btnBorrarUsuario.setBounds(1445, 558, 116, 37);
+		btnBorrarUsuario.setBounds(1134, 525, 130, 37);
 		add(btnBorrarUsuario);
 
 		// -------------------------- JTABLE --------------------------------------
@@ -180,18 +180,18 @@ public class AdministracionVentana extends JPanel {
 		scrollPane.setViewportView(jtResultados);
 		
 		//poner las columnas necesarias
-		modeloTabla.setColumnIdentifiers(new Object[] { });
-
-		jtResultados.setModel(modeloTabla);
-
-		jtResultados.getColumnModel().getColumn(0).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(1).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(2).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(3).setPreferredWidth(120);
-		jtResultados.getColumnModel().getColumn(4).setPreferredWidth(80);
-		jtResultados.getColumnModel().getColumn(5).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(6).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(7).setPreferredWidth(10);
+//		modeloTabla.setColumnIdentifiers(new Object[] { });
+//
+//		jtResultados.setModel(modeloTabla);
+//
+//		jtResultados.getColumnModel().getColumn(0).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(1).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(2).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(3).setPreferredWidth(120);
+//		jtResultados.getColumnModel().getColumn(4).setPreferredWidth(80);
+//		jtResultados.getColumnModel().getColumn(5).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(6).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(7).setPreferredWidth(10);
 
 		JTableHeader encabezado = jtResultados.getTableHeader();
 		Color violeta = new Color(230, 217, 240);

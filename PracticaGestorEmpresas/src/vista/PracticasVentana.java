@@ -74,17 +74,17 @@ public class PracticasVentana extends JPanel {
 		btnMen.setBounds(32, 24, 79, 37);
 		add(btnMen);
 
-		JLabel lblConsultar = new JLabel("Consultar Practicas");
+		JLabel lblConsultar = new JLabel("Prácticas");
 		lblConsultar.setVerticalAlignment(SwingConstants.TOP);
 		lblConsultar.setHorizontalAlignment(SwingConstants.LEFT);
 		lblConsultar.setForeground(new Color(0, 0, 0));
 		lblConsultar.setFont(new Font("Lato", Font.PLAIN, 55));
-		lblConsultar.setBounds(431, 24, 569, 81);
+		lblConsultar.setBounds(414, 24, 569, 81);
 		add(lblConsultar);
 
 		scrollPane = new JScrollPane();
 		scrollPane.setBackground(Color.WHITE);
-		scrollPane.setBounds(32, 160, 1318, 463);
+		scrollPane.setBounds(32, 160, 1029, 463);
 		add(scrollPane);
 
 		// -- AÑADIR SOCIO --
@@ -100,7 +100,7 @@ public class PracticasVentana extends JPanel {
 		btnNuevaPractica.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnNuevaPractica.setBorder(null);
 		btnNuevaPractica.setBackground(new Color(254, 86, 86));
-		btnNuevaPractica.setBounds(1445, 158, 130, 37);
+		btnNuevaPractica.setBounds(1134, 258, 130, 37);
 		add(btnNuevaPractica);
 
 		// -- EDITAR SOCIO --
@@ -124,7 +124,7 @@ public class PracticasVentana extends JPanel {
 		btnEditarPractica.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnEditarPractica.setBorder(null);
 		btnEditarPractica.setBackground(new Color(254, 86, 86));
-		btnEditarPractica.setBounds(1445, 358, 122, 37);
+		btnEditarPractica.setBounds(1134, 396, 130, 37);
 		add(btnEditarPractica);
 
 		// -- BOTÓN ELIMINAR SOCIO --
@@ -150,7 +150,7 @@ public class PracticasVentana extends JPanel {
 		btnBorrarPractica.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnBorrarPractica.setBorder(null);
 		btnBorrarPractica.setBackground(new Color(254, 86, 86));
-		btnBorrarPractica.setBounds(1445, 558, 116, 37);
+		btnBorrarPractica.setBounds(1134, 525, 130, 37);
 		add(btnBorrarPractica);
 
 		// -------------------------- JTABLE --------------------------------------
@@ -176,18 +176,18 @@ public class PracticasVentana extends JPanel {
 		scrollPane.setViewportView(jtResultados);
 		
 		//poner las columnas necesarias
-		modeloTabla.setColumnIdentifiers(new Object[] { });
-
-		jtResultados.setModel(modeloTabla);
-
-		jtResultados.getColumnModel().getColumn(0).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(1).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(2).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(3).setPreferredWidth(120);
-		jtResultados.getColumnModel().getColumn(4).setPreferredWidth(80);
-		jtResultados.getColumnModel().getColumn(5).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(6).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(7).setPreferredWidth(10);
+//		modeloTabla.setColumnIdentifiers(new Object[] { });
+//
+//		jtResultados.setModel(modeloTabla);
+//
+//		jtResultados.getColumnModel().getColumn(0).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(1).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(2).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(3).setPreferredWidth(120);
+//		jtResultados.getColumnModel().getColumn(4).setPreferredWidth(80);
+//		jtResultados.getColumnModel().getColumn(5).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(6).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(7).setPreferredWidth(10);
 
 		JTableHeader encabezado = jtResultados.getTableHeader();
 		Color violeta = new Color(230, 217, 240);

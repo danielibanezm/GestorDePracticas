@@ -75,17 +75,17 @@ public class BolsasVentana extends JPanel {
 		btnMen.setBounds(32, 24, 79, 37);
 		add(btnMen);
 
-		JLabel lblConsultar = new JLabel("Consultar Bolsas");
+		JLabel lblConsultar = new JLabel("Bolsas");
 		lblConsultar.setVerticalAlignment(SwingConstants.TOP);
 		lblConsultar.setHorizontalAlignment(SwingConstants.LEFT);
 		lblConsultar.setForeground(new Color(0, 0, 0));
 		lblConsultar.setFont(new Font("Lato", Font.PLAIN, 55));
-		lblConsultar.setBounds(431, 24, 586, 81);
+		lblConsultar.setBounds(414, 24, 586, 81);
 		add(lblConsultar);
 
 		scrollPane = new JScrollPane();
 		scrollPane.setBackground(Color.WHITE);
-		scrollPane.setBounds(32, 160, 1318, 463);
+		scrollPane.setBounds(32, 160, 1029, 463);
 		add(scrollPane);
 
 		// -- AÑADIR SOCIO --
@@ -105,7 +105,7 @@ public class BolsasVentana extends JPanel {
 		btnNuevoAlumnos.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnNuevoAlumnos.setBorder(null);
 		btnNuevoAlumnos.setBackground(new Color(254, 86, 86));
-		btnNuevoAlumnos.setBounds(1445, 158, 130, 37);
+		btnNuevoAlumnos.setBounds(1134, 258, 130, 37);
 		add(btnNuevoAlumnos);
 
 		// -- EDITAR SOCIO --
@@ -129,7 +129,7 @@ public class BolsasVentana extends JPanel {
 		btnEditarAlumnos.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnEditarAlumnos.setBorder(null);
 		btnEditarAlumnos.setBackground(new Color(254, 86, 86));
-		btnEditarAlumnos.setBounds(1445, 358, 122, 37);
+		btnEditarAlumnos.setBounds(1134, 396, 130, 37);
 		add(btnEditarAlumnos);
 
 		// -- BOTÓN ELIMINAR SOCIO --
@@ -155,7 +155,7 @@ public class BolsasVentana extends JPanel {
 		btnBorrarAlumnos.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnBorrarAlumnos.setBorder(null);
 		btnBorrarAlumnos.setBackground(new Color(254, 86, 86));
-		btnBorrarAlumnos.setBounds(1445, 558, 116, 37);
+		btnBorrarAlumnos.setBounds(1134, 525, 130, 37);
 		add(btnBorrarAlumnos);
 
 		// -------------------------- JTABLE --------------------------------------
@@ -181,23 +181,23 @@ public class BolsasVentana extends JPanel {
 		scrollPane.setViewportView(jtResultados);
 		
 		//poner las columnas necesarias
-		modeloTabla.setColumnIdentifiers(new Object[] { });
-
-		jtResultados.setModel(modeloTabla);
-		
-		JToggleButton tglbtnCambiarTabla = new JToggleButton("Mostrar becas");
-		tglbtnCambiarTabla.setBounds(1445, 47, 121, 37);
-		tglbtnCambiarTabla.setBackground(new Color(254, 86, 86));
-		add(tglbtnCambiarTabla);
-
-		jtResultados.getColumnModel().getColumn(0).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(1).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(2).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(3).setPreferredWidth(120);
-		jtResultados.getColumnModel().getColumn(4).setPreferredWidth(80);
-		jtResultados.getColumnModel().getColumn(5).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(6).setPreferredWidth(100);
-		jtResultados.getColumnModel().getColumn(7).setPreferredWidth(10);
+//		modeloTabla.setColumnIdentifiers(new Object[] { });
+//
+//		jtResultados.setModel(modeloTabla);
+//		
+//		JToggleButton tglbtnCambiarTabla = new JToggleButton("Mostrar becas");
+//		tglbtnCambiarTabla.setBounds(1445, 47, 121, 37);
+//		tglbtnCambiarTabla.setBackground(new Color(254, 86, 86));
+//		add(tglbtnCambiarTabla);
+//
+//		jtResultados.getColumnModel().getColumn(0).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(1).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(2).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(3).setPreferredWidth(120);
+//		jtResultados.getColumnModel().getColumn(4).setPreferredWidth(80);
+//		jtResultados.getColumnModel().getColumn(5).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(6).setPreferredWidth(100);
+//		jtResultados.getColumnModel().getColumn(7).setPreferredWidth(10);
 
 		JTableHeader encabezado = jtResultados.getTableHeader();
 		Color violeta = new Color(230, 217, 240);

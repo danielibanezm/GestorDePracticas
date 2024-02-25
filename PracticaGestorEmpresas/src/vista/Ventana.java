@@ -34,7 +34,7 @@ public class Ventana extends JFrame {
 //		setIconImage(Toolkit.getDefaultToolkit().getImage(Ventana.class.getResource("/img/libro.png")));
 		setMinimumSize(new Dimension(1400, 800));
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 1414, 926);
+		setBounds(100, 100, 1480, 926);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -44,9 +44,8 @@ public class Ventana extends JFrame {
 		/* -- 	PONEMOS EL PANEL LOGIN SIEMPRE POR DEFECTO --
 		"this" hace referencia a la instancia de Ventana*/
 		Ventana ventana = this;
-		Menu menuPanel = new Menu(this, false, "2");
- //       Login loginPanel = new Login(this);
-        nuevoPanel(menuPanel);
+        Login loginPanel = new Login(this);
+        nuevoPanel(loginPanel);
         //------------------------------------------------
         
         //---------	ACCIÓN CERRAR EL JFRAME	----

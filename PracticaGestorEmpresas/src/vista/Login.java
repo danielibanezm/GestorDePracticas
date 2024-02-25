@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
 
+import controlador.CompruebaCredenciales;
 
 import javax.swing.UIManager;
 import javax.swing.border.CompoundBorder;
@@ -40,8 +41,8 @@ public class Login extends JPanel{
 	private JButton btnAceptar;
 	private Ventana ventana;
 	private boolean esAdmin = true;
-//	private BaseDeDatos bd = new BaseDeDatos();
 	private String idBib = "";
+	private CompruebaCredenciales cc = new CompruebaCredenciales();
 
 	
 	//Modificamos el constructor para recibir una referencia de la instancia de "Ventana".
@@ -107,16 +108,9 @@ public class Login extends JPanel{
 				usuario = txtUsuario.getText();
 				contrasenia = new String(txtContrasenia.getPassword());
 				
-//				correcto = bd.compruebaUsuario(usuario, contrasenia);
+				correcto = cc.comprobarCredenciales(txtUsuario.getText(), new String(txtContrasenia.getPassword())).isExiste();
 				if(correcto) {
 					
-					//Comprobamos si el usuario es admin o no para habilitar el botón de usuarios en el menú.
-					if(!(usuario.contains("admin"))){
-						esAdmin = false;
-					}
-					
-//					idBib = bd.obtenBiblioteca(usuario);
-					//Utilizamos la referencia a Ventana para cambiar al panel Menu
 					ventana.nuevoPanel(new Menu(ventana, esAdmin, idBib));
 					
 				}else {
@@ -131,7 +125,7 @@ public class Login extends JPanel{
 		btnAceptar.setBorder(null);
 		btnAceptar.setForeground(new Color(255, 255, 255));
 		btnAceptar.setBackground(new Color(233, 1, 1));
-		btnAceptar.setBounds(522, 516, 117, 37);
+		btnAceptar.setBounds(623, 542, 117, 37);
 		add(btnAceptar);
 		
 		lblerror = new JLabel("");
@@ -139,7 +133,45 @@ public class Login extends JPanel{
 		lblerror.setFont(new Font("Tahoma", Font.ITALIC, 12));
 		lblerror.setBounds(575, 478, 239, 14);
 		add(lblerror);
-
+		
+		JLabel lblOlvido = new JLabel("He olvidado mi contraseña");
+		lblOlvido.setFont(new Font("Verdana", Font.PLAIN, 12));
+		lblOlvido.setBounds(472, 495, 186, 14);
+		lblOlvido.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//poner panel de cambiar contraseña
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				lblOlvido.setForeground(Color.CYAN);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblOlvido.setForeground(Color.BLUE);
+			}
+		});
+		lblOlvido.setForeground(Color.BLUE);
+		add(lblOlvido);
+		
+		JLabel lblCambiarMiContrasea = new JLabel("Cambiar mi contraseña");
+		lblCambiarMiContrasea.setFont(new Font("Verdana", Font.PLAIN, 12));
+		lblCambiarMiContrasea.setBounds(761, 495, 159, 14);
+		lblCambiarMiContrasea.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//poner panel de cambiar contraseña
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				lblCambiarMiContrasea.setForeground(Color.CYAN);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblCambiarMiContrasea.setForeground(Color.BLUE);
+			}
+		});
+		lblCambiarMiContrasea.setForeground(Color.BLUE);
+		add(lblCambiarMiContrasea);
 	}
-	
 }

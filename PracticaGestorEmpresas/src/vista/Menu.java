@@ -32,7 +32,7 @@ public class Menu extends JPanel {
 		lblTitulo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTitulo.setForeground(new Color(233, 1, 1));
 		lblTitulo.setFont(new Font("Lato", Font.PLAIN, 55));
-		lblTitulo.setBounds(503, 59, 380, 81);
+		lblTitulo.setBounds(544, 61, 380, 81);
 		add(lblTitulo);
 		
 		JLabel lblMen = new JLabel("Menú");
@@ -40,7 +40,7 @@ public class Menu extends JPanel {
 		lblMen.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMen.setForeground(new Color(9, 3, 62));
 		lblMen.setFont(new Font("Lato", Font.PLAIN, 55));
-		lblMen.setBounds(623, 137, 239, 81);
+		lblMen.setBounds(664, 139, 239, 81);
 		add(lblMen);
 		
 		JLabel lblIcono = new JLabel("");
@@ -62,7 +62,7 @@ public class Menu extends JPanel {
 		btnEmpresas.setForeground(new Color(255, 255, 255));
 		btnEmpresas.setBackground(new Color(233, 1, 1));
 		btnEmpresas.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnEmpresas.setBounds(534, 329, 315, 37);
+		btnEmpresas.setBounds(568, 246, 315, 37);
 		add(btnEmpresas);
 		
 		//-- ACCIÓN BOTÓN PRACTICAS --
@@ -79,7 +79,7 @@ public class Menu extends JPanel {
 		btnPracticas.setBackground(new Color(233, 1, 1));
 		btnPracticas.setBorder(null);
 		btnPracticas.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnPracticas.setBounds(534, 245, 315, 37);
+		btnPracticas.setBounds(30, 246, 315, 37);
 		add(btnPracticas);
 		
 		//-- ACCIÓN BOTÓN PRÉSTAMOS --
@@ -97,7 +97,7 @@ public class Menu extends JPanel {
 		btnAlumnos.setBorder(null);
 		btnAlumnos.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnAlumnos.setToolTipText("");
-		btnAlumnos.setBounds(534, 414, 315, 37);
+		btnAlumnos.setBounds(30, 476, 315, 37);
 		add(btnAlumnos);
 		
 		//-- ACCIÓN BOTÓN CONVENIOS --
@@ -115,7 +115,7 @@ public class Menu extends JPanel {
 		btnConvenios.setBorder(null);
 		btnConvenios.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnConvenios.setToolTipText("");
-		btnConvenios.setBounds(534, 498, 315, 37);
+		btnConvenios.setBounds(1105, 476, 315, 37);
 		add(btnConvenios);
 		
 		//-- ACCIÓN BOTÓN BOLSA DE TRABAJO --
@@ -132,7 +132,7 @@ public class Menu extends JPanel {
 		btnBolsaTrabajo.setBorder(null);
 		btnBolsaTrabajo.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnBolsaTrabajo.setToolTipText("");
-		btnBolsaTrabajo.setBounds(534, 582, 315, 37);
+		btnBolsaTrabajo.setBounds(1105, 246, 315, 37);
 		add(btnBolsaTrabajo);
 		
 		JButton btnSalir = new JButton("Cerrar sesión");
@@ -152,7 +152,7 @@ public class Menu extends JPanel {
 		btnSalir.setFont(new Font("Verdana", Font.PLAIN, 11));
 		btnSalir.setBorder(null);
 		btnSalir.setBackground(new Color(255, 128, 128));
-		btnSalir.setBounds(632, 822, 111, 37);
+		btnSalir.setBounds(668, 755, 111, 37);
 		add(btnSalir);
 		
 		
@@ -170,7 +170,7 @@ public class Menu extends JPanel {
 		btnAdministracion.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnAdministracion.setBorder(null);
 		btnAdministracion.setBackground(new Color(233, 1, 1));
-		btnAdministracion.setBounds(534, 749, 315, 37);
+		btnAdministracion.setBounds(568, 641, 315, 37);
 		add(btnAdministracion);
 				
 		//-- ACCIÓN BOTÓN NECESIDADES --
@@ -187,7 +187,7 @@ public class Menu extends JPanel {
 		btnNecesidades.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnNecesidades.setBorder(null);
 		btnNecesidades.setBackground(new Color(233, 1, 1));
-		btnNecesidades.setBounds(534, 665, 315, 37);
+		btnNecesidades.setBounds(568, 476, 315, 37);
 		add(btnNecesidades);
 		
 		if(esAdmin == false) {

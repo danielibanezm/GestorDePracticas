@@ -17,6 +17,8 @@ import javax.swing.JDialog;
 import javax.swing.border.LineBorder;
 
 import controlador.CompruebaCredenciales;
+import modales.CambioContrasenna;
+import modales.RecuperarContrasenna;
 import modelo.Usuario;
 
 import javax.swing.UIManager;

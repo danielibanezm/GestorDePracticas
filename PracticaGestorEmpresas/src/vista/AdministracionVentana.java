@@ -3,12 +3,19 @@ package vista;
 import javax.swing.JPanel;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+
 import java.awt.Color;
 
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import modales.CambioContrasenna;
+import modales.InsertarUsuario;
+import modales.ModificacionUsuario;
+import modelo.Consultas;
 
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -48,6 +55,7 @@ public class AdministracionVentana extends JPanel {
 	private JButton btnBorrarUsuario;
 	private JTable jtResultados;
 	private int filaTabla;
+	private Consultas c = new Consultas();
 
 //	private BaseDeDatos bd = new BaseDeDatos();
 //	private Errores err = new Errores();
@@ -74,12 +82,12 @@ public class AdministracionVentana extends JPanel {
 		btnMen.setBounds(32, 24, 79, 37);
 		add(btnMen);
 
-		JLabel lblConsultar = new JLabel("Usuarios");
+		JLabel lblConsultar = new JLabel("Administracion");
 		lblConsultar.setVerticalAlignment(SwingConstants.TOP);
 		lblConsultar.setHorizontalAlignment(SwingConstants.LEFT);
 		lblConsultar.setForeground(new Color(0, 0, 0));
 		lblConsultar.setFont(new Font("Lato", Font.PLAIN, 55));
-		lblConsultar.setBounds(414, 24, 218, 81);
+		lblConsultar.setBounds(414, 24, 377, 81);
 		add(lblConsultar);
 
 		scrollPane = new JScrollPane();
@@ -91,11 +99,9 @@ public class AdministracionVentana extends JPanel {
 		btnNuevoUsuario = new JButton("Nuevo usuario");
 		btnNuevoUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNuevoUsuario.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+				InsertarUsuario dialog = new InsertarUsuario();
+				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				dialog.setVisible(true);
 			}
 		});
 		// ----------------------------------------------
@@ -114,10 +120,12 @@ public class AdministracionVentana extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				filaTabla = jtResultados.getSelectedRow();
 				if (filaTabla != -1) { // Se ha seleccionado una fila
-
+					ModificacionUsuario dialog = new ModificacionUsuario(Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()));
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
 				} else {
 					// No se ha seleccionado ningún socio por lo tanto se muestra un error.
-					JOptionPane.showMessageDialog(null, "Seleccione un socio para editarlo", "Error",
+					JOptionPane.showMessageDialog(null, "Seleccione un usuario para editarlo", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -139,8 +147,7 @@ public class AdministracionVentana extends JPanel {
 				filaTabla = jtResultados.getSelectedRow();
 
 				if (filaTabla != -1) { // Se ha seleccionado una fila
-					eliminar(filaTabla, idBib);
-
+					
 				} else {
 					// No se ha seleccionado ningún libro por lo tanto se muestra un error.
 					JOptionPane.showMessageDialog(null, "Seleccione un socio para poder eliminarlo.", "Error",
@@ -164,8 +171,7 @@ public class AdministracionVentana extends JPanel {
 		jtResultados.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
-
+				
 			}
 		});
 		// ------------------
@@ -180,19 +186,16 @@ public class AdministracionVentana extends JPanel {
 		scrollPane.setViewportView(jtResultados);
 		
 		//poner las columnas necesarias
-//		modeloTabla.setColumnIdentifiers(new Object[] { });
-//
-//		jtResultados.setModel(modeloTabla);
-//
-//		jtResultados.getColumnModel().getColumn(0).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(1).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(2).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(3).setPreferredWidth(120);
-//		jtResultados.getColumnModel().getColumn(4).setPreferredWidth(80);
-//		jtResultados.getColumnModel().getColumn(5).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(6).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(7).setPreferredWidth(10);
+		modeloTabla.setColumnIdentifiers(new Object[] {"Id_usuario", "Id_Centro", "Email", "Perfil"});
 
+		jtResultados.setModel(modeloTabla);
+//
+		jtResultados.getColumnModel().getColumn(0).setMaxWidth(0);
+		jtResultados.getColumnModel().getColumn(1).setMaxWidth(0);
+		
+		jtResultados.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
+		jtResultados.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(1);
+		
 		JTableHeader encabezado = jtResultados.getTableHeader();
 		Color violeta = new Color(230, 217, 240);
 		Color darkBlue = new Color(9, 3, 62);
@@ -210,9 +213,7 @@ public class AdministracionVentana extends JPanel {
 
 	public void rellenaTabla(String idBib) {
 		modeloTabla.setRowCount(0);
-	}
-
-	public void eliminar(int filaTabla, String idBib) {
+		
 	}
 
 	

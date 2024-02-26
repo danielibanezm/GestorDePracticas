@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 public class Consultas {
 	private String baseDeDatos = "jdbc:mysql://localhost/gestor_practicas";
 	private String user = "root";
@@ -98,6 +101,96 @@ public class Consultas {
 			statement = conexion.createStatement();
 			
 			int valor = statement.executeUpdate("update usuarios set primer = 0 where id_usuario = " + idUsuario);
+			if(valor == 1) {
+				System.out.println("Todo correcto master");
+			}else{
+				System.out.println("Uy Uy Uy :(");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void rellenarUsuarios(DefaultTableModel tabla) {
+		Connection conexion = null;
+		Statement statement = null;
+		
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user , contrasenna);
+			statement = conexion.createStatement();
+			ResultSet rs = statement.executeQuery("select distinct * from Usuarios WHERE eliminado != 1");
+			
+			while(rs.next()) {
+				tabla.addRow(new Object[] {
+						rs.getInt("id_usuario"),
+						rs.getInt("id_centro"),
+						rs.getString("email"),
+						rs.getString("perfil")
+				});
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				conexion.close();
+			}catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	public void insertarUsuario(String email, String perfil, int idCentro) {
+		Connection conexion = null;
+		Statement statement = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user , contrasenna);
+			statement = conexion.createStatement();
+			
+			int valor = statement.executeUpdate("INSERT INTO usuarios (id_centro, email, primer, perfil, eliminado) VALUES ("
+					+ idCentro +", '"
+					+ email + "', 1, '"
+					+ perfil + "', 0)");
+			if(valor == 1) {
+				System.out.println("Todo correcto master");
+			}else{
+				System.out.println("Uy Uy Uy :(");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void borradoLogicoUsuario(int idUsuario) {
+		Connection conexion = null;
+		Statement statement = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user , contrasenna);
+			statement = conexion.createStatement();
+			
+			int valor = statement.executeUpdate("update usuarios set eliminado = 1 where id_usuario = " + idUsuario);
+			if(valor == 1) {
+				System.out.println("Todo correcto master");
+			}else{
+				System.out.println("Uy Uy Uy :(");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void actualizarUsuarios(String nuevoEmail, String nuevoPerfil, int idUsuario) {
+		Connection conexion = null;
+		Statement statement = null;
+
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user , contrasenna);
+			statement = conexion.createStatement();
+			
+			int valor = statement.executeUpdate("update usuarios set email = '" + nuevoEmail + "', set perfil = '" + nuevoPerfil + "' where id_usuario = " + idUsuario);
 			if(valor == 1) {
 				System.out.println("Todo correcto master");
 			}else{

@@ -1,4 +1,4 @@
-package vista;
+package modales;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -31,6 +31,7 @@ public class CambioContrasenna extends JDialog {
 	public CambioContrasenna(Usuario usuario) {
 		setBounds(100, 100, 821, 509);
 		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBackground(new Color(255, 255, 255));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);

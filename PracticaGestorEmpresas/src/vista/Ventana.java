@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.Color;
 
 public class Ventana extends JFrame {
 
@@ -36,6 +37,7 @@ public class Ventana extends JFrame {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 1480, 926);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-02-2024 a las 22:52:11
+-- Tiempo de generación: 26-02-2024 a las 12:45:28
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.2.0
 
@@ -104,6 +104,13 @@ CREATE TABLE `centro` (
   `codigo` varchar(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `centro`
+--
+
+INSERT INTO `centro` (`id_centro`, `id_tutor`, `nombre`, `codigo`) VALUES
+(1, 1, 'Alberto32', '14568');
+
 -- --------------------------------------------------------
 
 --
@@ -185,8 +192,16 @@ CREATE TABLE `necesidad` (
 
 CREATE TABLE `otros` (
   `id_otros` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL
+  `id_usuario` int(11) NOT NULL,
+  `material` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `otros`
+--
+
+INSERT INTO `otros` (`id_otros`, `id_usuario`, `material`) VALUES
+(1, 1, '12345');
 
 -- --------------------------------------------------------
 
@@ -214,6 +229,13 @@ CREATE TABLE `tutor` (
   `nombre` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `tutor`
+--
+
+INSERT INTO `tutor` (`id_tutor`, `nombre`) VALUES
+(1, 'Paco');
+
 -- --------------------------------------------------------
 
 --
@@ -223,8 +245,17 @@ CREATE TABLE `tutor` (
 CREATE TABLE `usuarios` (
   `id_usuario` int(11) NOT NULL,
   `id_centro` int(11) NOT NULL,
-  `email` varchar(50) NOT NULL
+  `email` varchar(50) NOT NULL,
+  `primer` tinyint(1) NOT NULL,
+  `perfil` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id_usuario`, `id_centro`, `email`, `primer`, `perfil`) VALUES
+(1, 1, 'alberto@correoelectronico.com', 0, 'Admin');
 
 --
 -- Índices para tablas volcadas
@@ -375,7 +406,7 @@ ALTER TABLE `bolsa_trabajo`
 -- AUTO_INCREMENT de la tabla `centro`
 --
 ALTER TABLE `centro`
-  MODIFY `id_centro` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_centro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `convenio`
@@ -405,7 +436,7 @@ ALTER TABLE `necesidad`
 -- AUTO_INCREMENT de la tabla `otros`
 --
 ALTER TABLE `otros`
-  MODIFY `id_otros` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_otros` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `practica`
@@ -417,13 +448,13 @@ ALTER TABLE `practica`
 -- AUTO_INCREMENT de la tabla `tutor`
 --
 ALTER TABLE `tutor`
-  MODIFY `id_tutor` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_tutor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas

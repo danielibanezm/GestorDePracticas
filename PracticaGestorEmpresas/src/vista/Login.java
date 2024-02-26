@@ -13,9 +13,11 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.border.LineBorder;
 
 import controlador.CompruebaCredenciales;
+import modelo.Usuario;
 
 import javax.swing.UIManager;
 import javax.swing.border.CompoundBorder;
@@ -34,7 +36,7 @@ public class Login extends JPanel{
 	private JTextField txtUsuario;
 	private JPasswordField txtContrasenia;
 	
-	private String usuario = "";
+	private String email = "";
 	private String contrasenia = "";
 	private JLabel lblerror;
 	private boolean correcto;
@@ -43,6 +45,7 @@ public class Login extends JPanel{
 	private boolean esAdmin = true;
 	private String idBib = "";
 	private CompruebaCredenciales cc = new CompruebaCredenciales();
+	private Usuario usuario;
 
 	
 	//Modificamos el constructor para recibir una referencia de la instancia de "Ventana".
@@ -105,13 +108,19 @@ public class Login extends JPanel{
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				usuario = txtUsuario.getText();
+				email = txtUsuario.getText();
 				contrasenia = new String(txtContrasenia.getPassword());
+				usuario = cc.comprobarCredenciales(txtUsuario.getText(), new String(txtContrasenia.getPassword()));
 				
-				correcto = cc.comprobarCredenciales(txtUsuario.getText(), new String(txtContrasenia.getPassword())).isExiste();
+				correcto = usuario.isExiste();
 				if(correcto) {
-					
-					ventana.nuevoPanel(new Menu(ventana, esAdmin, idBib));
+					if(usuario.isPrimeraVez()) {
+						CambioContrasenna dialog = new CambioContrasenna(usuario);
+						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+						dialog.setVisible(true);
+					}else {
+						ventana.nuevoPanel(new Menu(ventana, esAdmin, idBib));
+					}
 					
 				}else {
 					lblerror.setText("Usuario o contraseña incorrecto.");
@@ -140,7 +149,9 @@ public class Login extends JPanel{
 		lblOlvido.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//poner panel de cambiar contraseña
+				RecuperarContrasenna dialog = new RecuperarContrasenna();
+				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				dialog.setVisible(true);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -160,7 +171,9 @@ public class Login extends JPanel{
 		lblCambiarMiContrasea.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//poner panel de cambiar contraseña
+				CambioContrasenna dialog = new CambioContrasenna(usuario);
+				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				dialog.setVisible(true);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {

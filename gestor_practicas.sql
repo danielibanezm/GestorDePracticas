@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-02-2024 a las 15:48:39
+-- Tiempo de generación: 26-02-2024 a las 15:58:02
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.0.28
 
@@ -33,7 +33,7 @@ CREATE TABLE `alumno` (
   `nombre` varchar(20) NOT NULL,
   `dni` varchar(9) NOT NULL,
   `valido` tinyint(1) NOT NULL,
-  `cv` blob NOT NULL,
+  `cv` longblob NOT NULL,
   `ss` varchar(12) NOT NULL,
   `ciclo` varchar(20) NOT NULL,
   `año` varchar(10) NOT NULL,

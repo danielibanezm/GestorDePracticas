@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-02-2024 a las 15:58:02
+-- Tiempo de generación: 26-02-2024 a las 17:01:32
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.0.28
 
@@ -300,31 +300,31 @@ ALTER TABLE `anexos_semanales`
 --
 ALTER TABLE `bolsa_becas`
   ADD PRIMARY KEY (`id_bolsa_becas`),
-  ADD UNIQUE KEY `id_alumno` (`id_alumno`,`id_empresa`),
-  ADD KEY `id_empresa_becas_fk` (`id_empresa`);
+  ADD KEY `id_empresa_becas_fk` (`id_empresa`),
+  ADD KEY `id_alumno` (`id_alumno`,`id_empresa`) USING BTREE;
 
 --
 -- Indices de la tabla `bolsa_trabajo`
 --
 ALTER TABLE `bolsa_trabajo`
   ADD PRIMARY KEY (`id_bolsa_trabajo`),
-  ADD UNIQUE KEY `id_alumno` (`id_alumno`,`id_empresa`),
-  ADD KEY `id_empresa_trabajo_fk` (`id_empresa`);
+  ADD KEY `id_empresa_trabajo_fk` (`id_empresa`),
+  ADD KEY `id_alumno` (`id_alumno`,`id_empresa`) USING BTREE;
 
 --
 -- Indices de la tabla `centro`
 --
 ALTER TABLE `centro`
   ADD PRIMARY KEY (`id_centro`),
-  ADD UNIQUE KEY `id_tutor` (`id_tutor`);
+  ADD KEY `id_tutor` (`id_tutor`) USING BTREE;
 
 --
 -- Indices de la tabla `convenio`
 --
 ALTER TABLE `convenio`
   ADD PRIMARY KEY (`id_convenio`),
-  ADD UNIQUE KEY `id_necesidad` (`id_necesidad`),
-  ADD UNIQUE KEY `id_firma` (`id_firma`);
+  ADD KEY `id_firma` (`id_firma`) USING BTREE,
+  ADD KEY `id_necesidad` (`id_necesidad`) USING BTREE;
 
 --
 -- Indices de la tabla `empresa`
@@ -337,8 +337,8 @@ ALTER TABLE `empresa`
 --
 ALTER TABLE `firma`
   ADD PRIMARY KEY (`id_firma`),
-  ADD UNIQUE KEY `id_centro` (`id_centro`,`id_empresa`),
-  ADD KEY `id_empresa_firma_fk` (`id_empresa`);
+  ADD KEY `id_empresa_firma_fk` (`id_empresa`),
+  ADD KEY `id_centro` (`id_centro`,`id_empresa`) USING BTREE;
 
 --
 -- Indices de la tabla `intermedia_anexos`
@@ -352,23 +352,23 @@ ALTER TABLE `intermedia_anexos`
 --
 ALTER TABLE `necesidad`
   ADD PRIMARY KEY (`id_necesidad`),
-  ADD UNIQUE KEY `id_empresa` (`id_empresa`);
+  ADD KEY `id_empresa` (`id_empresa`) USING BTREE;
 
 --
 -- Indices de la tabla `otros`
 --
 ALTER TABLE `otros`
   ADD PRIMARY KEY (`id_otros`),
-  ADD UNIQUE KEY `id_usuario` (`id_usuario`);
+  ADD KEY `id_usuario` (`id_usuario`) USING BTREE;
 
 --
 -- Indices de la tabla `practica`
 --
 ALTER TABLE `practica`
   ADD PRIMARY KEY (`id_practica`) USING BTREE,
-  ADD UNIQUE KEY `id_alumno` (`id_alumno`,`id_anexo`,`id_empresa`),
   ADD KEY `id_anexo_practica_fk` (`id_anexo`),
-  ADD KEY `id_empresa_practica_fk` (`id_empresa`);
+  ADD KEY `id_empresa_practica_fk` (`id_empresa`),
+  ADD KEY `id_alumno` (`id_alumno`,`id_anexo`,`id_empresa`) USING BTREE;
 
 --
 -- Indices de la tabla `tutor`
@@ -381,7 +381,7 @@ ALTER TABLE `tutor`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id_usuario`),
-  ADD UNIQUE KEY `id_centro` (`id_centro`);
+  ADD KEY `id_centro` (`id_centro`) USING BTREE;
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -469,7 +469,7 @@ ALTER TABLE `tutor`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas

@@ -180,18 +180,15 @@ public class AlumnosVentana extends JPanel {
 		scrollPane.setViewportView(jtResultados);
 		
 		//poner las columnas necesarias
-//		modeloTabla.setColumnIdentifiers(new Object[] { });
-//
-//		jtResultados.setModel(modeloTabla);
-//
-//		jtResultados.getColumnModel().getColumn(0).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(1).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(2).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(3).setPreferredWidth(120);
-//		jtResultados.getColumnModel().getColumn(4).setPreferredWidth(80);
-//		jtResultados.getColumnModel().getColumn(5).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(6).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(7).setPreferredWidth(10);
+		modeloTabla.setColumnIdentifiers(new Object[] {"Id", "", "Alumno", "Centro", "Valido", "Ciclo", "Año"});
+
+		jtResultados.setModel(modeloTabla);
+
+		jtResultados.getColumnModel().getColumn(0).setMaxWidth(0);
+		jtResultados.getColumnModel().getColumn(1).setMaxWidth(0);
+		
+		jtResultados.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
+		jtResultados.getTableHeader().getColumnModel().getColumn(1).setMaxWidth(0);
 
 		JTableHeader encabezado = jtResultados.getTableHeader();
 		Color violeta = new Color(230, 217, 240);

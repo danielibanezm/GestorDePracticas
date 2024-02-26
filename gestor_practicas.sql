@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-02-2024 a las 12:45:28
--- Versión del servidor: 10.4.27-MariaDB
--- Versión de PHP: 8.2.0
+-- Tiempo de generación: 26-02-2024 a las 15:48:39
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -36,7 +36,8 @@ CREATE TABLE `alumno` (
   `cv` blob NOT NULL,
   `ss` varchar(12) NOT NULL,
   `ciclo` varchar(20) NOT NULL,
-  `año` varchar(10) NOT NULL
+  `año` varchar(10) NOT NULL,
+  `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -47,11 +48,12 @@ CREATE TABLE `alumno` (
 
 CREATE TABLE `anexos` (
   `id_anexo` int(11) NOT NULL,
-  `anexo_8` blob NOT NULL,
-  `anexo_1` blob NOT NULL,
-  `anexo_2_1` blob NOT NULL,
-  `anexo_2_2` blob NOT NULL,
-  `anexo_3` blob NOT NULL
+  `anexo_8` longblob NOT NULL,
+  `anexo_1` longblob NOT NULL,
+  `anexo_2_1` longblob NOT NULL,
+  `anexo_2_2` longblob NOT NULL,
+  `anexo_3` longblob NOT NULL,
+  `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -62,7 +64,8 @@ CREATE TABLE `anexos` (
 
 CREATE TABLE `anexos_semanales` (
   `id_anexo_semanal` int(11) NOT NULL,
-  `seguiminento` blob NOT NULL
+  `seguiminento` longblob NOT NULL,
+  `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -75,7 +78,8 @@ CREATE TABLE `bolsa_becas` (
   `id_bolsa_becas` int(11) NOT NULL,
   `id_alumno` int(11) NOT NULL,
   `id_empresa` int(11) NOT NULL,
-  `fecha_entrada` date NOT NULL
+  `fecha_entrada` date NOT NULL,
+  `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -88,7 +92,8 @@ CREATE TABLE `bolsa_trabajo` (
   `id_bolsa_trabajo` int(11) NOT NULL,
   `id_alumno` int(11) NOT NULL,
   `id_empresa` int(11) NOT NULL,
-  `fecha_entrada` date NOT NULL
+  `fecha_entrada` date NOT NULL,
+  `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -101,15 +106,16 @@ CREATE TABLE `centro` (
   `id_centro` int(11) NOT NULL,
   `id_tutor` int(11) NOT NULL,
   `nombre` varchar(20) NOT NULL,
-  `codigo` varchar(9) NOT NULL
+  `codigo` varchar(9) NOT NULL,
+  `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `centro`
 --
 
-INSERT INTO `centro` (`id_centro`, `id_tutor`, `nombre`, `codigo`) VALUES
-(1, 1, 'Alberto32', '14568');
+INSERT INTO `centro` (`id_centro`, `id_tutor`, `nombre`, `codigo`, `eliminado`) VALUES
+(1, 1, 'Alberto32', '14568', 0);
 
 -- --------------------------------------------------------
 
@@ -121,7 +127,8 @@ CREATE TABLE `convenio` (
   `id_convenio` int(9) NOT NULL,
   `id_necesidad` int(9) NOT NULL,
   `id_firma` int(11) NOT NULL,
-  `numero_serie` int(11) NOT NULL
+  `numero_serie` int(11) NOT NULL,
+  `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -140,7 +147,8 @@ CREATE TABLE `empresa` (
   `email_empresa` varchar(20) NOT NULL,
   `tutor_empresa` varchar(20) NOT NULL,
   `contacto_empresa` varchar(20) NOT NULL,
-  `solicita` varchar(20) NOT NULL
+  `solicita` varchar(20) NOT NULL,
+  `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -153,7 +161,8 @@ CREATE TABLE `firma` (
   `id_firma` int(11) NOT NULL,
   `id_centro` int(11) NOT NULL,
   `id_empresa` int(11) NOT NULL,
-  `firma` varchar(15) NOT NULL
+  `firma` varchar(15) NOT NULL,
+  `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -164,7 +173,8 @@ CREATE TABLE `firma` (
 
 CREATE TABLE `intermedia_anexos` (
   `id_anexo_semanal` int(11) NOT NULL,
-  `id_anexo` int(11) NOT NULL
+  `id_anexo` int(11) NOT NULL,
+  `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -181,7 +191,8 @@ CREATE TABLE `necesidad` (
   `cantidad_daw` int(9) NOT NULL,
   `cantidad_asir` int(9) NOT NULL,
   `cantidad_marketin` int(9) NOT NULL,
-  `cantidad_finanzas` int(9) NOT NULL
+  `cantidad_finanzas` int(9) NOT NULL,
+  `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -193,15 +204,16 @@ CREATE TABLE `necesidad` (
 CREATE TABLE `otros` (
   `id_otros` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
-  `material` varchar(20) NOT NULL
+  `material` varchar(20) NOT NULL,
+  `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `otros`
 --
 
-INSERT INTO `otros` (`id_otros`, `id_usuario`, `material`) VALUES
-(1, 1, '12345');
+INSERT INTO `otros` (`id_otros`, `id_usuario`, `material`, `eliminado`) VALUES
+(1, 1, '12345', 0);
 
 -- --------------------------------------------------------
 
@@ -215,7 +227,8 @@ CREATE TABLE `practica` (
   `id_anexo` int(11) NOT NULL,
   `id_empresa` int(11) NOT NULL,
   `inicio` date NOT NULL,
-  `final` date NOT NULL
+  `final` date NOT NULL,
+  `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -226,15 +239,16 @@ CREATE TABLE `practica` (
 
 CREATE TABLE `tutor` (
   `id_tutor` int(11) NOT NULL,
-  `nombre` varchar(20) NOT NULL
+  `nombre` varchar(20) NOT NULL,
+  `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `tutor`
 --
 
-INSERT INTO `tutor` (`id_tutor`, `nombre`) VALUES
-(1, 'Paco');
+INSERT INTO `tutor` (`id_tutor`, `nombre`, `eliminado`) VALUES
+(1, 'Paco', 0);
 
 -- --------------------------------------------------------
 
@@ -247,15 +261,16 @@ CREATE TABLE `usuarios` (
   `id_centro` int(11) NOT NULL,
   `email` varchar(50) NOT NULL,
   `primer` tinyint(1) NOT NULL,
-  `perfil` varchar(20) NOT NULL
+  `perfil` varchar(20) NOT NULL,
+  `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_usuario`, `id_centro`, `email`, `primer`, `perfil`) VALUES
-(1, 1, 'alberto@correoelectronico.com', 0, 'Admin');
+INSERT INTO `usuarios` (`id_usuario`, `id_centro`, `email`, `primer`, `perfil`, `eliminado`) VALUES
+(1, 1, 'alberto@correoelectronico.com', 0, 'Admin', 0);
 
 --
 -- Índices para tablas volcadas

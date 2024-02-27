@@ -112,14 +112,14 @@ public class Consultas {
 		}
 	}
 	
-	public void rellenarUsuarios(DefaultTableModel tabla) {
+	public void rellenarUsuarios(DefaultTableModel tabla, int idCentro) {
 		Connection conexion = null;
 		Statement statement = null;
 		
 		try {
 			conexion = DriverManager.getConnection(baseDeDatos, user , contrasenna);
 			statement = conexion.createStatement();
-			ResultSet rs = statement.executeQuery("select distinct * from Usuarios WHERE eliminado != 1");
+			ResultSet rs = statement.executeQuery("select distinct * from Usuarios WHERE eliminado != 1 AND id_centro = " + idCentro);
 			
 			while(rs.next()) {
 				tabla.addRow(new Object[] {
@@ -189,8 +189,8 @@ public class Consultas {
 		try {
 			conexion = DriverManager.getConnection(baseDeDatos, user , contrasenna);
 			statement = conexion.createStatement();
-			
-			int valor = statement.executeUpdate("update usuarios set email = '" + nuevoEmail + "', set perfil = '" + nuevoPerfil + "' where id_usuario = " + idUsuario);
+			String update = "UPDATE usuarios SET email = '" + nuevoEmail + "', perfil = '" + nuevoPerfil + "' WHERE id_usuario = " + idUsuario + ";";
+			int valor = statement.executeUpdate(update);
 			if(valor == 1) {
 				System.out.println("Todo correcto master");
 			}else{
@@ -200,5 +200,58 @@ public class Consultas {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	public ArrayList<String> cogeNombreCentros(){
+		ArrayList<String> arrlCentros = new ArrayList<>();
+		Connection conexion = null;
+		Statement statement = null;
+		
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user , contrasenna);
+			statement = conexion.createStatement();
+			ResultSet rs = statement.executeQuery("SELECT nombre FROM centro WHERE eliminado != 1;");
+			
+			while(rs.next()) {
+				arrlCentros.add(rs.getString("nombre"));
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				conexion.close();
+			}catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return arrlCentros;
+	}
+	
+	public int cogeIdCentro(String nombre){
+		int id = -1;
+		Connection conexion = null;
+		Statement statement = null;
+		
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user , contrasenna);
+			statement = conexion.createStatement();
+			ResultSet rs = statement.executeQuery("SELECT id_centro FROM centro WHERE eliminado != 1 AND nombre = '" + nombre + "';");
+			
+			if (rs.next()) {
+				id = rs.getInt("id_centro");
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				conexion.close();
+			}catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return id;
 	}
 }

@@ -11,6 +11,8 @@ import javax.swing.border.EmptyBorder;
 
 import modelo.Consultas;
 import modelo.Usuario;
+import vista.AdministracionVentana;
+
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Font;
@@ -29,7 +31,7 @@ public class ModificacionUsuario extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public ModificacionUsuario(int idUsuario) {
+	public ModificacionUsuario(AdministracionVentana ventana, int idUsuario, int idCentro, String emailUsuario) {
 		setBounds(100, 100, 649, 403);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(new Color(255, 255, 255));
@@ -45,22 +47,22 @@ public class ModificacionUsuario extends JDialog {
 		
 		JLabel lblRepiteContra = new JLabel("Nuevo perfil de usuario");
 		lblRepiteContra.setFont(new Font("Lato", Font.PLAIN, 15));
-		lblRepiteContra.setBounds(154, 224, 188, 14);
+		lblRepiteContra.setBounds(117, 225, 188, 14);
 		contentPanel.add(lblRepiteContra);
 		
 		JLabel lblNuevoEmail = new JLabel("Nuevo email");
 		lblNuevoEmail.setFont(new Font("Lato", Font.PLAIN, 15));
-		lblNuevoEmail.setBounds(154, 158, 188, 14);
+		lblNuevoEmail.setBounds(117, 158, 188, 14);
 		contentPanel.add(lblNuevoEmail);
 		
 		textFieldEmail = new JTextField();
-		textFieldEmail.setBounds(154, 183, 153, 20);
+		textFieldEmail.setBounds(117, 183, 209, 20);
 		contentPanel.add(textFieldEmail);
 		textFieldEmail.setColumns(10);
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"ADMINISTRADOR", "EMPLEADO"}));
-		comboBox.setBounds(154, 249, 153, 22);
+		comboBox.setBounds(117, 250, 153, 22);
 		contentPanel.add(comboBox);
 		
 		JButton btnAceptar = new JButton("Aceptar");
@@ -69,6 +71,7 @@ public class ModificacionUsuario extends JDialog {
 				String nuevoEmail = new String(textFieldEmail.getText());
 				if(!nuevoEmail.isBlank()) {
 					c.actualizarUsuarios(nuevoEmail, comboBox.getSelectedItem().toString(), idUsuario);
+					ventana.rellenaTabla(idCentro);
 					dispose();
 				}else {
 					System.out.println("El email no puede estar vacio");
@@ -86,6 +89,11 @@ public class ModificacionUsuario extends JDialog {
 		});
 		btnCancelar.setBounds(378, 249, 89, 23);
 		contentPanel.add(btnCancelar);
+		
+		JLabel lblAntiguoEmail = new JLabel("Antiguo email " + emailUsuario);
+		lblAntiguoEmail.setFont(new Font("Dialog", Font.PLAIN, 15));
+		lblAntiguoEmail.setBounds(117, 125, 188, 14);
+		contentPanel.add(lblAntiguoEmail);
 
 	}
 }

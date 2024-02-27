@@ -52,7 +52,7 @@ public class EmpresasVentana extends JPanel {
 //	private BaseDeDatos bd = new BaseDeDatos();
 //	private Errores err = new Errores();
 
-	public EmpresasVentana(Ventana ventana, boolean esAdmin, String idBib) {
+	public EmpresasVentana(Ventana ventana, boolean esAdmin, int idCentro) {
 		
 		setBackground(new Color(255, 255, 255));
 		setLayout(null);
@@ -62,7 +62,7 @@ public class EmpresasVentana extends JPanel {
 		btnMen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ventana.nuevoPanel(new Menu(ventana, esAdmin, idBib));
+				ventana.nuevoPanel(new Menu(ventana, esAdmin, idCentro));
 			}
 		});
 		// ------------------------------------------------------------
@@ -135,7 +135,6 @@ public class EmpresasVentana extends JPanel {
 				filaTabla = jtResultados.getSelectedRow();
 
 				if (filaTabla != -1) { // Se ha seleccionado una fila
-					eliminar(filaTabla, idBib);
 
 				} else {
 					// No se ha seleccionado ningún libro por lo tanto se muestra un error.
@@ -199,16 +198,13 @@ public class EmpresasVentana extends JPanel {
 		jtResultados.getTableHeader().setResizingAllowed(false);
 		jtResultados.getTableHeader().setReorderingAllowed(false);
 		
-		rellenaTabla(idBib);
+		rellenaTabla(idCentro);
 
 		// -------------------------------------------------------------
 	}
 
-	public void rellenaTabla(String idBib) {
+	public void rellenaTabla(int idBib) {
 		modeloTabla.setRowCount(0);
-	}
-
-	public void eliminar(int filaTabla, String idBib) {
 	}
 
 	

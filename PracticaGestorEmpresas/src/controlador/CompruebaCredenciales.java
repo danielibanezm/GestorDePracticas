@@ -21,7 +21,9 @@ public class CompruebaCredenciales {
 		}
 		ArrayList<Usuario> arrlUsuarios = c.tomaTodosUsuarios();
 		while(!encontrado && i < arrlUsuarios.size()) {
+			System.out.println(arrlUsuarios.get(i).getEmail() + "  =  " + email);
 			if(arrlUsuarios.get(i).getEmail().equals(email)) {
+				System.out.println("se encontro");
 				encontrado = true;
 				idUser = arrlUsuarios.get(i).getIdUsuario();
 			}

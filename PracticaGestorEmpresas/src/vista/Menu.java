@@ -21,7 +21,7 @@ public class Menu extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Menu(Ventana ventana, boolean esAdmin, String idCentro) {
+	public Menu(Ventana ventana, boolean esAdmin, int idCentro) {
 		this.ventana = ventana;
 		
 		setBackground(new Color(255, 255, 255));

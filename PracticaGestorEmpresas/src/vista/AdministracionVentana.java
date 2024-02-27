@@ -16,6 +16,7 @@ import modales.CambioContrasenna;
 import modales.InsertarUsuario;
 import modales.ModificacionUsuario;
 import modelo.Consultas;
+import modelo.Usuario;
 
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -56,12 +57,13 @@ public class AdministracionVentana extends JPanel {
 	private JTable jtResultados;
 	private int filaTabla;
 	private Consultas c = new Consultas();
+	private AdministracionVentana ventanaActual;
 
 //	private BaseDeDatos bd = new BaseDeDatos();
 //	private Errores err = new Errores();
 
-	public AdministracionVentana(Ventana ventana, boolean esAdmin, String idBib) {
-		
+	public AdministracionVentana(Ventana ventana, boolean esAdmin, int idCentro) {
+		ventanaActual = this;
 		setBackground(new Color(255, 255, 255));
 		setLayout(null);
 
@@ -70,7 +72,7 @@ public class AdministracionVentana extends JPanel {
 		btnMen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ventana.nuevoPanel(new Menu(ventana, esAdmin, idBib));
+				ventana.nuevoPanel(new Menu(ventana, esAdmin, idCentro));
 			}
 		});
 		// ------------------------------------------------------------
@@ -99,7 +101,7 @@ public class AdministracionVentana extends JPanel {
 		btnNuevoUsuario = new JButton("Nuevo usuario");
 		btnNuevoUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InsertarUsuario dialog = new InsertarUsuario();
+				InsertarUsuario dialog = new InsertarUsuario(ventanaActual);
 				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 				dialog.setVisible(true);
 			}
@@ -120,7 +122,11 @@ public class AdministracionVentana extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				filaTabla = jtResultados.getSelectedRow();
 				if (filaTabla != -1) { // Se ha seleccionado una fila
-					ModificacionUsuario dialog = new ModificacionUsuario(Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()));
+					ModificacionUsuario dialog = new ModificacionUsuario(ventanaActual, 
+							Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()), 
+							Integer.parseInt(jtResultados.getValueAt(filaTabla, 1).toString()),
+							jtResultados.getValueAt(filaTabla, 2).toString()
+							);
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 				} else {
@@ -147,10 +153,11 @@ public class AdministracionVentana extends JPanel {
 				filaTabla = jtResultados.getSelectedRow();
 
 				if (filaTabla != -1) { // Se ha seleccionado una fila
-					
+					c.borradoLogicoUsuario(Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()));
+					rellenaTabla(idCentro);
 				} else {
 					// No se ha seleccionado ningún libro por lo tanto se muestra un error.
-					JOptionPane.showMessageDialog(null, "Seleccione un socio para poder eliminarlo.", "Error",
+					JOptionPane.showMessageDialog(null, "Seleccione un usuario para poder eliminarlo.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -192,9 +199,13 @@ public class AdministracionVentana extends JPanel {
 //
 		jtResultados.getColumnModel().getColumn(0).setMaxWidth(0);
 		jtResultados.getColumnModel().getColumn(1).setMaxWidth(0);
+		jtResultados.getColumnModel().getColumn(0).setMinWidth(0);
+		jtResultados.getColumnModel().getColumn(1).setMinWidth(0);
 		
 		jtResultados.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
-		jtResultados.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(1);
+		jtResultados.getTableHeader().getColumnModel().getColumn(1).setMaxWidth(0);
+		jtResultados.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
+		jtResultados.getTableHeader().getColumnModel().getColumn(1).setMinWidth(0);
 		
 		JTableHeader encabezado = jtResultados.getTableHeader();
 		Color violeta = new Color(230, 217, 240);
@@ -206,13 +217,14 @@ public class AdministracionVentana extends JPanel {
 		jtResultados.getTableHeader().setResizingAllowed(false);
 		jtResultados.getTableHeader().setReorderingAllowed(false);
 		
-		rellenaTabla(idBib);
+		rellenaTabla(idCentro);
 
 		// -------------------------------------------------------------
 	}
 
-	public void rellenaTabla(String idBib) {
+	public void rellenaTabla(int idCentro) {
 		modeloTabla.setRowCount(0);
+		c.rellenarUsuarios(modeloTabla, idCentro);
 		
 	}
 

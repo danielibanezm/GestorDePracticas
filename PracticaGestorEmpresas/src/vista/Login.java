@@ -45,7 +45,6 @@ public class Login extends JPanel{
 	private JButton btnAceptar;
 	private Ventana ventana;
 	private boolean esAdmin = true;
-	private String idBib = "";
 	private CompruebaCredenciales cc = new CompruebaCredenciales();
 	private Usuario usuario;
 
@@ -121,7 +120,12 @@ public class Login extends JPanel{
 						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 						dialog.setVisible(true);
 					}else {
-						ventana.nuevoPanel(new Menu(ventana, esAdmin, idBib));
+						if(usuario.getPerfil().equals("ADMINISTRADOR")) {
+							esAdmin = true;
+						}else {
+							esAdmin = false;
+						}
+						ventana.nuevoPanel(new Menu(ventana, esAdmin, usuario.getIdCentro()));
 					}
 					
 				}else {

@@ -10,6 +10,9 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import modales.InsertarPractica;
+import modelo.Consultas;
+
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -30,6 +33,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.DefaultComboBoxModel;
 
 public class PracticasVentana extends JPanel {
 
@@ -48,9 +54,10 @@ public class PracticasVentana extends JPanel {
 	private JButton btnBorrarPractica;
 	private JTable jtResultados;
 	private int filaTabla;
-
-//	private BaseDeDatos bd = new BaseDeDatos();
-//	private Errores err = new Errores();
+	private JLabel lblEmpresa;
+	private JTextField textFieldAlumnos;
+	private Consultas c = new Consultas();
+	private PracticasVentana ventanaActual;
 
 	public PracticasVentana(Ventana ventana, boolean esAdmin, int idCentro) {
 		
@@ -92,6 +99,9 @@ public class PracticasVentana extends JPanel {
 		btnNuevaPractica.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				InsertarPractica dialog = new InsertarPractica(ventanaActual);
+				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				dialog.setVisible(true);
 			}
 		});
 		// ----------------------------------------------
@@ -174,19 +184,53 @@ public class PracticasVentana extends JPanel {
 		jtResultados.setRowHeight(30);
 		scrollPane.setViewportView(jtResultados);
 		
+		lblEmpresa = new JLabel("Empresa");
+		lblEmpresa.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblEmpresa.setBounds(99, 124, 87, 25);
+		add(lblEmpresa);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"---EMPRESAS---"}));
+		comboBox.setBounds(196, 129, 130, 22);
+		add(comboBox);
+		
+		JLabel lblAlumnos = new JLabel("Buscar por alumnos");
+		lblAlumnos.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblAlumnos.setBounds(503, 124, 187, 25);
+		add(lblAlumnos);
+		
+		textFieldAlumnos = new JTextField();
+		textFieldAlumnos.setBounds(719, 129, 227, 20);
+		add(textFieldAlumnos);
+		textFieldAlumnos.setColumns(10);
+		
+		JButton btnVerAnexos = new JButton("Ver anexos");
+		btnVerAnexos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				InsertarPractica dialog = new InsertarPractica(null);
+			}
+		});
+		btnVerAnexos.setForeground(new Color(9, 3, 62));
+		btnVerAnexos.setFont(new Font("Verdana", Font.PLAIN, 12));
+		btnVerAnexos.setBorder(null);
+		btnVerAnexos.setBackground(new Color(254, 86, 86));
+		btnVerAnexos.setBounds(461, 634, 130, 37);
+		add(btnVerAnexos);
+		
 		//poner las columnas necesarias
-//		modeloTabla.setColumnIdentifiers(new Object[] { });
-//
-//		jtResultados.setModel(modeloTabla);
-//
-//		jtResultados.getColumnModel().getColumn(0).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(1).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(2).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(3).setPreferredWidth(120);
-//		jtResultados.getColumnModel().getColumn(4).setPreferredWidth(80);
-//		jtResultados.getColumnModel().getColumn(5).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(6).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(7).setPreferredWidth(10);
+		modeloTabla.setColumnIdentifiers(new Object[] {"id practicas", "id anexo", "Alumno", "Empresa"});
+
+		jtResultados.setModel(modeloTabla);
+
+		jtResultados.getColumnModel().getColumn(0).setMaxWidth(0);
+		jtResultados.getColumnModel().getColumn(1).setMaxWidth(0);
+		jtResultados.getColumnModel().getColumn(0).setMinWidth(0);
+		jtResultados.getColumnModel().getColumn(1).setMinWidth(0);
+		
+		jtResultados.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
+		jtResultados.getTableHeader().getColumnModel().getColumn(1).setMaxWidth(0);
+		jtResultados.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
+		jtResultados.getTableHeader().getColumnModel().getColumn(1).setMinWidth(0);
 
 		JTableHeader encabezado = jtResultados.getTableHeader();
 		Color violeta = new Color(230, 217, 240);
@@ -205,8 +249,6 @@ public class PracticasVentana extends JPanel {
 
 	public void rellenaTabla(int idCentro) {
 		modeloTabla.setRowCount(0);
+		c.rellenarPracticas(modeloTabla, idCentro);
 	}
-
-
-	
 }

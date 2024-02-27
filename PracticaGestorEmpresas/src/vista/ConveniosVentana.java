@@ -43,11 +43,11 @@ public class ConveniosVentana extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JScrollPane scrollPane;
-	private JButton btnNuevoConvenio;
-	private JButton btnEditarConvenio;
-	private JButton btnBorrarConvenio;
+	private JButton btnMostrarConvenio;
 	private JTable jtResultados;
 	private int filaTabla;
+	private JLabel lblBuscarEmpresa;
+	private JTextField textFieldEmpresa;
 
 //	private BaseDeDatos bd = new BaseDeDatos();
 //	private Errores err = new Errores();
@@ -88,69 +88,20 @@ public class ConveniosVentana extends JPanel {
 		add(scrollPane);
 
 		// -- AÑADIR SOCIO --
-		btnNuevoConvenio = new JButton("Nuevo convenio");
-		btnNuevoConvenio.addMouseListener(new MouseAdapter() {
+		btnMostrarConvenio = new JButton("Mostrar convenio");
+		btnMostrarConvenio.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 			}
 		});
 		// ----------------------------------------------
 
-		btnNuevoConvenio.setForeground(new Color(9, 3, 62));
-		btnNuevoConvenio.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnNuevoConvenio.setBorder(null);
-		btnNuevoConvenio.setBackground(new Color(254, 86, 86));
-		btnNuevoConvenio.setBounds(1134, 258, 130, 37);
-		add(btnNuevoConvenio);
-
-		// -- EDITAR SOCIO --
-		btnEditarConvenio = new JButton("Editar convenio");
-		btnEditarConvenio.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				filaTabla = jtResultados.getSelectedRow();
-				if (filaTabla != -1) { // Se ha seleccionado una fila
-
-				} else {
-					// No se ha seleccionado ningún socio por lo tanto se muestra un error.
-					JOptionPane.showMessageDialog(null, "Seleccione un socio para editarlo", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
-		// ---------------------------------------
-
-		btnEditarConvenio.setForeground(new Color(9, 3, 62));
-		btnEditarConvenio.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnEditarConvenio.setBorder(null);
-		btnEditarConvenio.setBackground(new Color(254, 86, 86));
-		btnEditarConvenio.setBounds(1134, 396, 130, 37);
-		add(btnEditarConvenio);
-
-		// -- BOTÓN ELIMINAR SOCIO --
-		btnBorrarConvenio = new JButton("Borrar convenio");
-		btnBorrarConvenio.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				filaTabla = jtResultados.getSelectedRow();
-
-				if (filaTabla != -1) { // Se ha seleccionado una fila
-
-				} else {
-					// No se ha seleccionado ningún libro por lo tanto se muestra un error.
-					JOptionPane.showMessageDialog(null, "Seleccione un socio para poder eliminarlo.", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
-		// ----------------------------------------------------
-
-		btnBorrarConvenio.setForeground(new Color(9, 3, 62));
-		btnBorrarConvenio.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnBorrarConvenio.setBorder(null);
-		btnBorrarConvenio.setBackground(new Color(254, 86, 86));
-		btnBorrarConvenio.setBounds(1134, 525, 130, 37);
-		add(btnBorrarConvenio);
+		btnMostrarConvenio.setForeground(new Color(9, 3, 62));
+		btnMostrarConvenio.setFont(new Font("Verdana", Font.PLAIN, 12));
+		btnMostrarConvenio.setBorder(null);
+		btnMostrarConvenio.setBackground(new Color(254, 86, 86));
+		btnMostrarConvenio.setBounds(1134, 258, 130, 37);
+		add(btnMostrarConvenio);
 
 		// -------------------------- JTABLE --------------------------------------
 
@@ -175,9 +126,19 @@ public class ConveniosVentana extends JPanel {
 		scrollPane.setViewportView(jtResultados);
 		
 		//poner las columnas necesarias
-//		modeloTabla.setColumnIdentifiers(new Object[] { });
+		modeloTabla.setColumnIdentifiers(new Object[] {"Id convenio", "Empresa"});
 //
-//		jtResultados.setModel(modeloTabla);
+		jtResultados.setModel(modeloTabla);
+		
+		lblBuscarEmpresa = new JLabel("Buscar por empresa");
+		lblBuscarEmpresa.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblBuscarEmpresa.setBounds(152, 125, 195, 24);
+		add(lblBuscarEmpresa);
+		
+		textFieldEmpresa = new JTextField();
+		textFieldEmpresa.setBounds(357, 129, 262, 20);
+		add(textFieldEmpresa);
+		textFieldEmpresa.setColumns(10);
 //
 //		jtResultados.getColumnModel().getColumn(0).setPreferredWidth(100);
 //		jtResultados.getColumnModel().getColumn(1).setPreferredWidth(100);
@@ -209,6 +170,4 @@ public class ConveniosVentana extends JPanel {
 
 	public void eliminar(int filaTabla, String idBib) {
 	}
-
-	
 }

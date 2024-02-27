@@ -254,4 +254,36 @@ public class Consultas {
 		}
 		return id;
 	}
+	
+	public void rellenarPracticas(DefaultTableModel tabla, int idCentro) {
+		Connection conexion = null;
+		Statement statement = null;
+		
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user , contrasenna);
+			statement = conexion.createStatement();
+			String consulta = "SELECT practica.id_practica, practica.id_anexo, empresa.nombre_empresa, alumno.nombre from practica, alumno, empresa WHERE practica.eliminado != 1 AND alumno.id_centro = "+ idCentro + ";";
+			System.out.println(consulta);
+			ResultSet rs = statement.executeQuery(consulta);
+			
+			while(rs.next()) {
+				tabla.addRow(new Object[] {
+						rs.getInt("practica.id_practica"),
+						rs.getInt("practica.id_anexo"),
+						rs.getString("alumno.nombre"),
+						rs.getString("empresa.nombre_empresa")
+				});
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				conexion.close();
+			}catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

@@ -49,7 +49,6 @@ CREATE TABLE `alumno` (
 CREATE TABLE `anexos` (
   `id_anexo` int(11) NOT NULL,
   `anexo_8` longblob NOT NULL,
-  `anexo_1` longblob NOT NULL,
   `anexo_2_1` longblob NOT NULL,
   `anexo_2_2` longblob NOT NULL,
   `anexo_3` longblob NOT NULL,
@@ -125,8 +124,9 @@ INSERT INTO `centro` (`id_centro`, `id_tutor`, `nombre`, `codigo`, `eliminado`) 
 
 CREATE TABLE `convenio` (
   `id_convenio` int(9) NOT NULL,
-  `id_necesidad` int(9) NOT NULL,
-  `id_firma` int(11) NOT NULL,
+  `id_empresa` int(9) NOT NULL,
+  `id_centro` int(9) NOT NULL,
+  `anexo_1` longblob NOT NULL,
   `numero_serie` int(11) NOT NULL,
   `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -146,24 +146,11 @@ CREATE TABLE `empresa` (
   `direccion_empresa` varchar(50) NOT NULL,
   `email_empresa` varchar(20) NOT NULL,
   `tutor_empresa` varchar(20) NOT NULL,
-  `contacto_empresa` varchar(20) NOT NULL,
+  `correo_empresa` varchar(20) NOT NULL,
   `solicita` varchar(20) NOT NULL,
   `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `firma`
---
-
-CREATE TABLE `firma` (
-  `id_firma` int(11) NOT NULL,
-  `id_centro` int(11) NOT NULL,
-  `id_empresa` int(11) NOT NULL,
-  `firma` varchar(15) NOT NULL,
-  `eliminado` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -323,8 +310,8 @@ ALTER TABLE `centro`
 --
 ALTER TABLE `convenio`
   ADD PRIMARY KEY (`id_convenio`),
-  ADD KEY `id_firma` (`id_firma`) USING BTREE,
-  ADD KEY `id_necesidad` (`id_necesidad`) USING BTREE;
+  ADD KEY `id_empresa` (`id_empresa`) USING BTREE,
+  ADD KEY `id_centro` (`id_centro`) USING BTREE;
 
 --
 -- Indices de la tabla `empresa`
@@ -332,13 +319,6 @@ ALTER TABLE `convenio`
 ALTER TABLE `empresa`
   ADD PRIMARY KEY (`id_empresa`);
 
---
--- Indices de la tabla `firma`
---
-ALTER TABLE `firma`
-  ADD PRIMARY KEY (`id_firma`),
-  ADD KEY `id_empresa_firma_fk` (`id_empresa`),
-  ADD KEY `id_centro` (`id_centro`,`id_empresa`) USING BTREE;
 
 --
 -- Indices de la tabla `intermedia_anexos`
@@ -435,11 +415,6 @@ ALTER TABLE `convenio`
 ALTER TABLE `empresa`
   MODIFY `id_empresa` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT de la tabla `firma`
---
-ALTER TABLE `firma`
-  MODIFY `id_firma` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `necesidad`
@@ -505,15 +480,9 @@ ALTER TABLE `centro`
 -- Filtros para la tabla `convenio`
 --
 ALTER TABLE `convenio`
-  ADD CONSTRAINT `id_firma_fk` FOREIGN KEY (`id_firma`) REFERENCES `firma` (`id_firma`) ON DELETE CASCADE,
-  ADD CONSTRAINT `id_necesidad_fk` FOREIGN KEY (`id_necesidad`) REFERENCES `necesidad` (`id_necesidad`) ON DELETE CASCADE;
+  ADD CONSTRAINT `id_empresa_fk` FOREIGN KEY (`id_empresa`) REFERENCES `empresa` (`id_empresa`) ON DELETE CASCADE,
+  ADD CONSTRAINT `id_centro_fk` FOREIGN KEY (`id_centro`) REFERENCES `centro` (`id_centro`) ON DELETE CASCADE;
 
---
--- Filtros para la tabla `firma`
---
-ALTER TABLE `firma`
-  ADD CONSTRAINT `id_centro_firma_fk` FOREIGN KEY (`id_centro`) REFERENCES `centro` (`id_centro`) ON DELETE CASCADE,
-  ADD CONSTRAINT `id_empresa_firma_fk` FOREIGN KEY (`id_empresa`) REFERENCES `empresa` (`id_empresa`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `intermedia_anexos`

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-02-2024 a las 17:01:32
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.0.28
+-- Tiempo de generación: 28-02-2024 a las 20:40:29
+-- Versión del servidor: 10.4.27-MariaDB
+-- Versión de PHP: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -103,7 +103,6 @@ CREATE TABLE `bolsa_trabajo` (
 
 CREATE TABLE `centro` (
   `id_centro` int(11) NOT NULL,
-  `id_tutor` int(11) NOT NULL,
   `nombre` varchar(20) NOT NULL,
   `codigo` varchar(9) NOT NULL,
   `eliminado` tinyint(1) NOT NULL
@@ -113,8 +112,8 @@ CREATE TABLE `centro` (
 -- Volcado de datos para la tabla `centro`
 --
 
-INSERT INTO `centro` (`id_centro`, `id_tutor`, `nombre`, `codigo`, `eliminado`) VALUES
-(1, 1, 'Alberto32', '14568', 0);
+INSERT INTO `centro` (`id_centro`, `nombre`, `codigo`, `eliminado`) VALUES
+(1, 'Alberto32', '14568', 0);
 
 -- --------------------------------------------------------
 
@@ -150,7 +149,6 @@ CREATE TABLE `empresa` (
   `solicita` varchar(20) NOT NULL,
   `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 
 -- --------------------------------------------------------
 
@@ -226,6 +224,7 @@ CREATE TABLE `practica` (
 
 CREATE TABLE `tutor` (
   `id_tutor` int(11) NOT NULL,
+  `id_centro` int(11) NOT NULL,
   `nombre` varchar(20) NOT NULL,
   `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -234,8 +233,8 @@ CREATE TABLE `tutor` (
 -- Volcado de datos para la tabla `tutor`
 --
 
-INSERT INTO `tutor` (`id_tutor`, `nombre`, `eliminado`) VALUES
-(1, 'Paco', 0);
+INSERT INTO `tutor` (`id_tutor`, `id_centro`, `nombre`, `eliminado`) VALUES
+(1, 1, 'Paco', 0);
 
 -- --------------------------------------------------------
 
@@ -302,8 +301,7 @@ ALTER TABLE `bolsa_trabajo`
 -- Indices de la tabla `centro`
 --
 ALTER TABLE `centro`
-  ADD PRIMARY KEY (`id_centro`),
-  ADD KEY `id_tutor` (`id_tutor`) USING BTREE;
+  ADD PRIMARY KEY (`id_centro`);
 
 --
 -- Indices de la tabla `convenio`
@@ -318,7 +316,6 @@ ALTER TABLE `convenio`
 --
 ALTER TABLE `empresa`
   ADD PRIMARY KEY (`id_empresa`);
-
 
 --
 -- Indices de la tabla `intermedia_anexos`
@@ -354,7 +351,8 @@ ALTER TABLE `practica`
 -- Indices de la tabla `tutor`
 --
 ALTER TABLE `tutor`
-  ADD PRIMARY KEY (`id_tutor`);
+  ADD PRIMARY KEY (`id_tutor`),
+  ADD KEY `id_centro_tutores_fk` (`id_centro`);
 
 --
 -- Indices de la tabla `usuarios`
@@ -415,7 +413,6 @@ ALTER TABLE `convenio`
 ALTER TABLE `empresa`
   MODIFY `id_empresa` int(11) NOT NULL AUTO_INCREMENT;
 
-
 --
 -- AUTO_INCREMENT de la tabla `necesidad`
 --
@@ -471,18 +468,11 @@ ALTER TABLE `bolsa_trabajo`
   ADD CONSTRAINT `id_empresa_trabajo_fk` FOREIGN KEY (`id_empresa`) REFERENCES `empresa` (`id_empresa`) ON DELETE CASCADE;
 
 --
--- Filtros para la tabla `centro`
---
-ALTER TABLE `centro`
-  ADD CONSTRAINT `id_tutores_fk` FOREIGN KEY (`id_tutor`) REFERENCES `tutor` (`id_tutor`) ON DELETE CASCADE;
-
---
 -- Filtros para la tabla `convenio`
 --
 ALTER TABLE `convenio`
-  ADD CONSTRAINT `id_convenio_empresa_fk` FOREIGN KEY (`id_empresa`) REFERENCES `empresa` (`id_empresa`) ON DELETE CASCADE,
-  ADD CONSTRAINT `id_convenio_centro_fk` FOREIGN KEY (`id_centro`) REFERENCES `centro` (`id_centro`) ON DELETE CASCADE;
-
+  ADD CONSTRAINT `id_convenio_centro_fk` FOREIGN KEY (`id_centro`) REFERENCES `centro` (`id_centro`) ON DELETE CASCADE,
+  ADD CONSTRAINT `id_convenio_empresa_fk` FOREIGN KEY (`id_empresa`) REFERENCES `empresa` (`id_empresa`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `intermedia_anexos`
@@ -510,6 +500,12 @@ ALTER TABLE `practica`
   ADD CONSTRAINT `id_alumno_practica_fk` FOREIGN KEY (`id_alumno`) REFERENCES `alumno` (`id_alumno`) ON DELETE CASCADE,
   ADD CONSTRAINT `id_anexo_practica_fk` FOREIGN KEY (`id_anexo`) REFERENCES `anexos` (`id_anexo`) ON DELETE CASCADE,
   ADD CONSTRAINT `id_empresa_practica_fk` FOREIGN KEY (`id_empresa`) REFERENCES `empresa` (`id_empresa`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `tutor`
+--
+ALTER TABLE `tutor`
+  ADD CONSTRAINT `id_centro_tutores_fk` FOREIGN KEY (`id_centro`) REFERENCES `centro` (`id_centro`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `usuarios`

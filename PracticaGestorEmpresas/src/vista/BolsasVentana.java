@@ -199,9 +199,9 @@ public class BolsasVentana extends JPanel {
 //		jtResultados.getColumnModel().getColumn(7).setPreferredWidth(10);
 
 		JTableHeader encabezado = jtResultados.getTableHeader();
-		Color violeta = new Color(230, 217, 240);
+		Color rojoClaro = new Color(255, 157, 157);
 		Color darkBlue = new Color(9, 3, 62);
-		encabezado.setBackground(violeta);
+		encabezado.setBackground(rojoClaro);
 		encabezado.setForeground(darkBlue);
 		encabezado.setFont(new Font("Verdana", Font.BOLD, 13));
 

@@ -10,6 +10,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import modales.InsertarAnexosSemanal;
 import modales.InsertarPractica;
 import modelo.Consultas;
 
@@ -36,6 +37,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class PracticasVentana extends JPanel {
 
@@ -123,7 +126,7 @@ public class PracticasVentana extends JPanel {
 
 				} else {
 					// No se ha seleccionado ningún socio por lo tanto se muestra un error.
-					JOptionPane.showMessageDialog(null, "Seleccione un socio para editarlo", "Error",
+					JOptionPane.showMessageDialog(null, "Seleccione una practica para editarla", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -148,7 +151,7 @@ public class PracticasVentana extends JPanel {
 
 				} else {
 					// No se ha seleccionado ningún libro por lo tanto se muestra un error.
-					JOptionPane.showMessageDialog(null, "Seleccione un socio para poder eliminarlo.", "Error",
+					JOptionPane.showMessageDialog(null, "Seleccione una practica para poder eliminarla.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -190,6 +193,10 @@ public class PracticasVentana extends JPanel {
 		add(lblEmpresa);
 		
 		JComboBox comboBox = new JComboBox();
+		comboBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+			}
+		});
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"---EMPRESAS---"}));
 		comboBox.setBounds(196, 129, 130, 22);
 		add(comboBox);
@@ -200,6 +207,11 @@ public class PracticasVentana extends JPanel {
 		add(lblAlumnos);
 		
 		textFieldAlumnos = new JTextField();
+		textFieldAlumnos.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+		});
 		textFieldAlumnos.setBounds(719, 129, 227, 20);
 		add(textFieldAlumnos);
 		textFieldAlumnos.setColumns(10);
@@ -207,21 +219,45 @@ public class PracticasVentana extends JPanel {
 		JButton btnVerAnexos = new JButton("Ver anexos");
 		btnVerAnexos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InsertarPractica dialog = new InsertarPractica(null);
+				//ver anexos
+				filaTabla = jtResultados.getSelectedRow();
+
+				if (filaTabla != -1) { // Se ha seleccionado una fila
+
+				} else {
+					// No se ha seleccionado ningún libro por lo tanto se muestra un error.
+					JOptionPane.showMessageDialog(null, "Seleccione una practica para poder ver los anexos.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		btnVerAnexos.setForeground(new Color(9, 3, 62));
 		btnVerAnexos.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnVerAnexos.setBorder(null);
 		btnVerAnexos.setBackground(new Color(254, 86, 86));
-		btnVerAnexos.setBounds(461, 634, 130, 37);
+		btnVerAnexos.setBounds(252, 634, 130, 37);
 		add(btnVerAnexos);
 		
+		
+		JButton btnInsertar = new JButton("Insertar seguimiento semanal");
+		btnInsertar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				InsertarAnexosSemanal dialog = new InsertarAnexosSemanal(ventanaActual);
+				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				dialog.setVisible(true);
+			}
+		});
+		btnInsertar.setForeground(new Color(9, 3, 62));
+		btnInsertar.setFont(new Font("Verdana", Font.PLAIN, 12));
+		btnInsertar.setBorder(null);
+		btnInsertar.setBackground(new Color(254, 86, 86));
+		btnInsertar.setBounds(629, 634, 227, 37);
+		add(btnInsertar);
+
 		//poner las columnas necesarias
 		modeloTabla.setColumnIdentifiers(new Object[] {"id practicas", "id anexo", "Alumno", "Empresa"});
-
+		
 		jtResultados.setModel(modeloTabla);
-
 		jtResultados.getColumnModel().getColumn(0).setMaxWidth(0);
 		jtResultados.getColumnModel().getColumn(1).setMaxWidth(0);
 		jtResultados.getColumnModel().getColumn(0).setMinWidth(0);
@@ -233,9 +269,9 @@ public class PracticasVentana extends JPanel {
 		jtResultados.getTableHeader().getColumnModel().getColumn(1).setMinWidth(0);
 
 		JTableHeader encabezado = jtResultados.getTableHeader();
-		Color violeta = new Color(230, 217, 240);
+		Color rojoClaro = new Color(255, 157, 157);
 		Color darkBlue = new Color(9, 3, 62);
-		encabezado.setBackground(violeta);
+		encabezado.setBackground(rojoClaro);
 		encabezado.setForeground(darkBlue);
 		encabezado.setFont(new Font("Verdana", Font.BOLD, 13));
 

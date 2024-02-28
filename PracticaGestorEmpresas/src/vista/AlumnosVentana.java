@@ -185,14 +185,18 @@ public class AlumnosVentana extends JPanel {
 
 		jtResultados.getColumnModel().getColumn(0).setMaxWidth(0);
 		jtResultados.getColumnModel().getColumn(1).setMaxWidth(0);
+		jtResultados.getColumnModel().getColumn(0).setMinWidth(0);
+		jtResultados.getColumnModel().getColumn(1).setMinWidth(0);
 		
 		jtResultados.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
 		jtResultados.getTableHeader().getColumnModel().getColumn(1).setMaxWidth(0);
+		jtResultados.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
+		jtResultados.getTableHeader().getColumnModel().getColumn(1).setMinWidth(0);
 
 		JTableHeader encabezado = jtResultados.getTableHeader();
-		Color violeta = new Color(230, 217, 240);
+		Color rojoClaro = new Color(255, 157, 157);
 		Color darkBlue = new Color(9, 3, 62);
-		encabezado.setBackground(violeta);
+		encabezado.setBackground(rojoClaro);
 		encabezado.setForeground(darkBlue);
 		encabezado.setFont(new Font("Verdana", Font.BOLD, 13));
 

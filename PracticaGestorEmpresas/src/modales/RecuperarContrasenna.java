@@ -30,6 +30,7 @@ public class RecuperarContrasenna extends JDialog {
 	 * Create the dialog.
 	 */
 	public RecuperarContrasenna() {
+		setModal(true);
 		setBounds(100, 100, 821, 509);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(new Color(255, 255, 255));

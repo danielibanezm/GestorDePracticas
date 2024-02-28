@@ -1,6 +1,11 @@
 package modelo;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,6 +14,8 @@ import java.util.ArrayList;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import com.mysql.jdbc.Blob;
 
 public class Consultas {
 	private String baseDeDatos = "jdbc:mysql://localhost/gestor_practicas";
@@ -65,6 +72,14 @@ public class Consultas {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				conexion.close();
+			}catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		return historico;
@@ -90,6 +105,14 @@ public class Consultas {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				conexion.close();
+			}catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -109,6 +132,14 @@ public class Consultas {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				conexion.close();
+			}catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -160,6 +191,14 @@ public class Consultas {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				conexion.close();
+			}catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -179,6 +218,14 @@ public class Consultas {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				conexion.close();
+			}catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -199,6 +246,14 @@ public class Consultas {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				conexion.close();
+			}catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	public ArrayList<String> cogeNombreCentros(){
@@ -284,6 +339,83 @@ public class Consultas {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}
+		
+	}
+
+	public int insertarAnexos(File anexo2_1, File anexo2_2, File anexo3, File anexo8) {
+		Connection conexion = null;
+		Statement statement = null;
+		FileInputStream anexo2_1Stream = null;
+		FileInputStream anexo2_2Stream = null;
+		FileInputStream anexo3Stream = null;
+		FileInputStream anexo8Stream = null;
+		int idAnexo = -1;
+		String consulta = "SELECT MAX(id_anexo) FROM anexos";
+		try {
+			anexo2_1Stream = new FileInputStream(anexo2_1);
+			anexo2_2Stream = new FileInputStream(anexo2_2);
+			anexo3Stream = new FileInputStream(anexo3);
+			anexo8Stream = new FileInputStream(anexo8);
+			conexion = DriverManager.getConnection(baseDeDatos, user , contrasenna);
+			statement = conexion.createStatement();
+			
+			int valor = statement.executeUpdate("INSERT INTO anexo (anexo_8, anexo_2_1, anexo_2_2, anexo_3, eliminado) VALUES ("
+					+ anexo8Stream +", "
+					+ anexo2_1Stream + ", "
+					+ anexo2_2Stream + ", "
+					+ anexo3Stream + ", 0)");
+			if(valor == 1) {
+				System.out.println("Todo correcto master");
+				ResultSet rs = statement.executeQuery(consulta);
+				if (rs.next()) {
+					idAnexo = rs.getInt("id_anexo");
+				}
+			}else{
+				System.out.println("Uy Uy Uy :(");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				anexo2_1Stream.close();
+				anexo2_2Stream.close();
+				anexo3Stream.close();
+				anexo8Stream.close();
+				conexion.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return 0;
+	}
+
+	public void insertarPractica(int idAnexo, int idAlumno, int idEmpresa, Date fechaInicio, Date fechaFinal) {
+		Connection conexion = null;
+		Statement statement = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user , contrasenna);
+			statement = conexion.createStatement();
+			
+			int valor = statement.executeUpdate("INSERT INTO practica (id_anexo, id_alumno, id_empresa, inicio, final, eliminado) VALUES ("
+					+ idAnexo +", "
+					+ idAlumno + ", "
+					+ idEmpresa + ", "
+					+ fechaInicio + ", "
+					+ fechaFinal + ", 0)");
+			if(valor == 1) {
+				System.out.println("Todo correcto master");
+			}else{
+				System.out.println("Uy Uy Uy :(");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 }

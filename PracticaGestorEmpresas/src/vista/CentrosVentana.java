@@ -3,12 +3,18 @@ package vista;
 import javax.swing.JPanel;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+
 import java.awt.Color;
 
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import modales.InsertarCentro;
+import modales.ModificacionCentro;
+import modales.MostrarTutores;
 
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -31,7 +37,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class NecesidadesVentana extends JPanel {
+public class CentrosVentana extends JPanel {
 
 	DefaultTableModel modeloTabla = new DefaultTableModel() {
 		public boolean isCellEditable(int row, int column) {
@@ -43,17 +49,19 @@ public class NecesidadesVentana extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JScrollPane scrollPane;
-	private JButton btnNuevaNecesidad;
-	private JButton btnEditarNecesidad;
-	private JButton btnBorrarNecesidad;
+	private JButton btnNuevoCentro;
+	private JButton btnEditarCentro;
+	private JButton btnBorrarCentro;
 	private JTable jtResultados;
 	private int filaTabla;
+	private JTextField textField;
+	private CentrosVentana ventanaActual;
 
 //	private BaseDeDatos bd = new BaseDeDatos();
 //	private Errores err = new Errores();
 
-	public NecesidadesVentana(Ventana ventana, boolean esAdmin, int idCentro) {
-		
+	public CentrosVentana(Ventana ventana, boolean esAdmin, int idCentro) {
+		ventanaActual = this;
 		setBackground(new Color(255, 255, 255));
 		setLayout(null);
 
@@ -74,7 +82,7 @@ public class NecesidadesVentana extends JPanel {
 		btnMen.setBounds(32, 24, 79, 37);
 		add(btnMen);
 
-		JLabel lblConsultar = new JLabel("Necesidades");
+		JLabel lblConsultar = new JLabel("Centros");
 		lblConsultar.setVerticalAlignment(SwingConstants.TOP);
 		lblConsultar.setHorizontalAlignment(SwingConstants.LEFT);
 		lblConsultar.setForeground(new Color(0, 0, 0));
@@ -88,48 +96,53 @@ public class NecesidadesVentana extends JPanel {
 		add(scrollPane);
 
 		// -- AÑADIR SOCIO --
-		btnNuevaNecesidad = new JButton("Nueva necesidad");
-		btnNuevaNecesidad.addMouseListener(new MouseAdapter() {
+		btnNuevoCentro = new JButton("Nuevo centro");
+		btnNuevoCentro.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				InsertarCentro dialog = new InsertarCentro(ventanaActual);
+				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				dialog.setVisible(true);
 			}
 		});
 		// ----------------------------------------------
 
-		btnNuevaNecesidad.setForeground(new Color(9, 3, 62));
-		btnNuevaNecesidad.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnNuevaNecesidad.setBorder(null);
-		btnNuevaNecesidad.setBackground(new Color(254, 86, 86));
-		btnNuevaNecesidad.setBounds(1134, 258, 130, 37);
-		add(btnNuevaNecesidad);
+		btnNuevoCentro.setForeground(new Color(9, 3, 62));
+		btnNuevoCentro.setFont(new Font("Verdana", Font.PLAIN, 12));
+		btnNuevoCentro.setBorder(null);
+		btnNuevoCentro.setBackground(new Color(254, 86, 86));
+		btnNuevoCentro.setBounds(1134, 258, 130, 37);
+		add(btnNuevoCentro);
 
 		// -- EDITAR SOCIO --
-		btnEditarNecesidad = new JButton("Editar necesidad");
-		btnEditarNecesidad.addMouseListener(new MouseAdapter() {
+		btnEditarCentro = new JButton("Editar centro");
+		btnEditarCentro.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				filaTabla = jtResultados.getSelectedRow();
 				if (filaTabla != -1) { // Se ha seleccionado una fila
-
+					ModificacionCentro dialog = new ModificacionCentro(ventanaActual, jtResultados.getValueAt(filaTabla, 1).toString(), Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()), jtResultados.getValueAt(filaTabla, 2).toString());
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
 				} else {
 					// No se ha seleccionado ningún socio por lo tanto se muestra un error.
-					JOptionPane.showMessageDialog(null, "Seleccione un socio para editarlo", "Error",
+					JOptionPane.showMessageDialog(null, "Seleccione un centro para editarlo", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
 		// ---------------------------------------
 
-		btnEditarNecesidad.setForeground(new Color(9, 3, 62));
-		btnEditarNecesidad.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnEditarNecesidad.setBorder(null);
-		btnEditarNecesidad.setBackground(new Color(254, 86, 86));
-		btnEditarNecesidad.setBounds(1134, 396, 130, 37);
-		add(btnEditarNecesidad);
+		btnEditarCentro.setForeground(new Color(9, 3, 62));
+		btnEditarCentro.setFont(new Font("Verdana", Font.PLAIN, 12));
+		btnEditarCentro.setBorder(null);
+		btnEditarCentro.setBackground(new Color(254, 86, 86));
+		btnEditarCentro.setBounds(1134, 396, 130, 37);
+		add(btnEditarCentro);
 
 		// -- BOTÓN ELIMINAR SOCIO --
-		btnBorrarNecesidad = new JButton("Borrar necesidad");
-		btnBorrarNecesidad.addMouseListener(new MouseAdapter() {
+		btnBorrarCentro = new JButton("Borrar centro");
+		btnBorrarCentro.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				filaTabla = jtResultados.getSelectedRow();
@@ -138,19 +151,19 @@ public class NecesidadesVentana extends JPanel {
 
 				} else {
 					// No se ha seleccionado ningún libro por lo tanto se muestra un error.
-					JOptionPane.showMessageDialog(null, "Seleccione un socio para poder eliminarlo.", "Error",
+					JOptionPane.showMessageDialog(null, "Seleccione un centro para poder eliminarlo.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
 		// ----------------------------------------------------
 
-		btnBorrarNecesidad.setForeground(new Color(9, 3, 62));
-		btnBorrarNecesidad.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnBorrarNecesidad.setBorder(null);
-		btnBorrarNecesidad.setBackground(new Color(254, 86, 86));
-		btnBorrarNecesidad.setBounds(1134, 525, 130, 37);
-		add(btnBorrarNecesidad);
+		btnBorrarCentro.setForeground(new Color(9, 3, 62));
+		btnBorrarCentro.setFont(new Font("Verdana", Font.PLAIN, 12));
+		btnBorrarCentro.setBorder(null);
+		btnBorrarCentro.setBackground(new Color(254, 86, 86));
+		btnBorrarCentro.setBounds(1134, 525, 130, 37);
+		add(btnBorrarCentro);
 
 		// -------------------------- JTABLE --------------------------------------
 
@@ -174,24 +187,59 @@ public class NecesidadesVentana extends JPanel {
 		jtResultados.setRowHeight(30);
 		scrollPane.setViewportView(jtResultados);
 		
+		JButton btnTutores = new JButton("Ver tutores");
+		btnTutores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				filaTabla = jtResultados.getSelectedRow();
+
+				if (filaTabla != -1) { // Se ha seleccionado una fila
+					MostrarTutores dialog = new MostrarTutores(ventanaActual, Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()));
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+				} else {
+					// No se ha seleccionado ningún libro por lo tanto se muestra un error.
+					JOptionPane.showMessageDialog(null, "Seleccione un centro para poder mostrar los tutores.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		btnTutores.setForeground(new Color(9, 3, 62));
+		btnTutores.setFont(new Font("Verdana", Font.PLAIN, 12));
+		btnTutores.setBorder(null);
+		btnTutores.setBackground(new Color(254, 86, 86));
+		btnTutores.setBounds(1134, 126, 130, 37);
+		add(btnTutores);
+		
+		textField = new JTextField();
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+		});
+		textField.setColumns(10);
+		textField.setBounds(834, 129, 227, 20);
+		add(textField);
+		
+		JLabel lblCentros = new JLabel("Buscar por centro");
+		lblCentros.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblCentros.setBounds(618, 124, 187, 25);
+		add(lblCentros);
+		
 		//poner las columnas necesarias
-//		modeloTabla.setColumnIdentifiers(new Object[] { });
+		modeloTabla.setColumnIdentifiers(new Object[] {"id centro", "Nombre", "Codigo"});
 //
-//		jtResultados.setModel(modeloTabla);
+		jtResultados.setModel(modeloTabla);
 //
-//		jtResultados.getColumnModel().getColumn(0).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(1).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(2).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(3).setPreferredWidth(120);
-//		jtResultados.getColumnModel().getColumn(4).setPreferredWidth(80);
-//		jtResultados.getColumnModel().getColumn(5).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(6).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(7).setPreferredWidth(10);
+		jtResultados.getColumnModel().getColumn(0).setMaxWidth(0);
+		jtResultados.getColumnModel().getColumn(0).setMinWidth(0);
+		
+		jtResultados.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
+		jtResultados.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
 
 		JTableHeader encabezado = jtResultados.getTableHeader();
-		Color violeta = new Color(230, 217, 240);
+		Color rojoClaro = new Color(255, 157, 157);
 		Color darkBlue = new Color(9, 3, 62);
-		encabezado.setBackground(violeta);
+		encabezado.setBackground(rojoClaro);
 		encabezado.setForeground(darkBlue);
 		encabezado.setFont(new Font("Verdana", Font.BOLD, 13));
 
@@ -206,6 +254,4 @@ public class NecesidadesVentana extends JPanel {
 	public void rellenaTabla(int idCentro) {
 		modeloTabla.setRowCount(0);
 	}
-
-	
 }

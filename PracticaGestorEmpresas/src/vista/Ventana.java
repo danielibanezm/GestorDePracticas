@@ -39,12 +39,12 @@ public class Ventana extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
+		
+		setResizable(false);
+		
 		setContentPane(contentPane);
 		contentPane.setLayout(new CardLayout(0, 0));
 		
-		/* -- 	PONEMOS EL PANEL LOGIN SIEMPRE POR DEFECTO --
-		"this" hace referencia a la instancia de Ventana*/
 		Ventana ventana = this;
         Login loginPanel = new Login(this);
         nuevoPanel(loginPanel);
@@ -60,15 +60,6 @@ public class Ventana extends JFrame {
         //---------------------------------------------------
 	}
 	
-	/**
-	 * Método que vamos a llamar desde la acción de los JMenu
-	 * y mediante el cual vamos a realizar las siguientes acciones:
-	 * 1- Eliminamos el contenido del contentPane.
-	 * 2- Le añadimos el panel que se nos pasa en ese momento por parámetros.
-	 * 3- Método para que el componente se repinte.
-	 * 4- Método que obliga a que todos los componentes que hayan sido borrados o modificados aparezcan correctamente.
-	 * @param panelActual
-	 */
 	public void nuevoPanel(JPanel panelActual) {
 		contentPane.removeAll();
 		contentPane.add(panelActual);
@@ -76,10 +67,6 @@ public class Ventana extends JFrame {
 		contentPane.revalidate();
 	}
 	
-	/**
-	 * Método utilizado para que cuando pulsemos en el botón de la 'x' (cerrar) de la aplicación,
-	 * es decir, del JFrame, nos prgunte si realmente queremos hacerlo.
-	 */
 	public void cerrarJFrame() {
 		String botones[] = {"Cerrar", "Cancelar"};
 		String titulo = "Aviso";

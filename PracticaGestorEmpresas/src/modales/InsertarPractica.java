@@ -27,6 +27,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.Date;
+
 import javax.swing.JFormattedTextField;
 
 public class InsertarPractica extends JDialog {
@@ -38,11 +40,15 @@ public class InsertarPractica extends JDialog {
 	private JTextField textFieldEmpresas;
 	private JTextField textFieldAlumnos;
 	private InsertarPractica dialogActual;
-
+	private int idAlumno;
+	private int idEmpresa;
+	private Date fechaInicio;
+	private Date fechaFinal;
 	/**
 	 * Create the dialog.
 	 */
 	public InsertarPractica(PracticasVentana ventana) {
+		setModal(true);
 		setBounds(100, 100, 1015, 632);
 		dialogActual = this;
 		getContentPane().setLayout(new BorderLayout());
@@ -58,7 +64,8 @@ public class InsertarPractica extends JDialog {
 		contentPanel.add(lblTitulo);
 		
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBackground(new Color(255, 255, 255));
+		btnCancelar.setForeground(new Color(0, 0, 0));
+		btnCancelar.setBackground(new Color(255, 157, 157));
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -68,7 +75,8 @@ public class InsertarPractica extends JDialog {
 		contentPanel.add(btnCancelar);
 		
 		JButton btnAceptar = new JButton("Continuar");
-		btnAceptar.setBackground(new Color(255, 255, 255));
+		btnAceptar.setForeground(new Color(0, 0, 0));
+		btnAceptar.setBackground(new Color(254, 86, 86));
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				InsertarAnexos dialog = new InsertarAnexos(ventana, dialogActual);
@@ -141,6 +149,30 @@ public class InsertarPractica extends JDialog {
 		JFormattedTextField formattedTextFieldFechaFinal = new JFormattedTextField();
 		formattedTextFieldFechaFinal.setBounds(478, 392, 122, 20);
 		contentPanel.add(formattedTextFieldFechaFinal);
+	}
+	public Date getFechaInicio() {
+		return fechaInicio;
+	}
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+	public Date getFechaFinal() {
+		return fechaFinal;
+	}
+	public void setFechaFinal(Date fechaFinal) {
+		this.fechaFinal = fechaFinal;
+	}
+	public int getIdAlumno() {
+		return idAlumno;
+	}
+	public void setIdAlumno(int idAlumno) {
+		this.idAlumno = idAlumno;
+	}
+	public int getIdEmpresa() {
+		return idEmpresa;
+	}
+	public void setIdEmpresa(int idEmpresa) {
+		this.idEmpresa = idEmpresa;
 	}
 	private void rellenarComboCentros(JComboBox comboCentro) {
 		ArrayList<String> arrlCentros = c.cogeNombreCentros();

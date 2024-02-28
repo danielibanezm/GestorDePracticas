@@ -32,6 +32,7 @@ public class ModificacionUsuario extends JDialog {
 	 * Create the dialog.
 	 */
 	public ModificacionUsuario(AdministracionVentana ventana, int idUsuario, int idCentro, String emailUsuario) {
+		setModal(true);
 		setBounds(100, 100, 649, 403);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(new Color(255, 255, 255));

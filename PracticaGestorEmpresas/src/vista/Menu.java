@@ -96,7 +96,6 @@ public class Menu extends JPanel {
 		btnAlumnos.setBackground(new Color(233, 1, 1));
 		btnAlumnos.setBorder(null);
 		btnAlumnos.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnAlumnos.setToolTipText("");
 		btnAlumnos.setBounds(30, 476, 315, 37);
 		add(btnAlumnos);
 		
@@ -114,7 +113,6 @@ public class Menu extends JPanel {
 		btnConvenios.setBackground(new Color(233, 1, 1));
 		btnConvenios.setBorder(null);
 		btnConvenios.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnConvenios.setToolTipText("");
 		btnConvenios.setBounds(1105, 476, 315, 37);
 		add(btnConvenios);
 		
@@ -131,7 +129,6 @@ public class Menu extends JPanel {
 		btnBolsaTrabajo.setBackground(new Color(233, 1, 1));
 		btnBolsaTrabajo.setBorder(null);
 		btnBolsaTrabajo.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnBolsaTrabajo.setToolTipText("");
 		btnBolsaTrabajo.setBounds(1105, 246, 315, 37);
 		add(btnBolsaTrabajo);
 		
@@ -148,7 +145,6 @@ public class Menu extends JPanel {
 		//-------------------------------------------
 		
 		btnSalir.setForeground(new Color(255, 255, 255));
-		btnSalir.setToolTipText("");
 		btnSalir.setFont(new Font("Verdana", Font.PLAIN, 11));
 		btnSalir.setBorder(null);
 		btnSalir.setBackground(new Color(255, 128, 128));
@@ -165,7 +161,6 @@ public class Menu extends JPanel {
 				ventana.nuevoPanel(new AdministracionVentana(ventana, esAdmin, idCentro));				
 			}
 		});
-		btnAdministracion.setToolTipText("");
 		btnAdministracion.setForeground(new Color(255, 255, 255));
 		btnAdministracion.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnAdministracion.setBorder(null);
@@ -175,20 +170,19 @@ public class Menu extends JPanel {
 				
 		//-- ACCIÓN BOTÓN NECESIDADES --
 		
-		JButton btnNecesidades = new JButton("Necesidades");
-		btnNecesidades.addMouseListener(new MouseAdapter() {
+		JButton btnCentros = new JButton("Centros");
+		btnCentros.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {				
-				ventana.nuevoPanel(new NecesidadesVentana(ventana, esAdmin, idCentro));	
+				ventana.nuevoPanel(new CentrosVentana(ventana, esAdmin, idCentro));	
 			}
 		});
-		btnNecesidades.setToolTipText("");
-		btnNecesidades.setForeground(Color.WHITE);
-		btnNecesidades.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnNecesidades.setBorder(null);
-		btnNecesidades.setBackground(new Color(233, 1, 1));
-		btnNecesidades.setBounds(568, 476, 315, 37);
-		add(btnNecesidades);
+		btnCentros.setForeground(Color.WHITE);
+		btnCentros.setFont(new Font("Verdana", Font.PLAIN, 12));
+		btnCentros.setBorder(null);
+		btnCentros.setBackground(new Color(233, 1, 1));
+		btnCentros.setBounds(568, 476, 315, 37);
+		add(btnCentros);
 		
 		if(esAdmin == false) {
 			btnAdministracion.setVisible(false);

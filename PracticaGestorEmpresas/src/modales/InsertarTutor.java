@@ -22,8 +22,9 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.SwingConstants;
 
-public class InsertarUsuario extends JDialog {
+public class InsertarTutor extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	Consultas c = new Consultas();
@@ -32,7 +33,7 @@ public class InsertarUsuario extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public InsertarUsuario(AdministracionVentana ventana) {
+	public InsertarTutor(MostrarTutores ventana) {
 		setModal(true);
 		setBounds(100, 100, 649, 403);
 		getContentPane().setLayout(new BorderLayout());
@@ -41,33 +42,25 @@ public class InsertarUsuario extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
-		JLabel lblTitulo = new JLabel("Insertar usuario");
+		JLabel lblTitulo = new JLabel("Insertar tutor");
+		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setFont(new Font("Lato", Font.PLAIN, 45));
 		lblTitulo.setForeground(new Color(9, 3, 62));
-		lblTitulo.setBounds(136, 11, 359, 143);
+		lblTitulo.setBounds(154, 11, 351, 143);
 		contentPanel.add(lblTitulo);
 		
-		JLabel lblRepiteContra = new JLabel("Perfil de usuario");
-		lblRepiteContra.setFont(new Font("Lato", Font.PLAIN, 15));
-		lblRepiteContra.setBounds(154, 224, 188, 14);
-		contentPanel.add(lblRepiteContra);
-		
-		JLabel lblNuevoEmail = new JLabel("Email");
-		lblNuevoEmail.setFont(new Font("Lato", Font.PLAIN, 15));
-		lblNuevoEmail.setBounds(154, 158, 188, 14);
-		contentPanel.add(lblNuevoEmail);
+		JLabel lblNombre = new JLabel("Nombre");
+		lblNombre.setFont(new Font("Lato", Font.PLAIN, 15));
+		lblNombre.setBounds(154, 158, 188, 14);
+		contentPanel.add(lblNombre);
 		
 		textFieldEmail = new JTextField();
 		textFieldEmail.setBounds(154, 183, 153, 20);
 		contentPanel.add(textFieldEmail);
 		textFieldEmail.setColumns(10);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"ADMINISTRADOR", "EMPLEADO"}));
-		comboBox.setBounds(154, 249, 153, 22);
-		contentPanel.add(comboBox);
-		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBackground(new Color(255, 157, 157));
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -77,6 +70,7 @@ public class InsertarUsuario extends JDialog {
 		contentPanel.add(btnCancelar);
 		
 		JComboBox comboBoxCentros = new JComboBox();
+		comboBoxCentros.setBackground(new Color(255, 157, 157));
 		comboBoxCentros.setBounds(352, 183, 153, 22);
 		contentPanel.add(comboBoxCentros);
 		
@@ -88,19 +82,13 @@ public class InsertarUsuario extends JDialog {
 		contentPanel.add(lblCentro);
 		
 		JButton btnAceptar = new JButton("Aceptar");
+		btnAceptar.setBackground(new Color(255, 157, 157));
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String email = new String(textFieldEmail.getText());
-				if(!email.isBlank()) {
-					c.insertarUsuario(email, comboBox.getSelectedItem().toString(), c.cogeIdCentro(comboBoxCentros.getSelectedItem().toString()));
-					ventana.rellenaTabla(c.cogeIdCentro(comboBoxCentros.getSelectedItem().toString()));
-					dispose();
-				}else {
-					System.out.println("El email no puede estar vacio");
-				}
+				//insertar tutor
 			}
 		});
-		btnAceptar.setBounds(374, 307, 89, 23);
+		btnAceptar.setBounds(416, 307, 89, 23);
 		contentPanel.add(btnAceptar);
 	}
 	private void rellenarComboCentros(JComboBox comboCentro) {

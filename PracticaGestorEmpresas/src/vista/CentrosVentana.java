@@ -15,6 +15,7 @@ import javax.swing.table.JTableHeader;
 import modales.InsertarCentro;
 import modales.ModificacionCentro;
 import modales.MostrarTutores;
+import modelo.Consultas;
 
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -56,9 +57,7 @@ public class CentrosVentana extends JPanel {
 	private int filaTabla;
 	private JTextField textField;
 	private CentrosVentana ventanaActual;
-
-//	private BaseDeDatos bd = new BaseDeDatos();
-//	private Errores err = new Errores();
+	private Consultas c = new Consultas();
 
 	public CentrosVentana(Ventana ventana, boolean esAdmin, int idCentro) {
 		ventanaActual = this;
@@ -246,12 +245,13 @@ public class CentrosVentana extends JPanel {
 		jtResultados.getTableHeader().setResizingAllowed(false);
 		jtResultados.getTableHeader().setReorderingAllowed(false);
 		
-		rellenaTabla(idCentro);
+		rellenaTabla();
 
 		// -------------------------------------------------------------
 	}
 
-	public void rellenaTabla(int idCentro) {
+	public void rellenaTabla() {
 		modeloTabla.setRowCount(0);
+		c.rellenarCentros(modeloTabla);
 	}
 }

@@ -418,4 +418,61 @@ public class Consultas {
 			e.printStackTrace();
 		}
 	}
+	
+	public void rellenarCentros(DefaultTableModel tabla) {
+		Connection conexion = null;
+		Statement statement = null;
+		
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user , contrasenna);
+			statement = conexion.createStatement();
+			ResultSet rs = statement.executeQuery("select * from centro WHERE eliminado != 1;");
+			
+			while(rs.next()) {
+				tabla.addRow(new Object[] {
+						rs.getInt("id_centro"),
+						rs.getString("nombre"),
+						rs.getString("codigo"),
+				});
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				conexion.close();
+			}catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	public void rellenarTutores(DefaultTableModel tabla, int idCentro) {
+		Connection conexion = null;
+		Statement statement = null;
+		
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user , contrasenna);
+			statement = conexion.createStatement();
+			ResultSet rs = statement.executeQuery("select * from tutor WHERE eliminado != 1 AND id_centro = " + idCentro + ";");
+			
+			while(rs.next()) {
+				tabla.addRow(new Object[] {
+						rs.getInt("id_tutor"),
+						rs.getInt("id_centro"),
+						rs.getString("nombre"),
+				});
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				conexion.close();
+			}catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

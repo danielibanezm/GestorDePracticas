@@ -480,8 +480,8 @@ ALTER TABLE `centro`
 -- Filtros para la tabla `convenio`
 --
 ALTER TABLE `convenio`
-  ADD CONSTRAINT `id_empresa_fk` FOREIGN KEY (`id_empresa`) REFERENCES `empresa` (`id_empresa`) ON DELETE CASCADE,
-  ADD CONSTRAINT `id_centro_fk` FOREIGN KEY (`id_centro`) REFERENCES `centro` (`id_centro`) ON DELETE CASCADE;
+  ADD CONSTRAINT `id_convenio_empresa_fk` FOREIGN KEY (`id_empresa`) REFERENCES `empresa` (`id_empresa`) ON DELETE CASCADE,
+  ADD CONSTRAINT `id_convenio_centro_fk` FOREIGN KEY (`id_centro`) REFERENCES `centro` (`id_centro`) ON DELETE CASCADE;
 
 
 --

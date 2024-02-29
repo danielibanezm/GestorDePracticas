@@ -57,39 +57,7 @@ public class InsertarAnexos extends JDialog {
 		lblTitulo.setForeground(new Color(9, 3, 62));
 		lblTitulo.setBounds(194, -2, 359, 92);
 		contentPanel.add(lblTitulo);
-
-		JButton btnSeleccionarAnexo = new JButton("Seleccionar");
-		btnSeleccionarAnexo.setForeground(new Color(0, 0, 0));
-		btnSeleccionarAnexo.setBackground(new Color(255, 157, 157));
-		btnSeleccionarAnexo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser chooser = new JFileChooser();
-				int valor = chooser.showOpenDialog(null);
-				if (valor == JFileChooser.APPROVE_OPTION) {
-					
-					switch (comboBox.getSelectedItem().toString()) {
-					case "ANEXO 2.1":
-						anexo2_1 = chooser.getSelectedFile();
-						break;
-					case "ANEXO 2.2":
-						anexo2_2 = chooser.getSelectedFile();
-						break;
-					case "ANEXO 3":
-						anexo3 = chooser.getSelectedFile();
-						break;
-					case "ANEXO 8":
-						anexo8 = chooser.getSelectedFile();
-						break;
-
-					default:
-						break;
-					}
-				}
-			}
-		});
-		btnSeleccionarAnexo.setBounds(466, 308, 89, 23);
-		contentPanel.add(btnSeleccionarAnexo);
-
+		
 		JLabel lblAnexo2_1 = new JLabel("Anexo 2.1");
 		lblAnexo2_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblAnexo2_1.setBounds(99, 207, 93, 25);
@@ -130,6 +98,42 @@ public class InsertarAnexos extends JDialog {
 		lblAnexo8Seleccionado.setBounds(202, 378, 172, 25);
 		contentPanel.add(lblAnexo8Seleccionado);
 
+		JButton btnSeleccionarAnexo = new JButton("Seleccionar");
+		btnSeleccionarAnexo.setForeground(new Color(0, 0, 0));
+		btnSeleccionarAnexo.setBackground(new Color(255, 157, 157));
+		btnSeleccionarAnexo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser chooser = new JFileChooser();
+				int valor = chooser.showOpenDialog(null);
+				if (valor == JFileChooser.APPROVE_OPTION) {
+					
+					switch (comboBox.getSelectedItem().toString()) {
+					case "ANEXO 2.1":
+						anexo2_1 = chooser.getSelectedFile();
+						lblAnexo2_1Seleccionado.setText(anexo2_1.getName());
+						break;
+					case "ANEXO 2.2":
+						anexo2_2 = chooser.getSelectedFile();
+						lblAnexo2_2Seleccionado.setText(anexo2_2.getName());
+						break;
+					case "ANEXO 3":
+						anexo3 = chooser.getSelectedFile();
+						lblAnexo3Seleccionado.setText(anexo3.getName());
+						break;
+					case "ANEXO 8":
+						anexo8 = chooser.getSelectedFile();
+						lblAnexo8Seleccionado.setText(anexo8.getName());
+						break;
+
+					default:
+						break;
+					}
+				}
+			}
+		});
+		btnSeleccionarAnexo.setBounds(466, 308, 89, 23);
+		contentPanel.add(btnSeleccionarAnexo);
+
 		JLabel lblSubTitulo = new JLabel("Seleccion de anexos");
 		lblSubTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSubTitulo.setForeground(new Color(0, 0, 0));
@@ -160,7 +164,7 @@ public class InsertarAnexos extends JDialog {
 					dialogAterior.dispose();
 					dispose();
 				}else {
-					JOptionPane.showMessageDialog(null, "Error al insertar los anexos", "Error", ERROR);
+					JOptionPane.showMessageDialog(null, "Error al insertar los anexos", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				
 			}

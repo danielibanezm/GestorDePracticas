@@ -1,37 +1,49 @@
 package modales;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.text.MaskFormatter;
 
 import modelo.Consultas;
-import modelo.Usuario;
-import vista.AdministracionVentana;
 import vista.PracticasVentana;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.sql.Date;
 import java.awt.event.ActionEvent;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.swing.JFormattedTextField;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class InsertarPractica extends JDialog {
+	DefaultTableModel modeloTablaEmpresa = new DefaultTableModel() {
+		public boolean isCellEditable(int row, int column) {
+			return false;
+		}
+	};
+	DefaultTableModel modeloTablaAlumno = new DefaultTableModel() {
+		public boolean isCellEditable(int row, int column) {
+			return false;
+		}
+	};
 
 	private final JPanel contentPanel = new JPanel();
 	Consultas c = new Consultas();
@@ -40,14 +52,16 @@ public class InsertarPractica extends JDialog {
 	private JTextField textFieldEmpresas;
 	private JTextField textFieldAlumnos;
 	private InsertarPractica dialogActual;
-	private int idAlumno;
-	private int idEmpresa;
+	private int idAlumno = -1;
+	private int idEmpresa = -1;
 	private Date fechaInicio;
 	private Date fechaFinal;
+	private MaskFormatter fecha;
+	SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
 	/**
 	 * Create the dialog.
 	 */
-	public InsertarPractica(PracticasVentana ventana) {
+	public InsertarPractica(PracticasVentana ventana, int idCentro) {
 		setModal(true);
 		setBounds(100, 100, 1015, 632);
 		dialogActual = this;
@@ -74,25 +88,58 @@ public class InsertarPractica extends JDialog {
 		btnCancelar.setBounds(211, 531, 89, 23);
 		contentPanel.add(btnCancelar);
 		
-		JButton btnAceptar = new JButton("Continuar");
-		btnAceptar.setForeground(new Color(0, 0, 0));
-		btnAceptar.setBackground(new Color(254, 86, 86));
-		btnAceptar.addActionListener(new ActionListener() {
+		try {
+			fecha = new MaskFormatter("##/##/####");
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		
+		JFormattedTextField formattedTextFieldFechaInicial = new JFormattedTextField(fecha);
+		formattedTextFieldFechaInicial.setBounds(478, 251, 122, 20);
+		contentPanel.add(formattedTextFieldFechaInicial);
+		
+		JFormattedTextField formattedTextFieldFechaFinal = new JFormattedTextField(fecha);
+		formattedTextFieldFechaFinal.setBounds(478, 392, 122, 20);
+		contentPanel.add(formattedTextFieldFechaFinal);
+		
+		System.out.println(c.cogeUltimoIdAnexo());
+		
+		JButton btnContinuar = new JButton("Continuar");
+		btnContinuar.setForeground(new Color(0, 0, 0));
+		btnContinuar.setBackground(new Color(254, 86, 86));
+		btnContinuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InsertarAnexos dialog = new InsertarAnexos(ventana, dialogActual);
-				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-				dialog.setVisible(true);
-				setVisible(false);
+				if (idEmpresa != -1 && idAlumno != -1 && formattedTextFieldFechaFinal.getText().charAt(0) != ' ' && formattedTextFieldFechaInicial.getText().charAt(0) != ' ') {
+					try {
+						fechaFinal = (Date) formatoFecha.parse(formattedTextFieldFechaFinal.getText());
+						fechaInicio = (Date) formatoFecha.parse(formattedTextFieldFechaInicial.getText());
+					} catch (ParseException e1) {
+						// TODO Bloque catch generado automáticamente
+						e1.printStackTrace();
+					}
+					InsertarAnexos dialog = new InsertarAnexos(ventana, dialogActual);
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+					setVisible(false);
+				}else {
+					JOptionPane.showMessageDialog(null, "Los datos son incorrectos o incompletos", "Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
-		btnAceptar.setBounds(739, 531, 89, 23);
-		contentPanel.add(btnAceptar);
+		btnContinuar.setBounds(739, 531, 89, 23);
+		contentPanel.add(btnContinuar);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(109, 200, 260, 273);
 		contentPanel.add(scrollPane);
 		
 		tablaEmpresas = new JTable();
+		tablaEmpresas.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				idEmpresa = Integer.parseInt(tablaEmpresas.getValueAt(tablaEmpresas.getSelectedRow(), 0).toString());
+			}
+		});
 		scrollPane.setViewportView(tablaEmpresas);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -100,6 +147,12 @@ public class InsertarPractica extends JDialog {
 		contentPanel.add(scrollPane_1);
 		
 		tableAlumnos = new JTable();
+		tableAlumnos.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				idAlumno = Integer.parseInt(tableAlumnos.getValueAt(tableAlumnos.getSelectedRow(), 0).toString());
+			}
+		});
 		scrollPane_1.setViewportView(tableAlumnos);
 		
 		JLabel lblEmpresas = new JLabel("Empresas");
@@ -142,13 +195,48 @@ public class InsertarPractica extends JDialog {
 		lblFechafin.setBounds(379, 389, 78, 23);
 		contentPanel.add(lblFechafin);
 		
-		JFormattedTextField formattedTextFieldFechaInicial = new JFormattedTextField();
-		formattedTextFieldFechaInicial.setBounds(478, 251, 122, 20);
-		contentPanel.add(formattedTextFieldFechaInicial);
 		
-		JFormattedTextField formattedTextFieldFechaFinal = new JFormattedTextField();
-		formattedTextFieldFechaFinal.setBounds(478, 392, 122, 20);
-		contentPanel.add(formattedTextFieldFechaFinal);
+		modeloTablaAlumno.setColumnIdentifiers(new Object[] {"id alumno", "Nombre"});
+//
+		tableAlumnos.setModel(modeloTablaAlumno);
+//
+		tableAlumnos.getColumnModel().getColumn(0).setMaxWidth(0);
+		tableAlumnos.getColumnModel().getColumn(0).setMinWidth(0);
+		
+		tableAlumnos.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
+		tableAlumnos.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
+		
+		JTableHeader encabezadoAlumno = tableAlumnos.getTableHeader();
+		Color rojoClaro = new Color(255, 157, 157);
+		Color darkBlue = new Color(9, 3, 62);
+		encabezadoAlumno.setBackground(rojoClaro);
+		encabezadoAlumno.setForeground(darkBlue);
+		encabezadoAlumno.setFont(new Font("Verdana", Font.BOLD, 13));
+		
+		modeloTablaEmpresa.setColumnIdentifiers(new Object[] {"id empresa", "Nombre"});
+//
+		tablaEmpresas.setModel(modeloTablaEmpresa);
+//
+		tablaEmpresas.getColumnModel().getColumn(0).setMaxWidth(0);
+		tablaEmpresas.getColumnModel().getColumn(0).setMinWidth(0);
+		
+		tablaEmpresas.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
+		tablaEmpresas.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
+		
+		JTableHeader encabezadoEmpresa = tablaEmpresas.getTableHeader();
+		encabezadoEmpresa.setBackground(rojoClaro);
+		encabezadoEmpresa.setForeground(darkBlue);
+		encabezadoEmpresa.setFont(new Font("Verdana", Font.BOLD, 13));
+		rellenaTablaAlumno(idCentro);
+		rellenaTablaEmpresa(idCentro);
+	}
+	public void rellenaTablaAlumno(int idCentro) {
+		modeloTablaAlumno.setRowCount(0);
+		c.rellenarNombreAlumnos(modeloTablaAlumno, idCentro);
+	}
+	public void rellenaTablaEmpresa(int idCentro) {
+		modeloTablaEmpresa.setRowCount(0);
+		c.rellenarNombreEmpresas(modeloTablaEmpresa, idCentro);
 	}
 	public Date getFechaInicio() {
 		return fechaInicio;
@@ -173,11 +261,5 @@ public class InsertarPractica extends JDialog {
 	}
 	public void setIdEmpresa(int idEmpresa) {
 		this.idEmpresa = idEmpresa;
-	}
-	private void rellenarComboCentros(JComboBox comboCentro) {
-		ArrayList<String> arrlCentros = c.cogeNombreCentros();
-		for (String centro : arrlCentros) {
-			comboCentro.addItem(centro);
-		}
 	}
 }

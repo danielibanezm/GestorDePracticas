@@ -10,6 +10,11 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import modales.EditarEmpresa;
+import modales.InsertarEmpresa;
+import modelo.Consultas;
+import modelo.Empresa;
+
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -47,12 +52,17 @@ public class EmpresasVentana extends JPanel {
 	private JButton btnEditarEmpresa;
 	private JButton btnBorrarEmpresa;
 	private JTable jtResultados;
+	private Empresa empresa = new Empresa();
+
 	private int filaTabla;
 
-//	private BaseDeDatos bd = new BaseDeDatos();
-//	private Errores err = new Errores();
+	private Consultas bd = new Consultas();
+	//private Errores err = new Errores();
+	private EditarEmpresa editarEmpresa;
+
 
 	public EmpresasVentana(Ventana ventana, boolean esAdmin, int idCentro) {
+		InsertarEmpresa insertarEmpresa = new InsertarEmpresa(idCentro, modeloTabla, ventana, esAdmin);
 		
 		setBackground(new Color(255, 255, 255));
 		setLayout(null);
@@ -79,7 +89,7 @@ public class EmpresasVentana extends JPanel {
 		lblConsultar.setHorizontalAlignment(SwingConstants.LEFT);
 		lblConsultar.setForeground(new Color(0, 0, 0));
 		lblConsultar.setFont(new Font("Lato", Font.PLAIN, 55));
-		lblConsultar.setBounds(414, 24, 586, 81);
+		lblConsultar.setBounds(414, 24, 273, 81);
 		add(lblConsultar);
 
 		scrollPane = new JScrollPane();
@@ -87,11 +97,14 @@ public class EmpresasVentana extends JPanel {
 		scrollPane.setBounds(32, 160, 1029, 463);
 		add(scrollPane);
 
-		// -- AÑADIR SOCIO --
+		// -- AÑADIR EMPRESA --
 		btnNuevaEmpresa = new JButton("Nueva empresa");
 		btnNuevaEmpresa.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e) {				
+				if (insertarEmpresa != null) {
+					insertarEmpresa.setVisible(true);
+				}				
 			}
 		});
 		// ----------------------------------------------
@@ -103,13 +116,15 @@ public class EmpresasVentana extends JPanel {
 		btnNuevaEmpresa.setBounds(1134, 258, 130, 37);
 		add(btnNuevaEmpresa);
 
-		// -- EDITAR SOCIO --
+		// -- EDITAR EMPRESA --
 		btnEditarEmpresa = new JButton("Editar empresa");
 		btnEditarEmpresa.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				filaTabla = jtResultados.getSelectedRow();
 				if (filaTabla != -1) { // Se ha seleccionado una fila
+					editarEmpresa = new EditarEmpresa(empresa, modeloTabla, filaTabla, idCentro);
+					editarEmpresa.setVisible(true);
 
 				} else {
 					// No se ha seleccionado ningún socio por lo tanto se muestra un error.
@@ -135,7 +150,7 @@ public class EmpresasVentana extends JPanel {
 				filaTabla = jtResultados.getSelectedRow();
 
 				if (filaTabla != -1) { // Se ha seleccionado una fila
-
+					//eliminar(filaTabla, idCentro);
 				} else {
 					// No se ha seleccionado ningún libro por lo tanto se muestra un error.
 					JOptionPane.showMessageDialog(null, "Seleccione un socio para poder eliminarlo.", "Error",
@@ -175,18 +190,19 @@ public class EmpresasVentana extends JPanel {
 		scrollPane.setViewportView(jtResultados);
 		
 		//poner las columnas necesarias
-//		modeloTabla.setColumnIdentifiers(new Object[] { });
-//
-//		jtResultados.setModel(modeloTabla);
-//
-//		jtResultados.getColumnModel().getColumn(0).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(1).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(2).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(3).setPreferredWidth(120);
-//		jtResultados.getColumnModel().getColumn(4).setPreferredWidth(80);
-//		jtResultados.getColumnModel().getColumn(5).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(6).setPreferredWidth(100);
-//		jtResultados.getColumnModel().getColumn(7).setPreferredWidth(10);
+		modeloTabla.setColumnIdentifiers(new Object[] { "CIF", "Dueño", "Nombre", "Teléfono", "Email", "Dirección", "Tutor", "Contacto", "Solicita" });
+
+		jtResultados.setModel(modeloTabla);
+
+		jtResultados.getColumnModel().getColumn(0).setPreferredWidth(100);
+		jtResultados.getColumnModel().getColumn(1).setPreferredWidth(100);
+		jtResultados.getColumnModel().getColumn(2).setPreferredWidth(100);
+		jtResultados.getColumnModel().getColumn(3).setPreferredWidth(120);
+		jtResultados.getColumnModel().getColumn(4).setPreferredWidth(80);
+		jtResultados.getColumnModel().getColumn(5).setPreferredWidth(100);
+		jtResultados.getColumnModel().getColumn(6).setPreferredWidth(100);
+		jtResultados.getColumnModel().getColumn(7).setPreferredWidth(100);
+		jtResultados.getColumnModel().getColumn(8).setPreferredWidth(100);
 
 		JTableHeader encabezado = jtResultados.getTableHeader();
 		Color rojoClaro = new Color(255, 157, 157);
@@ -203,9 +219,35 @@ public class EmpresasVentana extends JPanel {
 		// -------------------------------------------------------------
 	}
 
-	public void rellenaTabla(int idBib) {
+	public void rellenaTabla(int idCentro) {
 		modeloTabla.setRowCount(0);
+		
+		for (Empresa recorreEmpresa : bd.cogeEmpresas()) {
+			
+			// Object puede coger todo tipo de datos, hasta imágenes.
+			modeloTabla.addRow(new Object[] { recorreEmpresa.getCIF(), recorreEmpresa.getDuenno(),
+					recorreEmpresa.getNombre_empresa(), recorreEmpresa.getTelefono_empresa(), recorreEmpresa.getDireccion_empresa(),
+					recorreEmpresa.getTutor_empresa(), recorreEmpresa.getContacto_empresa(), recorreEmpresa.getSolicita()});
+		}
+		
+		
 	}
+	
+//	public void eliminar(int filaTabla, String idBib) {
+//		Consultas bd = new Consultas();
+//		int opcion = 0;
+//		String id;
+//
+//		//opcion = err.preguntarEliminar();
+//
+//		if (opcion == 0) {
+//			id = bd.obtenerIdSocio(socio, idBib);
+//			bd.eliminarSocio(id, idBib);
+//
+//			// Eliminamos la fila del modelo.
+//			modeloTabla.removeRow(filaTabla);
+//		}
+//	}
 
 	
 }

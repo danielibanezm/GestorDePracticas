@@ -632,4 +632,54 @@ public class Consultas {
 		}
 		return bytes;
 	}
+
+	public ArrayList<Empresa> cogeEmpresas() {
+		ArrayList<Empresa> arrlEmpresas = new ArrayList<>();
+
+		Connection conexion = null;
+		Statement consultita = null;
+		ResultSet registro = null;
+
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user , contrasenna);
+			consultita = conexion.createStatement();
+
+			registro = consultita.executeQuery(
+					"SELECT * FROM empresaWHERE ORDER BY nombre_socio");
+
+			if (!registro.next()) {
+				String titulo = "Error";
+				JOptionPane.showMessageDialog(null, "La base de datos está vacía.", titulo, JOptionPane.ERROR_MESSAGE);
+			}
+
+			while (registro.next()) {
+				Empresa nuevaEmpresa = new Empresa();
+
+				nuevaEmpresa.setIdEmpresa(registro.getInt("id_empresa"));
+				nuevaEmpresa.setCIF(registro.getString("CIF"));
+				nuevaEmpresa.setDuenno(registro.getString("dueño"));
+				nuevaEmpresa.setNombre_empresa(registro.getString("nombre_empresa"));
+				nuevaEmpresa.setTelefono_empresa(registro.getString("telefono_empresa"));
+				nuevaEmpresa.setDireccion_empresa(registro.getString("direccion_empresa"));
+				nuevaEmpresa.setEmail_empresa(registro.getString("email_empresa"));
+				nuevaEmpresa.setTutor_empresa(registro.getString("tutor_empresa"));
+				nuevaEmpresa.setContacto_empresa(registro.getString("contacto_empresa"));
+				nuevaEmpresa.setSolicita(registro.getString("solicita"));
+				nuevaEmpresa.setEliminado(registro.getBoolean("eliminado"));
+
+
+				arrlEmpresas.add(nuevaEmpresa);
+			}
+
+		} catch (SQLException e) {
+		} finally {
+			try {
+				conexion.close();
+			} catch (SQLException e) {
+			} catch (NullPointerException e) {
+			}
+		}
+
+		return arrlEmpresas;
+	}	
 }

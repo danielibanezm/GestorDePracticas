@@ -139,13 +139,13 @@ CREATE TABLE `convenio` (
 CREATE TABLE `empresa` (
   `id_empresa` int(11) NOT NULL,
   `CIF` varchar(9) NOT NULL,
-  `dueño` varchar(20) NOT NULL,
+  `dueño_empresa` varchar(20) NOT NULL,
   `nombre_empresa` varchar(20) NOT NULL,
   `telefono_empresa` varchar(9) NOT NULL,
-  `direccion_empresa` varchar(50) NOT NULL,
   `email_empresa` varchar(20) NOT NULL,
+  `direccion_empresa` varchar(50) NOT NULL,
   `tutor_empresa` varchar(20) NOT NULL,
-  `correo_empresa` varchar(20) NOT NULL,
+  `correo_contacto` varchar(20) NOT NULL,
   `solicita` varchar(20) NOT NULL,
   `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

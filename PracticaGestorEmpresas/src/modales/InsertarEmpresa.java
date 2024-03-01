@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 import modelo.Consultas;
 import modelo.Empresa;
+import modelo.Socios;
 import vista.Ventana;
 
 import java.awt.Color;
@@ -37,6 +38,7 @@ public class InsertarEmpresa extends JDialog {
 	private JTextField txtTutor;
 	private JTextField txtEmail;
 	private JTextField txtDireccion;
+	private TextArea txtAreaSolicita;
 //	private ComprobarCampos comprobar = new ComprobarCampos();
 	private Empresa nuevaEmpresa = new Empresa();
 //	private Errores err = new Errores();
@@ -168,6 +170,22 @@ public class InsertarEmpresa extends JDialog {
 		btnAceptar.setBounds(735, 512, 89, 23);
 		contentPanel.add(btnAceptar);
 		
+		btnAceptar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (camposLlenos()) {
+					
+					nuevaEmpresa = rellenaObjeto();
+					insertar(nuevaEmpresa);
+					//actualizarse(nuevaEmpresa, modeloTabla);
+					
+				}
+			}
+					
+		});
+		
+		
+		
 		JLabel lblInsertarEmpresa = new JLabel("Insertar empresa");
 		lblInsertarEmpresa.setForeground(new Color(9, 3, 62));
 		lblInsertarEmpresa.setFont(new Font("Dialog", Font.PLAIN, 45));
@@ -184,4 +202,35 @@ public class InsertarEmpresa extends JDialog {
 				|| txtDireccion.getText().isEmpty() || txtTutor.getText().isEmpty() || txtEmail.getText().isEmpty()
 				|| txtTelefono.getText().isEmpty());
 	}
+	
+	public Empresa rellenaObjeto() {
+		Empresa empresa = new Empresa();
+
+		empresa.setCIF(txtCIF.getText());
+		empresa.setDuenno(txtDuenno.getText());
+		empresa.setNombre_empresa(txtNombre.getText());
+		empresa.setTelefono_empresa(txtTelefono.getText());
+		empresa.setDireccion_empresa(txtDireccion.getText());
+		empresa.setEmail_empresa(txtEmail.getText());
+		empresa.setTutor_empresa(txtTutor.getText());
+		empresa.setContacto_empresa(txtContacto.getText());
+		empresa.setSolicita(txtAreaSolicita.getText() );
+		empresa.setEliminado(false);
+
+		return empresa;
+	}
+	
+	public void insertar(Empresa nuevoSocio) {
+		int opcion = 0;
+
+		if (opcion == 0) {
+			bd.insertarSocio(nuevoSocio);
+
+		} else {
+
+		}
+	}
+	
+	
+	
 }

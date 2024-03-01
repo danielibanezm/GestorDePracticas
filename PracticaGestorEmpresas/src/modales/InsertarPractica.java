@@ -89,10 +89,12 @@ public class InsertarPractica extends JDialog {
 		contentPanel.add(btnCancelar);
 		
 		try {
-			fecha = new MaskFormatter("##/##/####");
+		    fecha = new MaskFormatter("##/##/####");
 		} catch (ParseException e1) {
-			e1.printStackTrace();
+		    e1.printStackTrace();
+		    // Manejo de error si hay un problema con el patrón de fecha
 		}
+
 		
 		JFormattedTextField formattedTextFieldFechaInicial = new JFormattedTextField(fecha);
 		formattedTextFieldFechaInicial.setBounds(478, 251, 122, 20);
@@ -111,11 +113,16 @@ public class InsertarPractica extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				if (idEmpresa != -1 && idAlumno != -1 && formattedTextFieldFechaFinal.getText().charAt(0) != ' ' && formattedTextFieldFechaInicial.getText().charAt(0) != ' ') {
 					try {
-						fechaFinal = (Date) formatoFecha.parse(formattedTextFieldFechaFinal.getText());
-						fechaInicio = (Date) formatoFecha.parse(formattedTextFieldFechaInicial.getText());
+						 // Convertir las fechas de java.util.Date a java.sql.Date
+		                java.util.Date fechaInicioUtil = formatoFecha.parse(formattedTextFieldFechaInicial.getText());
+		                java.util.Date fechaFinUtil = formatoFecha.parse(formattedTextFieldFechaFinal.getText());
+		                fechaInicio = new java.sql.Date(fechaInicioUtil.getTime());
+		                fechaFinal = new java.sql.Date(fechaFinUtil.getTime());
 					} catch (ParseException e1) {
 						// TODO Bloque catch generado automáticamente
 						e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Las fechas ingresadas no son válidas.", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
 					}
 					InsertarAnexos dialog = new InsertarAnexos(ventana, dialogActual);
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

@@ -15,6 +15,7 @@ import java.sql.Statement;
 import java.time.Instant;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -645,7 +646,7 @@ public class Consultas {
 			consultita = conexion.createStatement();
 
 			registro = consultita.executeQuery(
-					"SELECT * FROM empresaWHERE ORDER BY nombre_socio");
+					"SELECT * FROM empresa WHERE eliminado != 1");
 
 			if (!registro.next()) {
 				String titulo = "Error";
@@ -682,4 +683,37 @@ public class Consultas {
 
 		return arrlEmpresas;
 	}	
+	
+	public void insertarSocio(Empresa empresa) {
+		Connection conexion = null;
+		Statement consulta = null;
+
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user , contrasenna);
+			consulta = conexion.createStatement();
+
+			consulta.executeUpdate(
+					"INSERT INTO EMPRESA (CIF, dueño_empresa, nombre_empresa, telefono_empresa, email_empresa, direccion_empresa, tutor_empresa, correo_contacto, solicita, eliminado) "
+					+ "VALUES ('"	
+							+ empresa.getCIF() + "', '" + empresa.getDuenno() + "', '" + empresa.getNombre_empresa() + "', '"
+							+ empresa.getTelefono_empresa() + "', '" + empresa.getDireccion_empresa() + "', '" + empresa.getEmail_empresa() + "', "
+							+ empresa.getTutor_empresa() + ", '" + empresa.getContacto_empresa()+ ", '" + empresa.getSolicita() + ", " + 0 + ")");
+
+			//err.confirmarInsert();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			//err.baseDatosNoConexion();
+		} finally {
+			try {
+				conexion.close();
+			} catch (SQLException e) {
+			} catch (NullPointerException e) {
+			}
+		}
+
+	}
+	
+	
+	
 }

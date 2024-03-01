@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.event.KeyAdapter;
@@ -102,7 +103,7 @@ public class PracticasVentana extends JPanel {
 		btnNuevaPractica.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				InsertarPractica dialog = new InsertarPractica(ventanaActual);
+				InsertarPractica dialog = new InsertarPractica(ventanaActual, idCentro);
 				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 				dialog.setVisible(true);
 			}
@@ -255,9 +256,25 @@ public class PracticasVentana extends JPanel {
 		add(btnInsertar);
 
 		//poner las columnas necesarias
-		modeloTabla.setColumnIdentifiers(new Object[] {"id practicas", "id anexo", "Alumno", "Empresa"});
+		modeloTabla.setColumnIdentifiers(new Object[] {"id practicas", "id anexo", "Alumno", "Empresa", "Inicio", "Final"});
 		
 		jtResultados.setModel(modeloTabla);
+		
+		JToggleButton tglbtnMostrarPracticas = new JToggleButton("Mostrar todas");
+		tglbtnMostrarPracticas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (tglbtnMostrarPracticas.isSelected()) {
+					rellenaTablaTodos(idCentro);
+				}else {
+					rellenaTablaActual(idCentro);
+				}
+			}
+		});
+		tglbtnMostrarPracticas.setBackground(new Color(254, 86, 86));
+		tglbtnMostrarPracticas.setBounds(1134, 122, 130, 37);
+		add(tglbtnMostrarPracticas);
+		
+		
 		jtResultados.getColumnModel().getColumn(0).setMaxWidth(0);
 		jtResultados.getColumnModel().getColumn(1).setMaxWidth(0);
 		jtResultados.getColumnModel().getColumn(0).setMinWidth(0);
@@ -278,13 +295,18 @@ public class PracticasVentana extends JPanel {
 		jtResultados.getTableHeader().setResizingAllowed(false);
 		jtResultados.getTableHeader().setReorderingAllowed(false);
 		
-		rellenaTabla(idCentro);
+		rellenaTablaActual(idCentro);
 
 		// -------------------------------------------------------------
 	}
 
-	public void rellenaTabla(int idCentro) {
+	public void rellenaTablaActual(int idCentro) {
 		modeloTabla.setRowCount(0);
-		c.rellenarPracticas(modeloTabla, idCentro);
+		c.rellenarPracticasActuales(modeloTabla, idCentro);
+	}
+	public void rellenaTablaTodos(int idCentro) {
+		modeloTabla.setRowCount(0);
+		c.rellenarPracticasTotales(modeloTabla, idCentro);
+		
 	}
 }

@@ -222,7 +222,7 @@ public class EmpresasVentana extends JPanel {
 	public void rellenaTabla(int idCentro) {
 		modeloTabla.setRowCount(0);
 		
-		for (Empresa recorreEmpresa : bd.cogeEmpresas()) {
+		for (Empresa recorreEmpresa : bd.cogeEmpresas(idCentro)) {
 			
 			// Object puede coger todo tipo de datos, hasta imágenes.
 			modeloTabla.addRow(new Object[] { recorreEmpresa.getCIF(), recorreEmpresa.getDuenno(),

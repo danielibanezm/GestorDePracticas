@@ -11,7 +11,6 @@ import javax.swing.table.DefaultTableModel;
 
 import modelo.Consultas;
 import modelo.Empresa;
-import modelo.Socios;
 import vista.Ventana;
 
 import java.awt.Color;
@@ -26,6 +25,8 @@ import javax.swing.JTextArea;
 import java.awt.TextArea;
 import java.awt.Scrollbar;
 import java.awt.ScrollPane;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class InsertarEmpresa extends JDialog {
 
@@ -39,11 +40,10 @@ public class InsertarEmpresa extends JDialog {
 	private JTextField txtEmail;
 	private JTextField txtDireccion;
 	private TextArea txtAreaSolicita;
-//	private ComprobarCampos comprobar = new ComprobarCampos();
 	private Empresa nuevaEmpresa = new Empresa();
-//	private Errores err = new Errores();
 	private Consultas bd = new Consultas();
 	private JTextField txtContacto;
+	private JComboBox comboBox;
 
 	public InsertarEmpresa(int idCentro, DefaultTableModel modeloTabla, Ventana ventana, boolean esAdmin) {
 		setResizable(false);
@@ -177,6 +177,7 @@ public class InsertarEmpresa extends JDialog {
 					
 					nuevaEmpresa = rellenaObjeto();
 					insertar(nuevaEmpresa);
+					dispose();
 					//actualizarse(nuevaEmpresa, modeloTabla);
 					
 				}
@@ -192,9 +193,10 @@ public class InsertarEmpresa extends JDialog {
 		lblInsertarEmpresa.setBounds(322, 10, 359, 143);
 		contentPanel.add(lblInsertarEmpresa);
 		
-		TextArea txtAreaSolicita = new TextArea();
-		txtAreaSolicita.setBounds(385, 356, 219, 150);
-		contentPanel.add(txtAreaSolicita);
+		comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"PRACTICAS", "BECAS", "TRABAJADORES"}));
+		comboBox.setBounds(389, 382, 110, 22);
+		contentPanel.add(comboBox);
 	}
 	
 	public boolean camposLlenos() {
@@ -214,7 +216,7 @@ public class InsertarEmpresa extends JDialog {
 		empresa.setEmail_empresa(txtEmail.getText());
 		empresa.setTutor_empresa(txtTutor.getText());
 		empresa.setContacto_empresa(txtContacto.getText());
-		empresa.setSolicita(txtAreaSolicita.getText() );
+		empresa.setSolicita(comboBox.getSelectedItem().toString());
 		empresa.setEliminado(false);
 
 		return empresa;
@@ -230,7 +232,4 @@ public class InsertarEmpresa extends JDialog {
 
 		}
 	}
-	
-	
-	
 }

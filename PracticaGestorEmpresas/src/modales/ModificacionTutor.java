@@ -63,8 +63,9 @@ public class ModificacionTutor extends JDialog {
 		btnAceptar.setBackground(new Color(255, 157, 157));
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//actualizar tutor
-				
+				c.actualizaTutor(textFieldNombre.getText(), idCentro);
+				ventana.rellenaTabla(idCentro);
+				dispose();
 			}
 		});
 		btnAceptar.setBounds(334, 182, 89, 23);
@@ -80,7 +81,7 @@ public class ModificacionTutor extends JDialog {
 		btnCancelar.setBounds(456, 182, 89, 23);
 		contentPanel.add(btnCancelar);
 		
-		JLabel lblAntiguoNombre = new JLabel("Antiguo nombre <dynamic>");
+		JLabel lblAntiguoNombre = new JLabel("Antiguo nombre " + nombre);
 		lblAntiguoNombre.setFont(new Font("Dialog", Font.PLAIN, 15));
 		lblAntiguoNombre.setBounds(73, 125, 188, 29);
 		contentPanel.add(lblAntiguoNombre);

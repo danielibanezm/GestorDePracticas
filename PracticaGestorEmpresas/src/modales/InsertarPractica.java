@@ -57,7 +57,7 @@ public class InsertarPractica extends JDialog {
 	private Date fechaInicio;
 	private Date fechaFinal;
 	private MaskFormatter fecha;
-	SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+	SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy/MM/dd");
 	/**
 	 * Create the dialog.
 	 */
@@ -89,7 +89,7 @@ public class InsertarPractica extends JDialog {
 		contentPanel.add(btnCancelar);
 		
 		try {
-		    fecha = new MaskFormatter("##/##/####");
+		    fecha = new MaskFormatter("####/##/##");
 		} catch (ParseException e1) {
 		    e1.printStackTrace();
 		    // Manejo de error si hay un problema con el patrón de fecha
@@ -114,12 +114,15 @@ public class InsertarPractica extends JDialog {
 				if (idEmpresa != -1 && idAlumno != -1 && formattedTextFieldFechaFinal.getText().charAt(0) != ' ' && formattedTextFieldFechaInicial.getText().charAt(0) != ' ') {
 					try {
 						 // Convertir las fechas de java.util.Date a java.sql.Date
-		                java.util.Date fechaInicioUtil = formatoFecha.parse(formattedTextFieldFechaInicial.getText());
-		                java.util.Date fechaFinUtil = formatoFecha.parse(formattedTextFieldFechaFinal.getText());
-		                fechaInicio = new java.sql.Date(fechaInicioUtil.getTime());
-		                fechaFinal = new java.sql.Date(fechaFinUtil.getTime());
+						
+						fechaInicio = new Date(formatoFecha.parse(formattedTextFieldFechaInicial.getText()).getYear(),
+								formatoFecha.parse(formattedTextFieldFechaInicial.getText()).getMonth(), 
+								formatoFecha.parse(formattedTextFieldFechaInicial.getText()).getDay());
+						fechaFinal = new Date(formatoFecha.parse(formattedTextFieldFechaFinal.getText()).getYear(),
+								formatoFecha.parse(formattedTextFieldFechaFinal.getText()).getMonth(), 
+								formatoFecha.parse(formattedTextFieldFechaFinal.getText()).getDay());
+		                
 					} catch (ParseException e1) {
-						// TODO Bloque catch generado automáticamente
 						e1.printStackTrace();
 						JOptionPane.showMessageDialog(null, "Las fechas ingresadas no son válidas.", "Error", JOptionPane.ERROR_MESSAGE);
 						return;

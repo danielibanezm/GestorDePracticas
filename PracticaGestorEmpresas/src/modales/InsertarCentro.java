@@ -15,6 +15,8 @@ import vista.AdministracionVentana;
 import vista.CentrosVentana;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -76,19 +78,26 @@ public class InsertarCentro extends JDialog {
 		lblCodigo.setBounds(352, 152, 188, 20);
 		contentPanel.add(lblCodigo);
 		
+		textFieldCodigo = new JTextField();
+		textFieldCodigo.setColumns(10);
+		textFieldCodigo.setBounds(352, 183, 153, 20);
+		contentPanel.add(textFieldCodigo);
+		
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.setBackground(new Color(255, 157, 157));
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//insertar centro
+				if (textFieldCodigo.getText().length() < 9 && textFieldNombre.getText().length() < 20) {
+					c.insertarCentro(textFieldCodigo.getText(), textFieldNombre.getText());
+					ventana.rellenaTabla();
+					dispose();
+				}else {
+					JOptionPane.showMessageDialog(null, "Longitud de los campos demasiado larga");
+				}
 			}
 		});
 		btnAceptar.setBounds(416, 307, 89, 23);
 		contentPanel.add(btnAceptar);
 		
-		textFieldCodigo = new JTextField();
-		textFieldCodigo.setColumns(10);
-		textFieldCodigo.setBounds(352, 183, 153, 20);
-		contentPanel.add(textFieldCodigo);
 	}
 }

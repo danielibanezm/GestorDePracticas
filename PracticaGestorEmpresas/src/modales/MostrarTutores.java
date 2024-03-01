@@ -70,7 +70,7 @@ public class MostrarTutores extends JDialog {
 		btnNuevoTutor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Añadir tutor
-				InsertarTutor dialog = new InsertarTutor(ventana);
+				InsertarTutor dialog = new InsertarTutor(ventana, idCentro);
 				dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 				dialog.setVisible(true);
 			}
@@ -113,7 +113,8 @@ public class MostrarTutores extends JDialog {
 				filaTabla = jtResultados.getSelectedRow();
 
 				if (filaTabla != -1) { // Se ha seleccionado una fila
-					
+					c.borradoLogicoTutores(Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()));
+					rellenaTabla(idCentro);
 				} else {
 					// No se ha seleccionado ningún libro por lo tanto se muestra un error.
 					JOptionPane.showMessageDialog(null, "Seleccione un tutor para poder eliminarlo.", "Error",

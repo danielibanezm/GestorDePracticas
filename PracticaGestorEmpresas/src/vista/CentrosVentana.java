@@ -147,7 +147,7 @@ public class CentrosVentana extends JPanel {
 				filaTabla = jtResultados.getSelectedRow();
 
 				if (filaTabla != -1) { // Se ha seleccionado una fila
-
+					c.borradoLogicoCentro(Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()));
 				} else {
 					// No se ha seleccionado ningún libro por lo tanto se muestra un error.
 					JOptionPane.showMessageDialog(null, "Seleccione un centro para poder eliminarlo.", "Error",

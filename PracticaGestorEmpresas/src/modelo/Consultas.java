@@ -104,9 +104,9 @@ public class Consultas {
 			int valor = statement.executeUpdate(
 					"update otros set material = '" + nuevoHistorico + "' where id_usuario = " + idUsuario);
 			if (valor == 1) {
-				System.out.println("Todo correcto master");
+				JOptionPane.showMessageDialog(null, "Contraseña modificada correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				System.out.println("Uy Uy Uy :(");
+				JOptionPane.showMessageDialog(null, "Error al modificar la contraseña", "Info", JOptionPane.ERROR_MESSAGE);
 			}
 
 		} catch (SQLException e) {
@@ -131,7 +131,7 @@ public class Consultas {
 
 			int valor = statement.executeUpdate("update usuarios set primer = 0 where id_usuario = " + idUsuario);
 			if (valor == 1) {
-				System.out.println("Todo correcto master");
+				System.out.println("Guay");
 			} else {
 				System.out.println("Uy Uy Uy :(");
 			}
@@ -179,6 +179,7 @@ public class Consultas {
 	public void insertarUsuario(String email, String perfil, int idCentro) {
 		Connection conexion = null;
 		Statement statement = null;
+		int idUsuario = -1;
 		try {
 			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
 			statement = conexion.createStatement();
@@ -187,9 +188,14 @@ public class Consultas {
 					.executeUpdate("INSERT INTO usuarios (id_centro, email, primer, perfil, eliminado) VALUES ("
 							+ idCentro + ", '" + email + "', 1, '" + perfil + "', 0)");
 			if (valor == 1) {
-				System.out.println("Todo correcto master");
+				JOptionPane.showMessageDialog(null, "Usuario insertado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+				if((idUsuario = cogeUltimoIdUsuario()) != -1) {
+					statement.executeUpdate("INSERT INTO otros (id_usuario, material, eliminado) VALUES (" + idUsuario + ", '12345', 0);");
+				}else {
+					System.out.println("no se puede seleccionar el ultimo id");
+				}
 			} else {
-				System.out.println("Uy Uy Uy :(");
+				JOptionPane.showMessageDialog(null, "Error al insertar usuario", "Info", JOptionPane.ERROR_MESSAGE);
 			}
 
 		} catch (SQLException e) {
@@ -214,9 +220,9 @@ public class Consultas {
 
 			int valor = statement.executeUpdate("update usuarios set eliminado = 1 where id_usuario = " + idUsuario);
 			if (valor == 1) {
-				System.out.println("Todo correcto master");
+				JOptionPane.showMessageDialog(null, "Usuario borrado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				System.out.println("Uy Uy Uy :(");
+				JOptionPane.showMessageDialog(null, "Error al borrar usuario", "Info", JOptionPane.ERROR_MESSAGE);
 			}
 
 		} catch (SQLException e) {
@@ -243,9 +249,9 @@ public class Consultas {
 					+ "' WHERE id_usuario = " + idUsuario + ";";
 			int valor = statement.executeUpdate(update);
 			if (valor == 1) {
-				System.out.println("Todo correcto master");
+				JOptionPane.showMessageDialog(null, "Usuario actualizado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				System.out.println("Uy Uy Uy :(");
+				JOptionPane.showMessageDialog(null, "Error al actualizar usuario", "Info", JOptionPane.ERROR_MESSAGE);
 			}
 
 		} catch (SQLException e) {
@@ -329,9 +335,10 @@ public class Consultas {
 			ResultSet rs = statement.executeQuery(consulta);
 
 			while (rs.next()) {
-				if(rs.getDate("inicio").after(hoy)) {
+				if (rs.getDate("inicio").after(hoy)) {
 					tabla.addRow(new Object[] { rs.getInt("practica.id_practica"), rs.getInt("practica.id_anexo"),
-							rs.getString("alumno.nombre"), rs.getString("empresa.nombre_empresa"), rs.getDate("inicio"), rs.getDate("final")});
+							rs.getString("alumno.nombre"), rs.getString("empresa.nombre_empresa"), rs.getDate("inicio"),
+							rs.getDate("final") });
 				}
 			}
 		} catch (SQLException e) {
@@ -347,7 +354,7 @@ public class Consultas {
 		}
 
 	}
-	
+
 	public void rellenarPracticasTotales(DefaultTableModel tabla, int idCentro) {
 		Connection conexion = null;
 		Statement statement = null;
@@ -362,7 +369,8 @@ public class Consultas {
 
 			while (rs.next()) {
 				tabla.addRow(new Object[] { rs.getInt("practica.id_practica"), rs.getInt("practica.id_anexo"),
-						rs.getString("alumno.nombre"), rs.getString("empresa.nombre_empresa"), rs.getDate("inicio"), rs.getDate("final")});
+						rs.getString("alumno.nombre"), rs.getString("empresa.nombre_empresa"), rs.getDate("inicio"),
+						rs.getDate("final") });
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -407,10 +415,10 @@ public class Consultas {
 				ResultSet rs = statement.executeQuery(consulta);
 				if (rs.next()) {
 					idAnexo = rs.getInt(1);
-					System.out.println("Todo correcto master");
+					JOptionPane.showMessageDialog(null, "Anexo insertado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
 				}
 			} else {
-				System.out.println("Uy Uy Uy :(");
+				JOptionPane.showMessageDialog(null, "Error al insertar anexos", "Info", JOptionPane.ERROR_MESSAGE);
 			}
 
 		} catch (SQLException e) {
@@ -439,7 +447,6 @@ public class Consultas {
 			ResultSet rs = statement.executeQuery(consulta);
 			if (rs.next()) {
 				idAnexo = rs.getInt(1);
-				System.out.println("Todo correcto master");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -451,6 +458,31 @@ public class Consultas {
 			}
 		}
 		return idAnexo;
+	}
+	
+	public int cogeUltimoIdUsuario() {
+		Connection conexion = null;
+		Statement statement = null;
+		int idUsuario = -1;
+		String consulta = "SELECT MAX(id_usuario) FROM usuarios";
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+
+			ResultSet rs = statement.executeQuery(consulta);
+			if (rs.next()) {
+				idUsuario = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return idUsuario;
 	}
 
 	public void insertarPractica(int idAnexo, int idAlumno, int idEmpresa, Date fechaInicio, Date fechaFinal) {
@@ -465,9 +497,9 @@ public class Consultas {
 							+ idAnexo + ", " + idAlumno + ", " + idEmpresa + ", " + fechaInicio + ", " + fechaFinal
 							+ ", 0)");
 			if (valor == 1) {
-				System.out.println("Todo correcto master");
+				JOptionPane.showMessageDialog(null, "Practica insertada correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				System.out.println("Uy Uy Uy :(");
+				JOptionPane.showMessageDialog(null, "Error al insertar practica", "Info", JOptionPane.ERROR_MESSAGE);
 			}
 
 		} catch (SQLException e) {
@@ -606,35 +638,7 @@ public class Consultas {
 		}
 	}
 
-	private byte[] leerBytes(File archivo) {
-		int longitudArchivo = (int) archivo.length();
-		byte[] bytes = new byte[longitudArchivo];
-		int indice = 0;
-		int byteLeido = 0;
-		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream(archivo);
-			bytes = Files.readAllBytes(archivo.toPath());
-//			while((byteLeido = is.read(bytes, indice, bytes.length-indice)) != 1) {
-//				indice+=byteLeido;
-//			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (fis != null) {
-				try {
-					fis.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return bytes;
-	}
-
-	public ArrayList<Empresa> cogeEmpresas() {
+	public ArrayList<Empresa> cogeEmpresas(int idCentro) {
 		ArrayList<Empresa> arrlEmpresas = new ArrayList<>();
 
 		Connection conexion = null;
@@ -642,11 +646,10 @@ public class Consultas {
 		ResultSet registro = null;
 
 		try {
-			conexion = DriverManager.getConnection(baseDeDatos, user , contrasenna);
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
 			consultita = conexion.createStatement();
 
-			registro = consultita.executeQuery(
-					"SELECT * FROM empresa WHERE eliminado != 1");
+			registro = consultita.executeQuery("SELECT * FROM empresa WHERE eliminado != 1");
 
 			if (!registro.next()) {
 				String titulo = "Error";
@@ -668,7 +671,6 @@ public class Consultas {
 				nuevaEmpresa.setSolicita(registro.getString("solicita"));
 				nuevaEmpresa.setEliminado(registro.getBoolean("eliminado"));
 
-
 				arrlEmpresas.add(nuevaEmpresa);
 			}
 
@@ -682,28 +684,29 @@ public class Consultas {
 		}
 
 		return arrlEmpresas;
-	}	
-	
+	}
+
 	public void insertarSocio(Empresa empresa) {
 		Connection conexion = null;
 		Statement consulta = null;
 
 		try {
-			conexion = DriverManager.getConnection(baseDeDatos, user , contrasenna);
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
 			consulta = conexion.createStatement();
 
 			consulta.executeUpdate(
 					"INSERT INTO EMPRESA (CIF, dueño_empresa, nombre_empresa, telefono_empresa, email_empresa, direccion_empresa, tutor_empresa, correo_contacto, solicita, eliminado) "
-					+ "VALUES ('"	
-							+ empresa.getCIF() + "', '" + empresa.getDuenno() + "', '" + empresa.getNombre_empresa() + "', '"
-							+ empresa.getTelefono_empresa() + "', '" + empresa.getDireccion_empresa() + "', '" + empresa.getEmail_empresa() + "', "
-							+ empresa.getTutor_empresa() + ", '" + empresa.getContacto_empresa()+ ", '" + empresa.getSolicita() + ", " + 0 + ")");
+							+ "VALUES ('" + empresa.getCIF() + "', '" + empresa.getDuenno() + "', '"
+							+ empresa.getNombre_empresa() + "', '" + empresa.getTelefono_empresa() + "', '"
+							+ empresa.getEmail_empresa() + "', '" + empresa.getDireccion_empresa() + "', '"
+							+ empresa.getTutor_empresa() + "', '" + empresa.getContacto_empresa() + "', '"
+							+ empresa.getSolicita() + "', 0)");
 
-			//err.confirmarInsert();
+			// err.confirmarInsert();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			//err.baseDatosNoConexion();
+			// err.baseDatosNoConexion();
 		} finally {
 			try {
 				conexion.close();
@@ -713,7 +716,173 @@ public class Consultas {
 		}
 
 	}
+
+	public void insertarTutor(String nombre, int idCentro) {
+		Connection conexion = null;
+		Statement statement = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+
+			int valor = statement
+					.executeUpdate("INSERT INTO tutor (id_centro, nombre, eliminado) VALUES ("
+							+ idCentro + ", '" + nombre + "', 0)");
+			if (valor == 1) {
+				JOptionPane.showMessageDialog(null, "Tutor insertado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Error al insertar tutor", "Info", JOptionPane.ERROR_MESSAGE);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void actualizaTutor(String nombre, int idCentro) {
+		Connection conexion = null;
+		Statement statement = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+
+			int valor = statement
+					.executeUpdate("UPDATE tutor SET nombre = '" + nombre + "' WHERE id_centro = " + idCentro + ";");
+			if (valor == 1) {
+				JOptionPane.showMessageDialog(null, "Tutor modificado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Error al modificar tutor", "Info", JOptionPane.ERROR_MESSAGE);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void borradoLogicoTutores(int idTutor) {
+		Connection conexion = null;
+		Statement statement = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+
+			int valor = statement.executeUpdate("update tutor set eliminado = 1 where id_tutor = " + idTutor);
+			if (valor == 1) {
+				JOptionPane.showMessageDialog(null, "Tutor borrado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Error al borrar tutor", "Info", JOptionPane.ERROR_MESSAGE);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void borradoLogicoCentro(int idCentro) {
+		Connection conexion = null;
+		Statement statement = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+
+			int valor = statement.executeUpdate("update centro set eliminado = 1 where id_centro = " + idCentro);
+			if (valor == 1) {
+				JOptionPane.showMessageDialog(null, "Centro borrado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Error al borrar centro", "Info", JOptionPane.ERROR_MESSAGE);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void actualizarCentro(int idCentro, String codigo, String nombre) {
+		Connection conexion = null;
+		Statement statement = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+
+			int valor = statement.executeUpdate("update centro set codigo = '" + codigo + "', nombre ='" + nombre + "' where id_centro = " + idCentro);
+			if (valor == 1) {
+				JOptionPane.showMessageDialog(null, "Centro actualizado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Error al actuaizar centro", "Info", JOptionPane.ERROR_MESSAGE);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void insertarCentro(String codigo, String nombre) {
+		Connection conexion = null;
+		Statement statement = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+
+			int valor = statement
+					.executeUpdate("INSERT INTO centro (nombre, codigo, eliminado) VALUES ('"
+							+ nombre + "', " + codigo + ", 0)");
+			if (valor == 1) {
+				JOptionPane.showMessageDialog(null, "Tutor insertado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Error al insertar tutor", "Info", JOptionPane.ERROR_MESSAGE);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
-	
-	
+
 }

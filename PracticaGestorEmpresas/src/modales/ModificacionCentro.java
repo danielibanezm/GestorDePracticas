@@ -15,6 +15,8 @@ import vista.AdministracionVentana;
 import vista.CentrosVentana;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -62,7 +64,13 @@ public class ModificacionCentro extends JDialog {
 		btnAceptar.setBackground(new Color(255, 157, 157));
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//actualizar centro
+				if (textFieldCodigo.getText().length() < 9 && textFieldNombre.getText().length() < 20) {
+					c.actualizarCentro(idCentro, textFieldCodigo.getText(), textFieldNombre.getText());
+					ventana.rellenaTabla();
+					dispose();
+				}else {
+					JOptionPane.showMessageDialog(null, "Longitud de los campos demasiado larga");
+				}
 			}
 		});
 		btnAceptar.setBounds(378, 182, 89, 23);
@@ -78,7 +86,7 @@ public class ModificacionCentro extends JDialog {
 		btnCancelar.setBounds(378, 289, 89, 23);
 		contentPanel.add(btnCancelar);
 		
-		JLabel lblAntiguoNombre = new JLabel("Antiguo nombre <dynamic>");
+		JLabel lblAntiguoNombre = new JLabel("Antiguo nombre " + nombre);
 		lblAntiguoNombre.setFont(new Font("Dialog", Font.PLAIN, 15));
 		lblAntiguoNombre.setBounds(117, 125, 188, 20);
 		contentPanel.add(lblAntiguoNombre);
@@ -93,7 +101,7 @@ public class ModificacionCentro extends JDialog {
 		lblNuevoCodigo.setBounds(117, 265, 188, 14);
 		contentPanel.add(lblNuevoCodigo);
 		
-		JLabel lblAntiguoCodigo = new JLabel("Antiguo código <dynamic>");
+		JLabel lblAntiguoCodigo = new JLabel("Antiguo código " + codigo);
 		lblAntiguoCodigo.setFont(new Font("Dialog", Font.PLAIN, 15));
 		lblAntiguoCodigo.setBounds(117, 232, 188, 22);
 		contentPanel.add(lblAntiguoCodigo);

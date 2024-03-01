@@ -33,7 +33,7 @@ public class InsertarTutor extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public InsertarTutor(MostrarTutores ventana) {
+	public InsertarTutor(MostrarTutores ventana, int idCentro) {
 		setModal(true);
 		setBounds(100, 100, 649, 403);
 		getContentPane().setLayout(new BorderLayout());
@@ -86,6 +86,9 @@ public class InsertarTutor extends JDialog {
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//insertar tutor
+				c.insertarTutor(textFieldEmail.getText(), c.cogeIdCentro(comboBoxCentros.getSelectedItem().toString()));
+				ventana.rellenaTabla(idCentro);
+				dispose();
 			}
 		});
 		btnAceptar.setBounds(416, 307, 89, 23);

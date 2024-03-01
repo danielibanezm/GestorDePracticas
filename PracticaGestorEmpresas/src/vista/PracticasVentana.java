@@ -12,6 +12,7 @@ import javax.swing.table.JTableHeader;
 
 import modales.InsertarAnexosSemanal;
 import modales.InsertarPractica;
+import modales.VerAnexos;
 import modelo.Consultas;
 
 import java.awt.Font;
@@ -224,7 +225,9 @@ public class PracticasVentana extends JPanel {
 				filaTabla = jtResultados.getSelectedRow();
 
 				if (filaTabla != -1) { // Se ha seleccionado una fila
-
+					VerAnexos dialog = new VerAnexos(Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()));
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
 				} else {
 					// No se ha seleccionado ningún libro por lo tanto se muestra un error.
 					JOptionPane.showMessageDialog(null, "Seleccione una practica para poder ver los anexos.", "Error",
@@ -243,9 +246,18 @@ public class PracticasVentana extends JPanel {
 		JButton btnInsertar = new JButton("Insertar seguimiento semanal");
 		btnInsertar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InsertarAnexosSemanal dialog = new InsertarAnexosSemanal(ventanaActual);
-				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-				dialog.setVisible(true);
+				filaTabla = jtResultados.getSelectedRow();
+
+				if (filaTabla != -1) { // Se ha seleccionado una fila
+					InsertarAnexosSemanal dialog = new InsertarAnexosSemanal(ventanaActual, Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()));
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+				} else {
+					// No se ha seleccionado ningún libro por lo tanto se muestra un error.
+					JOptionPane.showMessageDialog(null, "Seleccione una practica para poder eliminarla.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+				
 			}
 		});
 		btnInsertar.setForeground(new Color(9, 3, 62));

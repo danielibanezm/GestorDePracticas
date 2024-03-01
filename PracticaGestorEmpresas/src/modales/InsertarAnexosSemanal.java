@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
@@ -19,6 +20,7 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
@@ -33,7 +35,8 @@ public class InsertarAnexosSemanal extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public InsertarAnexosSemanal(PracticasVentana ventana) {
+	private File anexoSemanal;
+	public InsertarAnexosSemanal(PracticasVentana ventana, int idPractica) {
 		setModal(true);
 		setBounds(100, 100, 791, 603);
 		getContentPane().setLayout(new BorderLayout());
@@ -48,21 +51,27 @@ public class InsertarAnexosSemanal extends JDialog {
 		lblTitulo.setForeground(new Color(9, 3, 62));
 		lblTitulo.setBounds(194, -2, 359, 92);
 		contentPanel.add(lblTitulo);
+
+		JLabel lblAnexo4 = new JLabel("Anexo 4");
+		lblAnexo4.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblAnexo4.setBounds(141, 313, 343, 25);
+		contentPanel.add(lblAnexo4);
 		
 		JButton btnSeleccionarAnexo = new JButton("Seleccionar");
 		btnSeleccionarAnexo.setForeground(new Color(0, 0, 0));
 		btnSeleccionarAnexo.setBackground(new Color(255, 157, 157));
 		btnSeleccionarAnexo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				JFileChooser chooser = new JFileChooser();
+				int valor = chooser.showOpenDialog(null);
+				if (valor == JFileChooser.APPROVE_OPTION) {
+						anexoSemanal = chooser.getSelectedFile();
+						lblAnexo4.setText("Anexo 4 " + anexoSemanal.getName());
+				}
 			}
 		});
 		btnSeleccionarAnexo.setBounds(597, 313, 89, 23);
 		contentPanel.add(btnSeleccionarAnexo);
-		
-		JLabel lblAnexo4 = new JLabel("Anexo 4");
-		lblAnexo4.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblAnexo4.setBounds(141, 313, 343, 25);
-		contentPanel.add(lblAnexo4);
 		
 		JLabel lblAnexo3Seleccionado = new JLabel("");
 		lblAnexo3Seleccionado.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -91,7 +100,7 @@ public class InsertarAnexosSemanal extends JDialog {
 		btnFinalizar.setForeground(new Color(0, 0, 0));
 		btnFinalizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Insertar la practica y los anexos
+				c.insertaAnexoSemana(idPractica, anexoSemanal);
 				dispose();
 			}
 		});

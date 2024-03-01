@@ -1,9 +1,14 @@
 package modelo;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.sql.Connection;
 import java.util.Date;
@@ -104,9 +109,11 @@ public class Consultas {
 			int valor = statement.executeUpdate(
 					"update otros set material = '" + nuevoHistorico + "' where id_usuario = " + idUsuario);
 			if (valor == 1) {
-				JOptionPane.showMessageDialog(null, "Contraseña modificada correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Contraseña modificada correcatamente", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				JOptionPane.showMessageDialog(null, "Error al modificar la contraseña", "Info", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error al modificar la contraseña", "Info",
+						JOptionPane.ERROR_MESSAGE);
 			}
 
 		} catch (SQLException e) {
@@ -188,10 +195,12 @@ public class Consultas {
 					.executeUpdate("INSERT INTO usuarios (id_centro, email, primer, perfil, eliminado) VALUES ("
 							+ idCentro + ", '" + email + "', 1, '" + perfil + "', 0)");
 			if (valor == 1) {
-				JOptionPane.showMessageDialog(null, "Usuario insertado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
-				if((idUsuario = cogeUltimoIdUsuario()) != -1) {
-					statement.executeUpdate("INSERT INTO otros (id_usuario, material, eliminado) VALUES (" + idUsuario + ", '12345', 0);");
-				}else {
+				JOptionPane.showMessageDialog(null, "Usuario insertado correcatamente", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
+				if ((idUsuario = cogeUltimoIdUsuario()) != -1) {
+					statement.executeUpdate("INSERT INTO otros (id_usuario, material, eliminado) VALUES (" + idUsuario
+							+ ", '12345', 0);");
+				} else {
 					System.out.println("no se puede seleccionar el ultimo id");
 				}
 			} else {
@@ -220,7 +229,8 @@ public class Consultas {
 
 			int valor = statement.executeUpdate("update usuarios set eliminado = 1 where id_usuario = " + idUsuario);
 			if (valor == 1) {
-				JOptionPane.showMessageDialog(null, "Usuario borrado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Usuario borrado correcatamente", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
 			} else {
 				JOptionPane.showMessageDialog(null, "Error al borrar usuario", "Info", JOptionPane.ERROR_MESSAGE);
 			}
@@ -249,7 +259,8 @@ public class Consultas {
 					+ "' WHERE id_usuario = " + idUsuario + ";";
 			int valor = statement.executeUpdate(update);
 			if (valor == 1) {
-				JOptionPane.showMessageDialog(null, "Usuario actualizado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Usuario actualizado correcatamente", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
 			} else {
 				JOptionPane.showMessageDialog(null, "Error al actualizar usuario", "Info", JOptionPane.ERROR_MESSAGE);
 			}
@@ -415,7 +426,8 @@ public class Consultas {
 				ResultSet rs = statement.executeQuery(consulta);
 				if (rs.next()) {
 					idAnexo = rs.getInt(1);
-					JOptionPane.showMessageDialog(null, "Anexo insertado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Anexo insertado correcatamente", "Info",
+							JOptionPane.INFORMATION_MESSAGE);
 				}
 			} else {
 				JOptionPane.showMessageDialog(null, "Error al insertar anexos", "Info", JOptionPane.ERROR_MESSAGE);
@@ -459,7 +471,7 @@ public class Consultas {
 		}
 		return idAnexo;
 	}
-	
+
 	public int cogeUltimoIdUsuario() {
 		Connection conexion = null;
 		Statement statement = null;
@@ -497,7 +509,8 @@ public class Consultas {
 							+ idAnexo + ", " + idAlumno + ", " + idEmpresa + ", " + fechaInicio + ", " + fechaFinal
 							+ ", 0)");
 			if (valor == 1) {
-				JOptionPane.showMessageDialog(null, "Practica insertada correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Practica insertada correcatamente", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
 			} else {
 				JOptionPane.showMessageDialog(null, "Error al insertar practica", "Info", JOptionPane.ERROR_MESSAGE);
 			}
@@ -724,11 +737,11 @@ public class Consultas {
 			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
 			statement = conexion.createStatement();
 
-			int valor = statement
-					.executeUpdate("INSERT INTO tutor (id_centro, nombre, eliminado) VALUES ("
-							+ idCentro + ", '" + nombre + "', 0)");
+			int valor = statement.executeUpdate(
+					"INSERT INTO tutor (id_centro, nombre, eliminado) VALUES (" + idCentro + ", '" + nombre + "', 0)");
 			if (valor == 1) {
-				JOptionPane.showMessageDialog(null, "Tutor insertado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Tutor insertado correcatamente", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
 			} else {
 				JOptionPane.showMessageDialog(null, "Error al insertar tutor", "Info", JOptionPane.ERROR_MESSAGE);
 			}
@@ -756,7 +769,8 @@ public class Consultas {
 			int valor = statement
 					.executeUpdate("UPDATE tutor SET nombre = '" + nombre + "' WHERE id_centro = " + idCentro + ";");
 			if (valor == 1) {
-				JOptionPane.showMessageDialog(null, "Tutor modificado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Tutor modificado correcatamente", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
 			} else {
 				JOptionPane.showMessageDialog(null, "Error al modificar tutor", "Info", JOptionPane.ERROR_MESSAGE);
 			}
@@ -783,7 +797,8 @@ public class Consultas {
 
 			int valor = statement.executeUpdate("update tutor set eliminado = 1 where id_tutor = " + idTutor);
 			if (valor == 1) {
-				JOptionPane.showMessageDialog(null, "Tutor borrado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Tutor borrado correcatamente", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
 			} else {
 				JOptionPane.showMessageDialog(null, "Error al borrar tutor", "Info", JOptionPane.ERROR_MESSAGE);
 			}
@@ -810,7 +825,8 @@ public class Consultas {
 
 			int valor = statement.executeUpdate("update centro set eliminado = 1 where id_centro = " + idCentro);
 			if (valor == 1) {
-				JOptionPane.showMessageDialog(null, "Centro borrado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Centro borrado correcatamente", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
 			} else {
 				JOptionPane.showMessageDialog(null, "Error al borrar centro", "Info", JOptionPane.ERROR_MESSAGE);
 			}
@@ -835,9 +851,11 @@ public class Consultas {
 			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
 			statement = conexion.createStatement();
 
-			int valor = statement.executeUpdate("update centro set codigo = '" + codigo + "', nombre ='" + nombre + "' where id_centro = " + idCentro);
+			int valor = statement.executeUpdate("update centro set codigo = '" + codigo + "', nombre ='" + nombre
+					+ "' where id_centro = " + idCentro);
 			if (valor == 1) {
-				JOptionPane.showMessageDialog(null, "Centro actualizado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Centro actualizado correcatamente", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
 			} else {
 				JOptionPane.showMessageDialog(null, "Error al actuaizar centro", "Info", JOptionPane.ERROR_MESSAGE);
 			}
@@ -862,11 +880,11 @@ public class Consultas {
 			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
 			statement = conexion.createStatement();
 
-			int valor = statement
-					.executeUpdate("INSERT INTO centro (nombre, codigo, eliminado) VALUES ('"
-							+ nombre + "', " + codigo + ", 0)");
+			int valor = statement.executeUpdate(
+					"INSERT INTO centro (nombre, codigo, eliminado) VALUES ('" + nombre + "', " + codigo + ", 0)");
 			if (valor == 1) {
-				JOptionPane.showMessageDialog(null, "Tutor insertado correcatamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Tutor insertado correcatamente", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
 			} else {
 				JOptionPane.showMessageDialog(null, "Error al insertar tutor", "Info", JOptionPane.ERROR_MESSAGE);
 			}
@@ -883,6 +901,226 @@ public class Consultas {
 			}
 		}
 	}
-	
 
+	public InputStream obtenAnexo2_1(int idPractica) {
+		Connection conexion = null;
+		Statement statement = null;
+		InputStream anexoStream = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+			ResultSet rs = statement.executeQuery(
+					"select anexo_2_1 from anexos WHERE id_anexo = (SELECT id_anexo FROM practica WHERE id_practica = "
+							+ idPractica + ");");
+
+			if (rs.next()) {
+				anexoStream = rs.getBinaryStream("anexo_2_1");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+				anexoStream.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return anexoStream;
+	}
+
+	public InputStream obtenAnexo2_2(int idPractica) {
+		Connection conexion = null;
+		Statement statement = null;
+		InputStream anexoStream = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+			ResultSet rs = statement.executeQuery(
+					"select anexo_2_2 from anexos WHERE id_anexo = (SELECT id_anexo FROM practica WHERE id_practica = "
+							+ idPractica + ");");
+
+			if (rs.next()) {
+				anexoStream = rs.getBinaryStream("anexo_2_2");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+				anexoStream.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return anexoStream;
+	}
+
+	public InputStream obtenAnexo3(int idPractica) {
+		Connection conexion = null;
+		Statement statement = null;
+		InputStream anexoStream = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+			ResultSet rs = statement.executeQuery(
+					"select anexo_3 from anexos WHERE id_anexo = (SELECT id_anexo FROM practica WHERE id_practica = "
+							+ idPractica + ");");
+
+			if (rs.next()) {
+				anexoStream = rs.getBinaryStream("anexo_3");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+				anexoStream.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return anexoStream;
+	}
+
+	public InputStream obtenAnexo8(int idPractica) {
+		Connection conexion = null;
+		Statement statement = null;
+		InputStream anexoStream = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+			ResultSet rs = statement.executeQuery(
+					"select anexo_8 from anexos WHERE id_anexo = (SELECT id_anexo FROM practica WHERE id_practica = "
+							+ idPractica + ");");
+
+			if (rs.next()) {
+				anexoStream = rs.getBinaryStream("anexo_8");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+				anexoStream.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return anexoStream;
+	}
+
+	public File leeFichero(String nombrenexo, InputStream anexoStream) {
+		File anexo = new File(nombrenexo);
+		OutputStream os = null;
+		try {
+			os = new FileOutputStream(anexo);
+			byte[] buf = new byte[1024];
+			int len;
+			while ((len = anexoStream.read(buf)) > 0) {
+				os.write(buf, 0, len);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				os.close();
+				anexoStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return anexo;
+	}
+
+	public void insertaAnexoSemana(int idPractica, File anexoSemanal) {
+		Connection conexion = null;
+		Statement statement = null;
+		FileInputStream anexoSemanalStream = null;
+		int idAnexo = -1, idAnexoSemanal = -1;
+		String consultaMaxSemanales = "SELECT MAX(id_anexo_semanal) FROM anexos_semanales";
+		String consultaIdAnexo = "SELECT id_anexo FROM practica WHERE id_practica = " + idPractica + ";";
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+
+			anexoSemanalStream = new FileInputStream(anexoSemanal);
+			PreparedStatement preparedStatement = conexion.prepareStatement(
+					"INSERT INTO anexos_semanales (seguiminento, eliminado) VALUES(?, ?)");
+			preparedStatement.setBinaryStream(1, anexoSemanalStream);
+			preparedStatement.setInt(2, 0);
+			int valor = preparedStatement.executeUpdate();
+			if (valor == 1) {
+				JOptionPane.showMessageDialog(null, "Anexo insertado correcatamente", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
+				ResultSet rs = statement.executeQuery(consultaIdAnexo);
+				if (rs.next()) {
+					idAnexo = rs.getInt("id_anexo");
+				}
+				rs = statement.executeQuery(consultaMaxSemanales);
+				if (rs.next()) {
+					idAnexoSemanal = rs.getInt(1);
+				}
+				preparedStatement = conexion.prepareStatement("INSERT INTO intermedia_anexos VALUES (?, ?, ?)");
+				preparedStatement.setInt(1, idAnexoSemanal);
+				preparedStatement.setInt(2, idAnexo);
+				preparedStatement.setInt(3, 0);
+			} else {
+				JOptionPane.showMessageDialog(null, "Error al insertar anexos", "Info", JOptionPane.ERROR_MESSAGE);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	public int cogeCantidadSemanal(int idPratica) {
+		Connection conexion = null;
+		Statement statement = null;
+		int semana = -1;
+		String consulta = "SELECT MAX(id_anexo_semanal) FROM anexos_semanales WHERE id_anexo_semanal = "
+				+ "(SELECT id_anexo_semanal FROM intermedia_anexos WHERE id_anexo = "
+				+ "(SELECT id_anexo FROM practica WHERE id_practica = "+ idPratica + "));";
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+
+			ResultSet rs = statement.executeQuery(consulta);
+			if (rs.next()) {
+				semana = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return semana+1;
+	}
 }

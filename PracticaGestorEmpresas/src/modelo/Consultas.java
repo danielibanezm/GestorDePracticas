@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.sql.Connection;
-import java.util.Date;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,7 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import com.mysql.jdbc.Blob;
 
 public class Consultas {
-	private Date hoy = Date.from(Instant.now());
+	private java.util.Date hoy = java.sql.Date.from(Instant.now());
 	private String baseDeDatos = "jdbc:mysql://localhost/gestor_practicas";
 	private String user = "root";
 	private String contrasenna = "";
@@ -346,14 +346,16 @@ public class Consultas {
 			ResultSet rs = statement.executeQuery(consulta);
 
 			while (rs.next()) {
-				if (rs.getDate("inicio").after(hoy)) {
-					tabla.addRow(new Object[] { rs.getInt("practica.id_practica"), rs.getInt("practica.id_anexo"),
-							rs.getString("alumno.nombre"), rs.getString("empresa.nombre_empresa"), rs.getDate("inicio"),
-							rs.getDate("final") });
-				}
+
+				tabla.addRow(new Object[] { rs.getInt("practica.id_practica"),
+						rs.getInt("practica.id_anexo"),
+						rs.getString("alumno.nombre"), 
+						rs.getString("empresa.nombre_empresa"), 
+						rs.getDate("inicio"),
+						rs.getDate("final") });
+
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			try {
 				conexion.close();
@@ -503,11 +505,19 @@ public class Consultas {
 		try {
 			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
 			statement = conexion.createStatement();
-
-			int valor = statement.executeUpdate(
-					"INSERT INTO practica (id_anexo, id_alumno, id_empresa, inicio, final, eliminado) VALUES ("
-							+ idAnexo + ", " + idAlumno + ", " + idEmpresa + ", " + fechaInicio + ", " + fechaFinal
-							+ ", 0)");
+			String insert = "INSERT INTO practica (id_anexo, id_alumno, id_empresa, inicio, final, eliminado) VALUES ("
+					+ idAnexo + ", " + idAlumno + ", " + idEmpresa + ", " + fechaInicio + ", " + fechaFinal + ", 0)";
+			System.out.println(insert);
+			// int valor = statement.executeUpdate(insert);
+			PreparedStatement ps = conexion.prepareStatement(
+					"INSERT INTO practica (id_anexo, id_alumno, id_empresa, inicio, final, eliminado) VALUES (?, ?, ?, ?, ?, ?)");
+			ps.setInt(1, idAnexo);
+			ps.setInt(2, idAlumno);
+			ps.setInt(3, idEmpresa);
+			ps.setDate(4, fechaInicio);
+			ps.setDate(5, fechaFinal);
+			ps.setInt(6, 0);
+			int valor = ps.executeUpdate();
 			if (valor == 1) {
 				JOptionPane.showMessageDialog(null, "Practica insertada correcatamente", "Info",
 						JOptionPane.INFORMATION_MESSAGE);
@@ -1061,8 +1071,8 @@ public class Consultas {
 			statement = conexion.createStatement();
 
 			anexoSemanalStream = new FileInputStream(anexoSemanal);
-			PreparedStatement preparedStatement = conexion.prepareStatement(
-					"INSERT INTO anexos_semanales (seguiminento, eliminado) VALUES(?, ?)");
+			PreparedStatement preparedStatement = conexion
+					.prepareStatement("INSERT INTO anexos_semanales (seguiminento, eliminado) VALUES(?, ?)");
 			preparedStatement.setBinaryStream(1, anexoSemanalStream);
 			preparedStatement.setInt(2, 0);
 			int valor = preparedStatement.executeUpdate();
@@ -1097,13 +1107,14 @@ public class Consultas {
 			}
 		}
 	}
+
 	public int cogeCantidadSemanal(int idPratica) {
 		Connection conexion = null;
 		Statement statement = null;
 		int semana = -1;
 		String consulta = "SELECT MAX(id_anexo_semanal) FROM anexos_semanales WHERE id_anexo_semanal = "
 				+ "(SELECT id_anexo_semanal FROM intermedia_anexos WHERE id_anexo = "
-				+ "(SELECT id_anexo FROM practica WHERE id_practica = "+ idPratica + "));";
+				+ "(SELECT id_anexo FROM practica WHERE id_practica = " + idPratica + "));";
 		try {
 			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
 			statement = conexion.createStatement();
@@ -1121,6 +1132,6 @@ public class Consultas {
 				e.printStackTrace();
 			}
 		}
-		return semana+1;
+		return semana + 1;
 	}
 }

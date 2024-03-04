@@ -70,7 +70,7 @@ public class InsertarAnexosSemanal extends JDialog {
 				}
 			}
 		});
-		btnSeleccionarAnexo.setBounds(597, 313, 89, 23);
+		btnSeleccionarAnexo.setBounds(597, 313, 107, 23);
 		contentPanel.add(btnSeleccionarAnexo);
 		
 		JLabel lblAnexo3Seleccionado = new JLabel("");

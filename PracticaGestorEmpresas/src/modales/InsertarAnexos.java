@@ -42,7 +42,7 @@ public class InsertarAnexos extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public InsertarAnexos(PracticasVentana ventana, InsertarPractica dialogAterior) {
+	public InsertarAnexos(PracticasVentana ventana, InsertarPractica dialogAterior, int idCentro) {
 		setModal(true);
 		setBounds(100, 100, 791, 603);
 		getContentPane().setLayout(new BorderLayout());
@@ -131,7 +131,7 @@ public class InsertarAnexos extends JDialog {
 				}
 			}
 		});
-		btnSeleccionarAnexo.setBounds(466, 308, 89, 23);
+		btnSeleccionarAnexo.setBounds(466, 308, 107, 23);
 		contentPanel.add(btnSeleccionarAnexo);
 
 		JLabel lblSubTitulo = new JLabel("Seleccion de anexos");
@@ -163,6 +163,7 @@ public class InsertarAnexos extends JDialog {
 					c.insertarPractica(idAnexo, dialogAterior.getIdAlumno(), dialogAterior.getIdEmpresa(), dialogAterior.getFechaInicio(), dialogAterior.getFechaFinal());
 					dialogAterior.dispose();
 					dispose();
+					ventana.rellenaTablaActual(idCentro);
 				}else {
 					JOptionPane.showMessageDialog(null, "Error al insertar los anexos", "Error", JOptionPane.ERROR_MESSAGE);
 				}

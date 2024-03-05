@@ -154,7 +154,7 @@ public class EditarEmpresa extends JDialog {
 			txtDireccion.setText(empresa.getDireccion_empresa());
 			txtTutor.setText(empresa.getTutor_empresa());
 			txtContacto.setText(empresa.getContacto_empresa());
-	        comboBox.setSelectedItem(empresa.getContacto_empresa());
+	        comboBox.setSelectedItem(empresa.getSolicita());
 
 		}
         
@@ -204,7 +204,8 @@ public class EditarEmpresa extends JDialog {
         nuevaEmpresa.setDireccion_empresa(txtDireccion.getText());
         nuevaEmpresa.setEmail_empresa(txtEmail.getText());
         nuevaEmpresa.setTutor_empresa(txtTutor.getText());
-        nuevaEmpresa.setContacto_empresa(comboBox.getSelectedItem().toString());
+        nuevaEmpresa.setContacto_empresa(txtContacto.getText());
+        nuevaEmpresa.setSolicita(comboBox.getSelectedItem().toString());
         return nuevaEmpresa;
     }
 
@@ -218,6 +219,8 @@ public class EditarEmpresa extends JDialog {
         modeloTabla.setValueAt(nuevaEmpresa.getEmail_empresa(), filaTabla, 5);
         modeloTabla.setValueAt(nuevaEmpresa.getTutor_empresa(), filaTabla, 6);
         modeloTabla.setValueAt(nuevaEmpresa.getContacto_empresa(), filaTabla, 7);
+        modeloTabla.setValueAt(nuevaEmpresa.getSolicita(), filaTabla, 8);
+
         
         // Actualiza la base de datos
         Consultas consultas = new Consultas();

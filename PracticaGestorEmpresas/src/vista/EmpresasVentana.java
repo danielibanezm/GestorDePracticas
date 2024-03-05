@@ -109,6 +109,8 @@ public class EmpresasVentana extends JPanel {
                     String direccion = (String) modeloTabla.getValueAt(filaTabla, 5);
                     String tutor = (String) modeloTabla.getValueAt(filaTabla, 6);
                     String contacto = (String) modeloTabla.getValueAt(filaTabla, 7);
+                	String solicita = (String) modeloTabla.getValueAt(filaTabla, 8);
+
                     
                     Empresa empresaSeleccionada = new Empresa();
                     empresaSeleccionada.setCIF(cif);
@@ -119,6 +121,7 @@ public class EmpresasVentana extends JPanel {
                     empresaSeleccionada.setDireccion_empresa(direccion);
                     empresaSeleccionada.setTutor_empresa(tutor);
                     empresaSeleccionada.setContacto_empresa(contacto);
+                    empresaSeleccionada.setSolicita(solicita);
                     
                     editarEmpresa = new EditarEmpresa(empresaSeleccionada, modeloTabla, filaTabla, esAdmin);
                     editarEmpresa.setVisible(true);

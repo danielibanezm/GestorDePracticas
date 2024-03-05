@@ -33,6 +33,7 @@ public class Ventana extends JFrame {
 
 
 	public Ventana() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Ventana.class.getResource("/imagenes/logo2.jpeg")));
 		setBounds(100, 100, 1300, 760);
 		setTitle("Gestor de practicas");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

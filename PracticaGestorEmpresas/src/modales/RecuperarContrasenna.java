@@ -82,5 +82,7 @@ public class RecuperarContrasenna extends JDialog {
 		});
 		btnRecuperar.setBounds(222, 345, 89, 23);
 		contentPanel.add(btnRecuperar);
+		btnRecuperar.setBackground(new Color(254, 86, 86));
+		btnVolver.setBackground(new Color(254, 86, 86));
 	}
 }

@@ -173,12 +173,12 @@ public class EmpresasVentana extends JPanel {
 //			}
 //		});
 //
-//		btnEditarEmpresa.setForeground(new Color(9, 3, 62));
-//		btnEditarEmpresa.setFont(new Font("Verdana", Font.PLAIN, 12));
-//		btnEditarEmpresa.setBorder(null);
-//		btnEditarEmpresa.setBackground(new Color(254, 86, 86));
-//		btnEditarEmpresa.setBounds(1134, 396, 130, 37);
-//		add(btnEditarEmpresa);
+		btnEditarEmpresa.setForeground(new Color(9, 3, 62));
+		btnEditarEmpresa.setFont(new Font("Verdana", Font.PLAIN, 12));
+		btnEditarEmpresa.setBorder(null);
+		btnEditarEmpresa.setBackground(new Color(254, 86, 86));
+		btnEditarEmpresa.setBounds(1134, 396, 130, 37);
+		add(btnEditarEmpresa);
 
 		btnBorrarEmpresa = new JButton("Borrar empresa");
 		btnBorrarEmpresa.addMouseListener(new MouseAdapter() {

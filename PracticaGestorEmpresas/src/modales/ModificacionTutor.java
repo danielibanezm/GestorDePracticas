@@ -60,7 +60,7 @@ public class ModificacionTutor extends JDialog {
 		textFieldNombre.setColumns(10);
 		
 		JButton btnAceptar = new JButton("Aceptar");
-		btnAceptar.setBackground(new Color(255, 157, 157));
+		btnAceptar.setBackground(new Color(254, 86, 86));
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				c.actualizaTutor(textFieldNombre.getText(), idCentro);
@@ -72,7 +72,7 @@ public class ModificacionTutor extends JDialog {
 		contentPanel.add(btnAceptar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBackground(new Color(255, 157, 157));
+		btnCancelar.setBackground(new Color(254, 86, 86));
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -83,7 +83,7 @@ public class ModificacionTutor extends JDialog {
 		
 		JLabel lblAntiguoNombre = new JLabel("Antiguo nombre " + nombre);
 		lblAntiguoNombre.setFont(new Font("Dialog", Font.PLAIN, 15));
-		lblAntiguoNombre.setBounds(73, 125, 188, 29);
+		lblAntiguoNombre.setBounds(73, 125, 472, 29);
 		contentPanel.add(lblAntiguoNombre);
 
 	}

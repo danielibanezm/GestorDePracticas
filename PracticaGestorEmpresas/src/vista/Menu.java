@@ -98,25 +98,8 @@ public class Menu extends JPanel {
 		btnAlumnos.setBackground(new Color(233, 1, 1));
 		btnAlumnos.setBorder(null);
 		btnAlumnos.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnAlumnos.setBounds(217, 424, 181, 37);
+		btnAlumnos.setBounds(529, 434, 181, 37);
 		add(btnAlumnos);
-		
-		//-- ACCIÓN BOTÓN CONVENIOS --
-		JButton btnConvenios = new JButton("Convenios");
-		btnConvenios.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				ventana.nuevoPanel(new ConveniosVentana(ventana, esAdmin, idCentro));
-			}
-		});
-		//-------------------------------------------------------
-		
-		btnConvenios.setForeground(new Color(255, 255, 255));
-		btnConvenios.setBackground(new Color(233, 1, 1));
-		btnConvenios.setBorder(null);
-		btnConvenios.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnConvenios.setBounds(864, 424, 181, 37);
-		add(btnConvenios);
 		
 		//-- ACCIÓN BOTÓN BOLSA DE TRABAJO --
 		JButton btnBolsaTrabajo = new JButton("Bolsa de trabajo");
@@ -154,7 +137,7 @@ public class Menu extends JPanel {
 		btnSalir.setFont(new Font("Verdana", Font.PLAIN, 11));
 		btnSalir.setBorder(null);
 		btnSalir.setBackground(new Color(255, 128, 128));
-		btnSalir.setBounds(558, 645, 111, 37);
+		btnSalir.setBounds(563, 553, 111, 37);
 		add(btnSalir);
 		
 		
@@ -171,7 +154,7 @@ public class Menu extends JPanel {
 		btnAdministracion.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnAdministracion.setBorder(null);
 		btnAdministracion.setBackground(new Color(233, 1, 1));
-		btnAdministracion.setBounds(529, 570, 181, 37);
+		btnAdministracion.setBounds(864, 434, 181, 37);
 		add(btnAdministracion);
 				
 		//-- ACCIÓN BOTÓN NECESIDADES --
@@ -187,13 +170,15 @@ public class Menu extends JPanel {
 		btnCentros.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnCentros.setBorder(null);
 		btnCentros.setBackground(new Color(233, 1, 1));
-		btnCentros.setBounds(529, 424, 181, 37);
+		btnCentros.setBounds(217, 434, 181, 37);
 		add(btnCentros);
 		
 		if(esAdmin == false) {
 			btnAdministracion.setVisible(false);
+			btnCentros.setVisible(false);
 		}else {
 			btnAdministracion.setVisible(true);
+			btnCentros.setVisible(true);
 		}
 
 	}

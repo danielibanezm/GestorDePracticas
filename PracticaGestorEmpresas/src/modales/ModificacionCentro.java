@@ -61,7 +61,8 @@ public class ModificacionCentro extends JDialog {
 		textFieldNombre.setColumns(10);
 		
 		JButton btnAceptar = new JButton("Aceptar");
-		btnAceptar.setBackground(new Color(255, 157, 157));
+		btnAceptar.setBackground(new Color(254, 86, 86));
+		
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (textFieldCodigo.getText().length() < 9 && textFieldNombre.getText().length() < 20) {
@@ -77,7 +78,7 @@ public class ModificacionCentro extends JDialog {
 		contentPanel.add(btnAceptar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBackground(new Color(255, 157, 157));
+		btnCancelar.setBackground(new Color(254, 86, 86));
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -88,7 +89,7 @@ public class ModificacionCentro extends JDialog {
 		
 		JLabel lblAntiguoNombre = new JLabel("Antiguo nombre " + nombre);
 		lblAntiguoNombre.setFont(new Font("Dialog", Font.PLAIN, 15));
-		lblAntiguoNombre.setBounds(117, 125, 188, 20);
+		lblAntiguoNombre.setBounds(117, 125, 404, 29);
 		contentPanel.add(lblAntiguoNombre);
 		
 		textFieldCodigo = new JTextField();
@@ -103,7 +104,7 @@ public class ModificacionCentro extends JDialog {
 		
 		JLabel lblAntiguoCodigo = new JLabel("Antiguo código " + codigo);
 		lblAntiguoCodigo.setFont(new Font("Dialog", Font.PLAIN, 15));
-		lblAntiguoCodigo.setBounds(117, 232, 188, 22);
+		lblAntiguoCodigo.setBounds(117, 232, 378, 29);
 		contentPanel.add(lblAntiguoCodigo);
 
 	}

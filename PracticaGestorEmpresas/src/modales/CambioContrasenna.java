@@ -79,9 +79,11 @@ public class CambioContrasenna extends JDialog {
 			}
 		});
 		btnAceptar.setBounds(222, 384, 89, 23);
+		btnAceptar.setBackground(new Color(254, 86, 86));
 		contentPanel.add(btnAceptar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBackground(new Color(254, 86, 86));
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();

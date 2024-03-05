@@ -48,7 +48,7 @@ public class ModificacionUsuario extends JDialog {
 		
 		JLabel lblRepiteContra = new JLabel("Nuevo perfil de usuario");
 		lblRepiteContra.setFont(new Font("Lato", Font.PLAIN, 15));
-		lblRepiteContra.setBounds(117, 225, 188, 14);
+		lblRepiteContra.setBounds(117, 225, 188, 20);
 		contentPanel.add(lblRepiteContra);
 		
 		JLabel lblNuevoEmail = new JLabel("Nuevo email");
@@ -67,6 +67,7 @@ public class ModificacionUsuario extends JDialog {
 		contentPanel.add(comboBox);
 		
 		JButton btnAceptar = new JButton("Aceptar");
+		btnAceptar.setBackground(new Color(254, 86, 86));
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nuevoEmail = new String(textFieldEmail.getText());
@@ -83,6 +84,7 @@ public class ModificacionUsuario extends JDialog {
 		contentPanel.add(btnAceptar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBackground(new Color(254, 86, 86));
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -93,7 +95,7 @@ public class ModificacionUsuario extends JDialog {
 		
 		JLabel lblAntiguoEmail = new JLabel("Antiguo email " + emailUsuario);
 		lblAntiguoEmail.setFont(new Font("Dialog", Font.PLAIN, 15));
-		lblAntiguoEmail.setBounds(117, 125, 188, 14);
+		lblAntiguoEmail.setBounds(117, 125, 471, 29);
 		contentPanel.add(lblAntiguoEmail);
 
 	}

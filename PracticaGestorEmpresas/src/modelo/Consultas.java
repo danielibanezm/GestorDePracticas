@@ -661,43 +661,73 @@ public class Consultas {
 		}
 	}
 
-	public ArrayList<Empresa> cogeEmpresas(int idCentro) {
-		ArrayList<Empresa> arrlEmpresas = new ArrayList<>();
+	public ArrayList<Empresa> cogeEmpresas() {
+	    ArrayList<Empresa> arrlEmpresas = new ArrayList<>();
+	    Connection conexion = null;
+	    Statement consultita = null;
+	    ResultSet registro = null;
 
+	    try {
+	        conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+	        consultita = conexion.createStatement();
+
+	        registro = consultita.executeQuery("SELECT CIF, dueño_empresa, nombre_empresa, telefono_empresa, email_empresa, direccion_empresa, tutor_empresa, correo_contacto, solicita FROM empresa WHERE eliminado != 1");
+
+	        if (!registro.next()) {
+	            String titulo = "Error";
+	            JOptionPane.showMessageDialog(null, "La base de datos está vacía.", titulo, JOptionPane.ERROR_MESSAGE);
+	        } else {
+	            do {
+	                Empresa nuevaEmpresa = new Empresa();
+	                nuevaEmpresa.setCIF(registro.getString("CIF"));
+	                nuevaEmpresa.setDuenno(registro.getString("dueño_empresa"));
+	                nuevaEmpresa.setNombre_empresa(registro.getString("nombre_empresa"));
+	                nuevaEmpresa.setTelefono_empresa(registro.getString("telefono_empresa"));
+	                nuevaEmpresa.setDireccion_empresa(registro.getString("direccion_empresa"));
+	                nuevaEmpresa.setEmail_empresa(registro.getString("email_empresa"));
+	                nuevaEmpresa.setTutor_empresa(registro.getString("tutor_empresa"));
+	                nuevaEmpresa.setContacto_empresa(registro.getString("correo_contacto"));
+	                nuevaEmpresa.setSolicita(registro.getString("solicita"));
+
+	                arrlEmpresas.add(nuevaEmpresa);
+	            } while (registro.next());
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (conexion != null) {
+	                conexion.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return arrlEmpresas;
+	}
+
+
+	public void insertaEmpresa(Empresa empresa) {
 		Connection conexion = null;
-		Statement consultita = null;
-		ResultSet registro = null;
+		Statement consulta = null;
 
 		try {
 			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
-			consultita = conexion.createStatement();
+			consulta = conexion.createStatement();			
+			
+			consulta.executeUpdate(
+					"INSERT INTO EMPRESA (CIF, dueño_empresa, nombre_empresa, telefono_empresa, email_empresa, direccion_empresa, tutor_empresa, correo_contacto, solicita, eliminado) "
+							+ "VALUES ('" + empresa.getCIF() + "', '" + empresa.getDuenno() + "', '"
+							+ empresa.getNombre_empresa() + "', '" + empresa.getTelefono_empresa() + "', '"
+							+ empresa.getEmail_empresa() + "', '" + empresa.getDireccion_empresa() + "', '"
+							+ empresa.getTutor_empresa() + "', '" + empresa.getContacto_empresa() + "', '"
+							+ empresa.getSolicita() + "', 0)");
 
-			registro = consultita.executeQuery("SELECT * FROM empresa WHERE eliminado != 1");
-
-			if (!registro.next()) {
-				String titulo = "Error";
-				JOptionPane.showMessageDialog(null, "La base de datos está vacía.", titulo, JOptionPane.ERROR_MESSAGE);
-			}
-
-			while (registro.next()) {
-				Empresa nuevaEmpresa = new Empresa();
-
-				nuevaEmpresa.setIdEmpresa(registro.getInt("id_empresa"));
-				nuevaEmpresa.setCIF(registro.getString("CIF"));
-				nuevaEmpresa.setDuenno(registro.getString("dueño"));
-				nuevaEmpresa.setNombre_empresa(registro.getString("nombre_empresa"));
-				nuevaEmpresa.setTelefono_empresa(registro.getString("telefono_empresa"));
-				nuevaEmpresa.setDireccion_empresa(registro.getString("direccion_empresa"));
-				nuevaEmpresa.setEmail_empresa(registro.getString("email_empresa"));
-				nuevaEmpresa.setTutor_empresa(registro.getString("tutor_empresa"));
-				nuevaEmpresa.setContacto_empresa(registro.getString("contacto_empresa"));
-				nuevaEmpresa.setSolicita(registro.getString("solicita"));
-				nuevaEmpresa.setEliminado(registro.getBoolean("eliminado"));
-
-				arrlEmpresas.add(nuevaEmpresa);
-			}
+			// err.confirmarInsert();
 
 		} catch (SQLException e) {
+			e.printStackTrace();
+			// err.baseDatosNoConexion();
 		} finally {
 			try {
 				conexion.close();
@@ -706,8 +736,128 @@ public class Consultas {
 			}
 		}
 
-		return arrlEmpresas;
 	}
+	
+	
+	public void actualizaEmpresa(Empresa empresa, String idEmpresa) {
+		
+		System.out.println("EL id de empresa es: " + idEmpresa);
+		
+	    Connection conexion = null;
+	    PreparedStatement statement = null;
+	    try {
+	        conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+
+	        String query = "UPDATE empresa SET CIF=?, dueño_empresa=?, nombre_empresa=?, telefono_empresa=?, "
+	                     + "email_empresa=?, direccion_empresa=?, tutor_empresa=?, correo_contacto=?, solicita=? "
+	                     + "WHERE id_empresa=?";
+	        
+	        statement = conexion.prepareStatement(query);
+	        statement.setString(1, empresa.getCIF());
+	        statement.setString(2, empresa.getDuenno());
+	        statement.setString(3, empresa.getNombre_empresa());
+	        statement.setString(4, empresa.getTelefono_empresa());
+	        statement.setString(5, empresa.getEmail_empresa());
+	        statement.setString(6, empresa.getDireccion_empresa());
+	        statement.setString(7, empresa.getTutor_empresa());
+	        statement.setString(8, empresa.getContacto_empresa());
+	        statement.setString(9, empresa.getSolicita());
+	        statement.setString(10, idEmpresa);
+	        
+	        int valor = statement.executeUpdate();
+
+	        if (valor == 1) {
+	            JOptionPane.showMessageDialog(null, "Empresa modificada correctamente", "Info",
+	                    JOptionPane.INFORMATION_MESSAGE);
+	        } else {
+	            JOptionPane.showMessageDialog(null, "Error al modificar empresa", "Info", JOptionPane.ERROR_MESSAGE);
+	        }
+	        
+	        conexion.close();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();	    
+	    }
+	}
+	
+	public String obtenerIdEmpresa(Empresa empresa) {
+	    String id = null; // Initialize id to null
+	    Connection conexion = null;
+	    PreparedStatement statement = null;
+	    ResultSet resultSet = null;
+
+	    try {
+	        conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+
+	        String query = "SELECT id_empresa FROM empresa WHERE CIF = ? AND dueño_empresa = ? AND email_empresa = ? AND eliminado = 0";
+	        statement = conexion.prepareStatement(query);
+	        statement.setString(1, empresa.getCIF());
+	        statement.setString(2, empresa.getDuenno());
+	        statement.setString(3, empresa.getEmail_empresa());
+
+	        resultSet = statement.executeQuery();
+
+	        if (resultSet.next()) {
+	            id = resultSet.getString("id_empresa");
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (resultSet != null) {
+	                resultSet.close();
+	            }
+	            if (statement != null) {
+	                statement.close();
+	            }
+	            if (conexion != null) {
+	                conexion.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    return id;
+	}
+
+
+	public void borrarEmpresaLogico(String idEmpresa) {
+	    Connection conexion = null;
+	    PreparedStatement statement = null;
+	    try {
+	        conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+
+	        String query = "UPDATE empresa SET eliminado = 1 WHERE id_empresa = ?";
+	        
+	        statement = conexion.prepareStatement(query);
+	        statement.setString(1, idEmpresa);
+	        
+	        int rowsAffected = statement.executeUpdate();
+
+	        if (rowsAffected == 1) {
+	            JOptionPane.showMessageDialog(null, "Empresa borrada correctamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+	        } else {
+	            JOptionPane.showMessageDialog(null, "Error al borrar empresa", "Error", JOptionPane.ERROR_MESSAGE);
+	        }
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (statement != null) {
+	                statement.close();
+	            }
+	            if (conexion != null) {
+	                conexion.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
+
 
 	public void insertarSocio(Empresa empresa) {
 		Connection conexion = null;

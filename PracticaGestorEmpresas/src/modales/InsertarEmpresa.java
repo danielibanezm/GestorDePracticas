@@ -178,14 +178,12 @@ public class InsertarEmpresa extends JDialog {
 					nuevaEmpresa = rellenaObjeto();
 					insertar(nuevaEmpresa);
 					dispose();
-					//actualizarse(nuevaEmpresa, modeloTabla);
+					actualizarse(nuevaEmpresa, modeloTabla);
 					
 				}
 			}
 					
-		});
-		
-		
+		});	
 		
 		JLabel lblInsertarEmpresa = new JLabel("Insertar empresa");
 		lblInsertarEmpresa.setForeground(new Color(9, 3, 62));
@@ -208,7 +206,8 @@ public class InsertarEmpresa extends JDialog {
 	public Empresa rellenaObjeto() {
 		Empresa empresa = new Empresa();
 
-		empresa.setCIF(txtCIF.getText());
+		
+		empresa.setCIF(txtCIF.getText());		
 		empresa.setDuenno(txtDuenno.getText());
 		empresa.setNombre_empresa(txtNombre.getText());
 		empresa.setTelefono_empresa(txtTelefono.getText());
@@ -218,18 +217,32 @@ public class InsertarEmpresa extends JDialog {
 		empresa.setContacto_empresa(txtContacto.getText());
 		empresa.setSolicita(comboBox.getSelectedItem().toString());
 		empresa.setEliminado(false);
+		
+		
+		System.out.println(empresa);
 
 		return empresa;
 	}
 	
-	public void insertar(Empresa nuevoSocio) {
+	public void insertar(Empresa nuevaEmpresa) {
 		int opcion = 0;
 
 		if (opcion == 0) {
-			bd.insertarSocio(nuevoSocio);
+			bd.insertaEmpresa(nuevaEmpresa);
 
 		} else {
 
 		}
 	}
+	
+	public void actualizarse(Empresa nuevaEmpresa, DefaultTableModel modeloTabla) {
+		Object[] nuevaFila = {nuevaEmpresa.getCIF(), nuevaEmpresa.getDuenno(),
+				nuevaEmpresa.getNombre_empresa(), nuevaEmpresa.getTelefono_empresa(), nuevaEmpresa.getEmail_empresa(), nuevaEmpresa.getDireccion_empresa(),
+				nuevaEmpresa.getTutor_empresa(), nuevaEmpresa.getContacto_empresa(), nuevaEmpresa.getSolicita()};
+		modeloTabla.addRow(nuevaFila);
+
+		modeloTabla.fireTableDataChanged();
+	}
+	
+	
 }

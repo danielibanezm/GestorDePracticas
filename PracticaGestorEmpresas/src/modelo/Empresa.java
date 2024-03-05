@@ -31,6 +31,23 @@ public class Empresa {
 		this.eliminado = eliminado;
 	}
 	
+	
+	public Empresa(String CIF, String duenno, String nombre_empresa, String telefono_empresa,
+			String direccion_empresa, String email_empresa, String tutor_empresa, String contacto_empresa,
+			String solicita, boolean eliminado) {
+		super();
+		this.CIF = CIF;
+		this.duenno = duenno;
+		this.nombre_empresa = nombre_empresa;
+		this.telefono_empresa = telefono_empresa;
+		this.direccion_empresa = direccion_empresa;
+		this.email_empresa = email_empresa;
+		this.tutor_empresa = tutor_empresa;
+		this.contacto_empresa = contacto_empresa;
+		this.solicita = solicita;
+		this.eliminado = eliminado;
+	}
+	
 	public Empresa() {
 		id_empresa = 0;
 		CIF = "";
@@ -58,7 +75,7 @@ public class Empresa {
 	}
 
 	public void setCIF(String CIF) {
-		CIF = CIF;
+	    this.CIF = CIF;
 	}
 
 	public String getDuenno() {
@@ -131,6 +148,14 @@ public class Empresa {
 
 	public void setEliminado(boolean eliminado) {
 		this.eliminado = eliminado;
+	}
+
+	@Override
+	public String toString() {
+		return "Empresa [id_empresa=" + id_empresa + ", CIF=" + CIF + ", duenno=" + duenno + ", nombre_empresa="
+				+ nombre_empresa + ", telefono_empresa=" + telefono_empresa + ", direccion_empresa=" + direccion_empresa
+				+ ", email_empresa=" + email_empresa + ", tutor_empresa=" + tutor_empresa + ", contacto_empresa="
+				+ contacto_empresa + ", solicita=" + solicita + ", eliminado=" + eliminado + "]";
 	}
 	
 	

@@ -177,6 +177,7 @@ public class InsertarPractica extends JDialog {
 		textFieldEmpresas.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
+				rellenaTablaEmpresaPorNombre(idCentro, textFieldEmpresas.getText());
 			}
 		});
 		textFieldEmpresas.setBounds(196, 169, 173, 20);
@@ -187,6 +188,7 @@ public class InsertarPractica extends JDialog {
 		textFieldAlumnos.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
+				rellenaTablaAlumnoPorNombre(idCentro, textFieldAlumnos.getText());
 			}
 		});
 		textFieldAlumnos.setColumns(10);
@@ -251,6 +253,15 @@ public class InsertarPractica extends JDialog {
 	public void rellenaTablaEmpresa(int idCentro) {
 		modeloTablaEmpresa.setRowCount(0);
 		c.rellenarNombreEmpresas(modeloTablaEmpresa, idCentro);
+	}
+	public void rellenaTablaAlumnoPorNombre(int idCentro, String nombre) {
+		modeloTablaAlumno.setRowCount(0);
+		c.rellenarNombreAlumnosPorNombre(modeloTablaAlumno, idCentro, nombre);
+	}
+	
+	public void rellenaTablaEmpresaPorNombre(int idCentro, String nombre) {
+		modeloTablaEmpresa.setRowCount(0);
+		c.rellenarNombreEmpresasPorNombre(modeloTablaEmpresa, idCentro, nombre);
 	}
 
 	public Date getFechaInicio() {

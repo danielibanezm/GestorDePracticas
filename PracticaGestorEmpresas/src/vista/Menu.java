@@ -14,6 +14,8 @@ import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Menu extends JPanel {
 	private Ventana ventana;
@@ -32,7 +34,7 @@ public class Menu extends JPanel {
 		lblTitulo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTitulo.setForeground(new Color(233, 1, 1));
 		lblTitulo.setFont(new Font("Lato", Font.PLAIN, 55));
-		lblTitulo.setBounds(544, 61, 380, 81);
+		lblTitulo.setBounds(413, 53, 380, 81);
 		add(lblTitulo);
 		
 		JLabel lblMen = new JLabel("Menú");
@@ -40,11 +42,11 @@ public class Menu extends JPanel {
 		lblMen.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMen.setForeground(new Color(9, 3, 62));
 		lblMen.setFont(new Font("Lato", Font.PLAIN, 55));
-		lblMen.setBounds(664, 139, 239, 81);
+		lblMen.setBounds(533, 131, 239, 81);
 		add(lblMen);
 		
 		JLabel lblIcono = new JLabel("");
-		lblIcono.setBounds(534, 44, 181, 135);
+		lblIcono.setBounds(465, 42, 181, 135);
 		add(lblIcono);
 		
 		JButton btnEmpresas = new JButton("Empresas");
@@ -62,7 +64,7 @@ public class Menu extends JPanel {
 		btnEmpresas.setForeground(new Color(255, 255, 255));
 		btnEmpresas.setBackground(new Color(233, 1, 1));
 		btnEmpresas.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnEmpresas.setBounds(568, 246, 315, 37);
+		btnEmpresas.setBounds(529, 244, 181, 37);
 		add(btnEmpresas);
 		
 		//-- ACCIÓN BOTÓN PRACTICAS --
@@ -79,7 +81,7 @@ public class Menu extends JPanel {
 		btnPracticas.setBackground(new Color(233, 1, 1));
 		btnPracticas.setBorder(null);
 		btnPracticas.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnPracticas.setBounds(30, 246, 315, 37);
+		btnPracticas.setBounds(217, 244, 181, 37);
 		add(btnPracticas);
 		
 		//-- ACCIÓN BOTÓN PRÉSTAMOS --
@@ -96,7 +98,7 @@ public class Menu extends JPanel {
 		btnAlumnos.setBackground(new Color(233, 1, 1));
 		btnAlumnos.setBorder(null);
 		btnAlumnos.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnAlumnos.setBounds(30, 476, 315, 37);
+		btnAlumnos.setBounds(217, 424, 181, 37);
 		add(btnAlumnos);
 		
 		//-- ACCIÓN BOTÓN CONVENIOS --
@@ -113,7 +115,7 @@ public class Menu extends JPanel {
 		btnConvenios.setBackground(new Color(233, 1, 1));
 		btnConvenios.setBorder(null);
 		btnConvenios.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnConvenios.setBounds(1105, 476, 315, 37);
+		btnConvenios.setBounds(864, 424, 181, 37);
 		add(btnConvenios);
 		
 		//-- ACCIÓN BOTÓN BOLSA DE TRABAJO --
@@ -129,10 +131,14 @@ public class Menu extends JPanel {
 		btnBolsaTrabajo.setBackground(new Color(233, 1, 1));
 		btnBolsaTrabajo.setBorder(null);
 		btnBolsaTrabajo.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnBolsaTrabajo.setBounds(1105, 246, 315, 37);
+		btnBolsaTrabajo.setBounds(864, 244, 181, 37);
 		add(btnBolsaTrabajo);
 		
 		JButton btnSalir = new JButton("Cerrar sesión");
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		
 		//-- ACCIÓN CERRAR SESIÓN --
 		btnSalir.addMouseListener(new MouseAdapter() {
@@ -148,7 +154,7 @@ public class Menu extends JPanel {
 		btnSalir.setFont(new Font("Verdana", Font.PLAIN, 11));
 		btnSalir.setBorder(null);
 		btnSalir.setBackground(new Color(255, 128, 128));
-		btnSalir.setBounds(668, 755, 111, 37);
+		btnSalir.setBounds(558, 645, 111, 37);
 		add(btnSalir);
 		
 		
@@ -165,7 +171,7 @@ public class Menu extends JPanel {
 		btnAdministracion.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnAdministracion.setBorder(null);
 		btnAdministracion.setBackground(new Color(233, 1, 1));
-		btnAdministracion.setBounds(568, 641, 315, 37);
+		btnAdministracion.setBounds(529, 570, 181, 37);
 		add(btnAdministracion);
 				
 		//-- ACCIÓN BOTÓN NECESIDADES --
@@ -181,7 +187,7 @@ public class Menu extends JPanel {
 		btnCentros.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnCentros.setBorder(null);
 		btnCentros.setBackground(new Color(233, 1, 1));
-		btnCentros.setBounds(568, 476, 315, 37);
+		btnCentros.setBounds(529, 424, 181, 37);
 		add(btnCentros);
 		
 		if(esAdmin == false) {

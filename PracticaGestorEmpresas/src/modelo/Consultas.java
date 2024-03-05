@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -332,6 +333,34 @@ public class Consultas {
 		}
 		return id;
 	}
+	
+	public int cogeIdConvenioPorIdEmpresa(int idEmpresa) {
+		int id = -1;
+		Connection conexion = null;
+		Statement statement = null;
+
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+			ResultSet rs = statement
+					.executeQuery("SELECT id_convenio FROM convenio WHERE eliminado != 1 AND id_empresa = " + idEmpresa + ";");
+
+			if (rs.next()) {
+				id = rs.getInt("id_convenio");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return id;
+	}
 
 	public void rellenarPracticasActuales(DefaultTableModel tabla, int idCentro) {
 		Connection conexion = null;
@@ -608,8 +637,8 @@ public class Consultas {
 		}
 
 	}
-
-	public void rellenarNombreAlumnos(DefaultTableModel modeloTablaAlumno, int idCentro) {
+	
+	public void rellenarNombreEmpresasPorNombre(DefaultTableModel modeloTablaEmpresa, int idCentro, String nombre) {
 		Connection conexion = null;
 		Statement statement = null;
 
@@ -617,8 +646,61 @@ public class Consultas {
 			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
 			statement = conexion.createStatement();
 			ResultSet rs = statement.executeQuery(
-					"select id_alumno, nombre from alumno WHERE eliminado != 1 AND id_centro = " + idCentro + ";");
+					"select id_empresa, nombre_empresa from empresa WHERE eliminado != 1 AND nombre_empresa LIKE '%"+ nombre + "%' AND id_empresa = "
+							+ "(SELECT id_empresa FROM convenio where id_centro = " + idCentro + ");");
 
+			while (rs.next()) {
+				modeloTablaEmpresa.addRow(new Object[] { rs.getInt("id_empresa"), rs.getString("nombre_empresa"), });
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	public void rellenarNombreAlumnosPorNombre(DefaultTableModel modeloTablaAlumno, int idCentro, String nombre) {
+		Connection conexion = null;
+		Statement statement = null;
+
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+			ResultSet rs = statement.executeQuery(
+					"select id_alumno, nombre from alumno WHERE eliminado != 1 AND id_centro = " + idCentro + " AND valido != 1 AND nombre LIKE '%"+ nombre +"%';");
+
+			while (rs.next()) {
+				modeloTablaAlumno.addRow(new Object[] { rs.getInt("id_alumno"), rs.getString("nombre"), });
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	public void rellenarNombreAlumnos(DefaultTableModel modeloTablaAlumno, int idCentro) {
+		Connection conexion = null;
+		Statement statement = null;
+		
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+			ResultSet rs = statement.executeQuery(
+					"select id_alumno, nombre from alumno WHERE eliminado != 1 AND id_centro = " + idCentro + " AND valido != 1;");
+			
 			while (rs.next()) {
 				modeloTablaAlumno.addRow(new Object[] { rs.getInt("id_alumno"), rs.getString("nombre"), });
 			}
@@ -1227,8 +1309,7 @@ public class Consultas {
 			preparedStatement.setInt(2, 0);
 			int valor = preparedStatement.executeUpdate();
 			if (valor == 1) {
-				JOptionPane.showMessageDialog(null, "Anexo insertado correcatamente", "Info",
-						JOptionPane.INFORMATION_MESSAGE);
+				
 				ResultSet rs = statement.executeQuery(consultaIdAnexo);
 				if (rs.next()) {
 					idAnexo = rs.getInt("id_anexo");
@@ -1241,6 +1322,14 @@ public class Consultas {
 				preparedStatement.setInt(1, idAnexoSemanal);
 				preparedStatement.setInt(2, idAnexo);
 				preparedStatement.setInt(3, 0);
+				
+				valor = preparedStatement.executeUpdate();
+				if(valor == 1) {
+					JOptionPane.showMessageDialog(null, "Anexo insertado correcatamente", "Info",
+							JOptionPane.INFORMATION_MESSAGE);
+				}else {
+					JOptionPane.showMessageDialog(null, "Error al insertar anexos", "Info", JOptionPane.ERROR_MESSAGE);
+				}
 			} else {
 				JOptionPane.showMessageDialog(null, "Error al insertar anexos", "Info", JOptionPane.ERROR_MESSAGE);
 			}
@@ -1283,5 +1372,167 @@ public class Consultas {
 			}
 		}
 		return semana + 1;
+	}
+	
+	public void borradoLogicoPractica(int idPratica) {
+		Connection conexion = null;
+		Statement statement = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+
+			int valor = statement.executeUpdate("update practica set eliminado = 1 where id_practica = " + idPratica);
+			if (valor == 1) {
+				JOptionPane.showMessageDialog(null, "Practica borrado correcatamente", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Error al borrar la practica", "Info", JOptionPane.ERROR_MESSAGE);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public ArrayList<String> cogeNombreEmpresas() {
+		ArrayList<String> arrlEmpresas = new ArrayList<>();
+		Connection conexion = null;
+		Statement statement = null;
+
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+			ResultSet rs = statement.executeQuery("SELECT nombre_empresa FROM empresa WHERE eliminado != 1;");
+
+			while (rs.next()) {
+				arrlEmpresas.add(rs.getString("nombre_empresa"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return arrlEmpresas;
+	}
+	
+	
+	public void rellenarPracticasActualesPorNombre(DefaultTableModel tabla, int idCentro, String nombreAlumno) {
+		Connection conexion = null;
+		Statement statement = null;
+
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+//			String consulta = "SELECT practica.id_practica, practica.id_anexo, empresa.nombre_empresa, alumno.nombre, practica.inicio, practica.final from practica, alumno, empresa"
+//					+ "WHERE practica.eliminado != 1 AND alumno.id_centro = "
+//					+ idCentro + " AND alumno.nombre LIKE '%" + nombreAlumno +"%';";
+			String consulta = "SELECT practica.id_practica, practica.id_anexo, empresa.nombre_empresa, alumno.nombre, practica.inicio, practica.final from practica, alumno, empresa "
+					+ "WHERE practica.eliminado != 1 AND alumno.id_centro = (SELECT id_centro FROM convenio where id_centro = " + idCentro + ") AND "
+					+ "empresa.id_empresa = (SELECT id_empresa FROM convenio where id_centro = " + idCentro + ") AND "
+					+ "alumno.nombre LIKE '%" + nombreAlumno +"%';";
+			System.out.println(consulta);
+			ResultSet rs = statement.executeQuery(consulta);
+
+			while (rs.next()) {
+
+				tabla.addRow(new Object[] { rs.getInt("practica.id_practica"),
+						rs.getInt("practica.id_anexo"),
+						rs.getString("alumno.nombre"), 
+						rs.getString("empresa.nombre_empresa"), 
+						rs.getDate("inicio"),
+						rs.getDate("final") });
+
+			}
+		} catch (SQLException e) {
+		} finally {
+			try {
+				conexion.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	public void insertaConvenio(int idCentro, int idEmpresa, File convenio) {
+		Connection conexion = null;
+		Statement statement = null;
+		FileInputStream convenioStream = null;
+		Random random = new Random();
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+
+			convenioStream = new FileInputStream(convenio);
+			PreparedStatement preparedStatement = conexion.prepareStatement(
+					"INSERT INTO convenio (id_empresa, id_centro, anexo_1, numero_serie, eliminado) VALUES(?, ?, ?, ?, ?)");
+			preparedStatement.setInt(1, idEmpresa);
+			preparedStatement.setInt(2, idCentro);
+			preparedStatement.setBinaryStream(3, convenioStream);
+			preparedStatement.setInt(4, random.nextInt(1000000, 9999999));
+			preparedStatement.setInt(5, 0);
+			int valor = preparedStatement.executeUpdate();
+			if (valor == 1) {
+				JOptionPane.showMessageDialog(null, "Convenio insertado", "Info", JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Error al insertar el convenio", "Info", JOptionPane.ERROR_MESSAGE);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	public InputStream obtenConvenio(int idConvenio) {
+		Connection conexion = null;
+		Statement statement = null;
+		InputStream anexoStream = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+			ResultSet rs = statement.executeQuery(
+					"select anexo_1 from convenio WHERE id_convenio = "	+ idConvenio + ";");
+
+			if (rs.next()) {
+				anexoStream = rs.getBinaryStream("anexo_1");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+				anexoStream.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return anexoStream;
 	}
 }

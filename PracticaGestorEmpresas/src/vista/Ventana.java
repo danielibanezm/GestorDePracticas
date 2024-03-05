@@ -12,6 +12,7 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.Color;
+import java.awt.Rectangle;
 
 public class Ventana extends JFrame {
 
@@ -32,15 +33,13 @@ public class Ventana extends JFrame {
 
 
 	public Ventana() {
-//		setIconImage(Toolkit.getDefaultToolkit().getImage(Ventana.class.getResource("/img/libro.png")));
-		setMinimumSize(new Dimension(1400, 800));
+		setBounds(100, 100, 1300, 760);
+		setTitle("Gestor de practicas");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 1480, 926);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		
-		setResizable(false);
+		setResizable(true);
 		
 		setContentPane(contentPane);
 		contentPane.setLayout(new CardLayout(0, 0));

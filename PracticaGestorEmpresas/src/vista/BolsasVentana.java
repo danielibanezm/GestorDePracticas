@@ -70,8 +70,7 @@ public class BolsasVentana extends JPanel {
 
 		btnMen.setForeground(Color.BLACK);
 		btnMen.setFont(new Font("Verdana", Font.PLAIN, 11));
-		btnMen.setBorder(new LineBorder(new Color(233, 1, 1), 2, true));
-		btnMen.setBackground(Color.WHITE);
+		btnMen.setBackground(new Color(254, 86, 86));
 		btnMen.setBounds(32, 24, 79, 37);
 		add(btnMen);
 

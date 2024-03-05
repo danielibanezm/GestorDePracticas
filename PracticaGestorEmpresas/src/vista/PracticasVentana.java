@@ -23,6 +23,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -81,8 +82,7 @@ public class PracticasVentana extends JPanel {
 
 		btnMen.setForeground(Color.BLACK);
 		btnMen.setFont(new Font("Verdana", Font.PLAIN, 11));
-		btnMen.setBorder(new LineBorder(new Color(233, 1, 1), 2, true));
-		btnMen.setBackground(Color.WHITE);
+		btnMen.setBackground(new Color(254, 86, 86));
 		btnMen.setBounds(32, 24, 79, 37);
 		add(btnMen);
 
@@ -141,7 +141,9 @@ public class PracticasVentana extends JPanel {
 		btnEditarPractica.setBackground(new Color(254, 86, 86));
 		btnEditarPractica.setBounds(1134, 396, 130, 37);
 		add(btnEditarPractica);
-
+		
+		JToggleButton tglbtnMostrarPracticas = new JToggleButton("Mostrar todas");
+		
 		// -- BOTÓN ELIMINAR SOCIO --
 		btnBorrarPractica = new JButton("Borrar práctica");
 		btnBorrarPractica.addMouseListener(new MouseAdapter() {
@@ -150,7 +152,12 @@ public class PracticasVentana extends JPanel {
 				filaTabla = jtResultados.getSelectedRow();
 
 				if (filaTabla != -1) { // Se ha seleccionado una fila
-
+					c.borradoLogicoPractica(Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()));
+					if (tglbtnMostrarPracticas.isSelected()) {
+						rellenaTablaTodos(idCentro);
+					}else {
+						rellenaTablaActual(idCentro);
+					}
 				} else {
 					// No se ha seleccionado ningún libro por lo tanto se muestra un error.
 					JOptionPane.showMessageDialog(null, "Seleccione una practica para poder eliminarla.", "Error",
@@ -212,6 +219,7 @@ public class PracticasVentana extends JPanel {
 		textFieldAlumnos.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
+				rellenaTablaActualPorNombre(idCentro, textFieldAlumnos.getText());
 			}
 		});
 		textFieldAlumnos.setBounds(719, 129, 227, 20);
@@ -272,7 +280,7 @@ public class PracticasVentana extends JPanel {
 		
 		jtResultados.setModel(modeloTabla);
 		
-		JToggleButton tglbtnMostrarPracticas = new JToggleButton("Mostrar todas");
+		
 		tglbtnMostrarPracticas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (tglbtnMostrarPracticas.isSelected()) {
@@ -308,6 +316,7 @@ public class PracticasVentana extends JPanel {
 		jtResultados.getTableHeader().setReorderingAllowed(false);
 		
 		rellenaTablaActual(idCentro);
+		rellenarComboCentros(comboBox);
 
 		// -------------------------------------------------------------
 	}
@@ -319,6 +328,17 @@ public class PracticasVentana extends JPanel {
 	public void rellenaTablaTodos(int idCentro) {
 		modeloTabla.setRowCount(0);
 		c.rellenarPracticasTotales(modeloTabla, idCentro);
-		
+	}
+	
+	public void rellenaTablaActualPorNombre(int idCentro, String nombre) {
+		modeloTabla.setRowCount(0);
+		c.rellenarPracticasActualesPorNombre(modeloTabla, idCentro, nombre);
+	}
+	
+	private void rellenarComboCentros(JComboBox comboCentro) {
+		ArrayList<String> arrlEmpresas = c.cogeNombreEmpresas();
+		for (String empresa : arrlEmpresas) {
+			comboCentro.addItem(empresa);
+		}
 	}
 }

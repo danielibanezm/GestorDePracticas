@@ -112,7 +112,7 @@ public class EmpresasVentana extends JPanel {
 				filaTabla = jtResultados.getSelectedRow();
 				if (filaTabla != -1) {
 
-<<<<<<< Updated upstream
+//<<<<<<< Updated upstream
                 	String cif = (String) modeloTabla.getValueAt(filaTabla, 0);
                     String duenno = (String) modeloTabla.getValueAt(filaTabla, 1);
                     String nombre = (String) modeloTabla.getValueAt(filaTabla, 2);
@@ -143,42 +143,42 @@ public class EmpresasVentana extends JPanel {
                 }
             }
         });
-=======
-					String cif = (String) modeloTabla.getValueAt(filaTabla, 0);
-					String duenno = (String) modeloTabla.getValueAt(filaTabla, 1);
-					String nombre = (String) modeloTabla.getValueAt(filaTabla, 2);
-					String telefono = (String) modeloTabla.getValueAt(filaTabla, 3);
-					String email = (String) modeloTabla.getValueAt(filaTabla, 4);
-					String direccion = (String) modeloTabla.getValueAt(filaTabla, 5);
-					String tutor = (String) modeloTabla.getValueAt(filaTabla, 6);
-					String contacto = (String) modeloTabla.getValueAt(filaTabla, 7);
->>>>>>> Stashed changes
-
-					Empresa empresaSeleccionada = new Empresa();
-					empresaSeleccionada.setCIF(cif);
-					empresaSeleccionada.setDuenno(duenno);
-					empresaSeleccionada.setNombre_empresa(nombre);
-					empresaSeleccionada.setTelefono_empresa(telefono);
-					empresaSeleccionada.setEmail_empresa(email);
-					empresaSeleccionada.setDireccion_empresa(direccion);
-					empresaSeleccionada.setTutor_empresa(tutor);
-					empresaSeleccionada.setContacto_empresa(contacto);
-
-					editarEmpresa = new EditarEmpresa(empresaSeleccionada, modeloTabla, filaTabla, esAdmin);
-					editarEmpresa.setVisible(true);
-				} else {
-					JOptionPane.showMessageDialog(null, "Seleccione una empresa para editar", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
-
-		btnEditarEmpresa.setForeground(new Color(9, 3, 62));
-		btnEditarEmpresa.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btnEditarEmpresa.setBorder(null);
-		btnEditarEmpresa.setBackground(new Color(254, 86, 86));
-		btnEditarEmpresa.setBounds(1134, 396, 130, 37);
-		add(btnEditarEmpresa);
+//=======
+//					String cif = (String) modeloTabla.getValueAt(filaTabla, 0);
+//					String duenno = (String) modeloTabla.getValueAt(filaTabla, 1);
+//					String nombre = (String) modeloTabla.getValueAt(filaTabla, 2);
+//					String telefono = (String) modeloTabla.getValueAt(filaTabla, 3);
+//					String email = (String) modeloTabla.getValueAt(filaTabla, 4);
+//					String direccion = (String) modeloTabla.getValueAt(filaTabla, 5);
+//					String tutor = (String) modeloTabla.getValueAt(filaTabla, 6);
+//					String contacto = (String) modeloTabla.getValueAt(filaTabla, 7);
+//>>>>>>> Stashed changes
+//
+//					Empresa empresaSeleccionada = new Empresa();
+//					empresaSeleccionada.setCIF(cif);
+//					empresaSeleccionada.setDuenno(duenno);
+//					empresaSeleccionada.setNombre_empresa(nombre);
+//					empresaSeleccionada.setTelefono_empresa(telefono);
+//					empresaSeleccionada.setEmail_empresa(email);
+//					empresaSeleccionada.setDireccion_empresa(direccion);
+//					empresaSeleccionada.setTutor_empresa(tutor);
+//					empresaSeleccionada.setContacto_empresa(contacto);
+//
+//					editarEmpresa = new EditarEmpresa(empresaSeleccionada, modeloTabla, filaTabla, esAdmin);
+//					editarEmpresa.setVisible(true);
+//				} else {
+//					JOptionPane.showMessageDialog(null, "Seleccione una empresa para editar", "Error",
+//							JOptionPane.ERROR_MESSAGE);
+//				}
+//			}
+//		});
+//
+//		btnEditarEmpresa.setForeground(new Color(9, 3, 62));
+//		btnEditarEmpresa.setFont(new Font("Verdana", Font.PLAIN, 12));
+//		btnEditarEmpresa.setBorder(null);
+//		btnEditarEmpresa.setBackground(new Color(254, 86, 86));
+//		btnEditarEmpresa.setBounds(1134, 396, 130, 37);
+//		add(btnEditarEmpresa);
 
 		btnBorrarEmpresa = new JButton("Borrar empresa");
 		btnBorrarEmpresa.addMouseListener(new MouseAdapter() {

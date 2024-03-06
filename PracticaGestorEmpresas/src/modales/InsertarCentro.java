@@ -46,7 +46,7 @@ public class InsertarCentro extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
-		JLabel lblTitulo = new JLabel("Insertar usuario");
+		JLabel lblTitulo = new JLabel("Insertar centro");
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setFont(new Font("Lato", Font.PLAIN, 45));
 		lblTitulo.setForeground(new Color(9, 3, 62));

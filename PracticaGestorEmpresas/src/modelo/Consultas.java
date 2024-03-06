@@ -963,7 +963,7 @@ public class Consultas {
 		}
 	}
 
-	public void actualizaTutor(String nombre, int idCentro) {
+	public void actualizaTutor(String nombre, int idCentro, int idTutor) {
 		Connection conexion = null;
 		Statement statement = null;
 		try {
@@ -971,7 +971,7 @@ public class Consultas {
 			statement = conexion.createStatement();
 
 			int valor = statement
-					.executeUpdate("UPDATE tutor SET nombre = '" + nombre + "' WHERE id_centro = " + idCentro + ";");
+					.executeUpdate("UPDATE tutor SET nombre = '" + nombre + "' WHERE id_centro = " + idCentro + " AND id_tutor = " + idTutor +";");
 			if (valor == 1) {
 				JOptionPane.showMessageDialog(null, "Tutor modificado correcatamente", "Info",
 						JOptionPane.INFORMATION_MESSAGE);
@@ -1087,10 +1087,10 @@ public class Consultas {
 			int valor = statement.executeUpdate(
 					"INSERT INTO centro (nombre, codigo, eliminado) VALUES ('" + nombre + "', " + codigo + ", 0)");
 			if (valor == 1) {
-				JOptionPane.showMessageDialog(null, "Tutor insertado correcatamente", "Info",
+				JOptionPane.showMessageDialog(null, "Centro insertado correcatamente", "Info",
 						JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				JOptionPane.showMessageDialog(null, "Error al insertar tutor", "Info", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error al insertar centro", "Info", JOptionPane.ERROR_MESSAGE);
 			}
 
 		} catch (SQLException e) {
@@ -1673,9 +1673,9 @@ public class Consultas {
 	                nuevoAlumno.setDni(registro.getString("dni"));
 	                
 	                if (registro.getBoolean("valido") == true) {
-	                	nuevoAlumno.setValido("Si");
+	                	nuevoAlumno.setValido("VALIDO");
 	                }else {
-	                	nuevoAlumno.setValido("No");
+	                	nuevoAlumno.setValido("NO VALIDO");
 	                }
 	                
 	                nuevoAlumno.setSs(registro.getString("ss"));
@@ -1825,10 +1825,10 @@ public class Consultas {
 	        int valor = statement.executeUpdate();
 
 	        if (valor == 1) {
-	            JOptionPane.showMessageDialog(null, "Empresa modificada correctamente", "Info",
+	            JOptionPane.showMessageDialog(null, "Alumno modificada correctamente", "Info",
 	                    JOptionPane.INFORMATION_MESSAGE);
 	        } else {
-	            JOptionPane.showMessageDialog(null, "Error al modificar empresa", "Info", JOptionPane.ERROR_MESSAGE);
+	            JOptionPane.showMessageDialog(null, "Error al modificar alumno", "Info", JOptionPane.ERROR_MESSAGE);
 	        }
 	        
 	        conexion.close();
@@ -2060,5 +2060,115 @@ public class Consultas {
 	    return necesidad;
 	}
 	
-	
+    public String cogeNombreEmpresaUnico(String idEmpresa) {
+    	String empresa = null; // Initialize id to null
+        Connection conexion = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+
+            String query = "SELECT nombre_empresa FROM empresa WHERE id_empresa = ? AND eliminado = 0";
+            statement = conexion.prepareStatement(query);
+            statement.setString(1, idEmpresa);
+
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                empresa = resultSet.getString("nombre_empresa");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (conexion != null) {
+                    conexion.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return empresa;
+    }
+
+	public void borradoLogicoNecesidad(Necesidad necesidad) {
+		Connection conexion = null;
+		Statement statement = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+
+			int valor = statement.executeUpdate("update necesidad set eliminado = 1 where id_necesidad = " + necesidad.getIdNecesidad());
+			if (valor == 1) {
+				JOptionPane.showMessageDialog(null, "Necesidad borrada correcatamente", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Error al borrar la necesidad", "Info", JOptionPane.ERROR_MESSAGE);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void modificarAnexos(File anexo2_1, File anexo2_2, File anexo3, File anexo8 , int idAnexo) {
+		Connection conexion = null;
+		Statement statement = null;
+		FileInputStream anexo2_1Stream = null;
+		FileInputStream anexo2_2Stream = null;
+		FileInputStream anexo3Stream = null;
+		FileInputStream anexo8Stream = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+
+			anexo2_1Stream = new FileInputStream(anexo2_1);
+			anexo2_2Stream = new FileInputStream(anexo2_2);
+			anexo3Stream = new FileInputStream(anexo3);
+			anexo8Stream = new FileInputStream(anexo8);
+			PreparedStatement preparedStatement = conexion.prepareStatement(
+					"UPDATE anexos SET anexo_8 = ?, anexo_2_1 = ?, anexo_2_2 = ?, anexo_3 = ? WHERE id_anexo = " + idAnexo + ";");
+			
+			preparedStatement.setBinaryStream(1, anexo8Stream);
+			preparedStatement.setBinaryStream(2, anexo2_1Stream);
+			preparedStatement.setBinaryStream(3, anexo2_2Stream);
+			preparedStatement.setBinaryStream(4, anexo3Stream);
+			int valor = preparedStatement.executeUpdate();
+			if (valor == 1) {
+				JOptionPane.showMessageDialog(null, "Anexos modificados correctamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Error al modificar los anexos", "Info", JOptionPane.ERROR_MESSAGE);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 }
+

@@ -89,7 +89,9 @@ public class MostrarTutores extends JDialog {
 				filaTabla = jtResultados.getSelectedRow();
 
 				if (filaTabla != -1) { // Se ha seleccionado una fila
-					ModificacionTutor dialog = new ModificacionTutor(ventana, jtResultados.getValueAt(filaTabla, 2).toString(), Integer.parseInt(jtResultados.getValueAt(filaTabla, 1).toString()));
+					ModificacionTutor dialog = new ModificacionTutor(ventana, jtResultados.getValueAt(filaTabla, 2).toString(),
+							Integer.parseInt(jtResultados.getValueAt(filaTabla, 1).toString()),
+							Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()));
 					dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 				} else {

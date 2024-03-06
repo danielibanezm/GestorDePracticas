@@ -33,7 +33,7 @@ public class ModificacionTutor extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public ModificacionTutor(MostrarTutores ventana, String nombre, int idCentro) {
+	public ModificacionTutor(MostrarTutores ventana, String nombre, int idCentro, int idTutor) {
 		setModal(true);
 		setBounds(100, 100, 649, 350);
 		getContentPane().setLayout(new BorderLayout());
@@ -63,7 +63,7 @@ public class ModificacionTutor extends JDialog {
 		btnAceptar.setBackground(new Color(254, 86, 86));
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				c.actualizaTutor(textFieldNombre.getText(), idCentro);
+				c.actualizaTutor(textFieldNombre.getText(), idCentro, idTutor);
 				ventana.rellenaTabla(idCentro);
 				dispose();
 			}

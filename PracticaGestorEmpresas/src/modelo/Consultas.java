@@ -1316,16 +1316,14 @@ public class Consultas {
 	public int cogeCantidadSemanal(int idPratica) {
 		Connection conexion = null;
 		Statement statement = null;
-		int semana = -1;
-		String consulta = "SELECT MAX(id_anexo_semanal) FROM anexos_semanales WHERE id_anexo_semanal = "
-				+ "(SELECT id_anexo_semanal FROM intermedia_anexos WHERE id_anexo = "
-				+ "(SELECT id_anexo FROM practica WHERE id_practica = " + idPratica + "));";
+		int semana = 0;
+		String consulta = "SELECT COUNT(intermedia_anexos.id_anexo_semanal) FROM intermedia_anexos WHERE  intermedia_anexos.id_anexo = (SELECT practica.id_anexo FROM practica WHERE practica.id_practica = " + idPratica+")";
 		try {
 			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
 			statement = conexion.createStatement();
 
 			ResultSet rs = statement.executeQuery(consulta);
-			if (rs.next()) {
+			while (rs.next()) {
 				semana = rs.getInt(1);
 			}
 		} catch (SQLException e) {

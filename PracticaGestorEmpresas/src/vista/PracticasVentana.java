@@ -66,7 +66,7 @@ public class PracticasVentana extends JPanel {
 	private PracticasVentana ventanaActual;
 
 	public PracticasVentana(Ventana ventana, boolean esAdmin, int idCentro) {
-
+		ventanaActual = this;
 		setBackground(new Color(255, 255, 255));
 		setLayout(null);
 

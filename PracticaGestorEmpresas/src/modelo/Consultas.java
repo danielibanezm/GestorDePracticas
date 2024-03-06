@@ -1977,7 +1977,7 @@ public class Consultas {
 			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
 			statement = conexion.createStatement();
 
-			int valor = statement.executeUpdate(
+			String query =(
 					"update necesidad set convocatoria = '" + necesidad.getConvocatoria() + "', "
 					 +"cantidad_dam = "+ necesidad.getCantidadDam() + ", "
 					 +"cantidad_daw = "+ necesidad.getCantidadDaw() + ", "
@@ -1985,6 +1985,8 @@ public class Consultas {
 					 +"cantidad_marketin = "+ necesidad.getCantidadMarketing() + ", "
 					 +"cantidad_finanzas = "+ necesidad.getCantidadFinazas() + ", "
 					 + " where id_necesidad = " + idNecesidad);
+			System.out.println(query);
+			int valor = statement.executeUpdate(query);
 			if (valor == 1) {
 				JOptionPane.showMessageDialog(null, "Necesidad modificada correcatamente", "Info",
 						JOptionPane.INFORMATION_MESSAGE);

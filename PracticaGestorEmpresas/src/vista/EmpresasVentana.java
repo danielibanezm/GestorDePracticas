@@ -9,8 +9,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import modales.EditarEmpresa;
+import modales.EditarNecesidad;
 import modales.InsertarConvenio;
 import modales.InsertarEmpresa;
+import modales.InsertarNecesidad;
 import modelo.Consultas;
 import modelo.Empresa;
 
@@ -296,6 +298,75 @@ public class EmpresasVentana extends JPanel {
 		btnInsertarConvenio.setBackground(new Color(254, 86, 86));
 		btnInsertarConvenio.setBounds(1134, 640, 130, 37);
 		add(btnInsertarConvenio);
+		
+		JButton btnNuevaNecesidad = new JButton("Nueva necesidad");
+		btnNuevaNecesidad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int filaSeleccionada = jtResultados.getSelectedRow();
+				if (filaSeleccionada != -1) {
+					if(c.obtenerNecesidad(c.obtenerIdEmpresa(empresa)) == null) {
+						Empresa empresa = new Empresa();
+						empresa.setCIF((String) modeloTabla.getValueAt(filaSeleccionada, 0));
+						empresa.setDuenno((String) modeloTabla.getValueAt(filaSeleccionada, 1));
+						empresa.setEmail_empresa((String) modeloTabla.getValueAt(filaSeleccionada, 4));
+						InsertarNecesidad dialog = new InsertarNecesidad(Integer.parseInt(c.obtenerIdEmpresa(empresa)), esAdmin);
+						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+						dialog.setVisible(true);
+					}else {
+						JOptionPane.showMessageDialog(null, "Esta empresa ya tiene una necesidad asociada.", "Error",
+								JOptionPane.ERROR_MESSAGE);
+					}
+
+				} else {
+					JOptionPane.showMessageDialog(null, "Seleccione una empresa para insertar la necesidad", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		btnNuevaNecesidad.setForeground(new Color(9, 3, 62));
+		btnNuevaNecesidad.setFont(new Font("Verdana", Font.PLAIN, 12));
+		btnNuevaNecesidad.setBorder(null);
+		btnNuevaNecesidad.setBackground(new Color(254, 86, 86));
+		btnNuevaNecesidad.setBounds(166, 648, 130, 37);
+		add(btnNuevaNecesidad);
+		
+		JButton btnModificarNecesidad = new JButton("Modificar necesidad");
+		btnModificarNecesidad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int filaSeleccionada = jtResultados.getSelectedRow();
+				if (filaSeleccionada != -1) {
+					Empresa empresa = new Empresa();
+					empresa.setCIF((String) modeloTabla.getValueAt(filaSeleccionada, 0));
+					empresa.setDuenno((String) modeloTabla.getValueAt(filaSeleccionada, 1));
+					empresa.setEmail_empresa((String) modeloTabla.getValueAt(filaSeleccionada, 4));
+					EditarNecesidad dialog = new EditarNecesidad(c.obtenerNecesidad(c.obtenerIdEmpresa(empresa)), esAdmin);
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+
+				} else {
+					JOptionPane.showMessageDialog(null, "Seleccione una empresa para insertar el convenio", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		btnModificarNecesidad.setForeground(new Color(9, 3, 62));
+		btnModificarNecesidad.setFont(new Font("Verdana", Font.PLAIN, 12));
+		btnModificarNecesidad.setBorder(null);
+		btnModificarNecesidad.setBackground(new Color(254, 86, 86));
+		btnModificarNecesidad.setBounds(487, 648, 130, 37);
+		add(btnModificarNecesidad);
+		
+		JButton btnBorrarNecesidad = new JButton("Borrar necesidad");
+		btnBorrarNecesidad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnBorrarNecesidad.setForeground(new Color(9, 3, 62));
+		btnBorrarNecesidad.setFont(new Font("Verdana", Font.PLAIN, 12));
+		btnBorrarNecesidad.setBorder(null);
+		btnBorrarNecesidad.setBackground(new Color(254, 86, 86));
+		btnBorrarNecesidad.setBounds(828, 648, 130, 37);
+		add(btnBorrarNecesidad);
 
 		jtResultados.getColumnModel().getColumn(0).setPreferredWidth(100);
 		jtResultados.getColumnModel().getColumn(1).setPreferredWidth(100);

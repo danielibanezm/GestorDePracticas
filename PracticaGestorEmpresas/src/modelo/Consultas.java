@@ -581,8 +581,7 @@ public class Consultas {
 			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
 			statement = conexion.createStatement();
 			ResultSet rs = statement.executeQuery(
-					"select id_empresa, nombre_empresa from empresa WHERE eliminado != 1 AND id_empresa = "
-							+ "(SELECT id_empresa FROM convenio where id_centro = " + idCentro + ");");
+					"select empresa.id_empresa, empresa.nombre_empresa from empresa, convenio WHERE empresa.eliminado != 1 AND empresa.id_empresa = convenio.id_empresa AND convenio.id_centro = " + idCentro + ";");
 
 			while (rs.next()) {
 				modeloTablaEmpresa.addRow(new Object[] { rs.getInt("id_empresa"), rs.getString("nombre_empresa"), });
@@ -1932,6 +1931,125 @@ public class Consultas {
 			}
 		}
 		return anexoStream;
+	}
+
+	public void insertarNecesidad(Necesidad necesidad, int idEmpresa) {
+		Connection conexion = null;
+		Statement statement = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+
+			int valor = statement
+					.executeUpdate("INSERT INTO necesidad (id_empresa, convocatoria, cantidad_dam, cantidad_daw,"
+							+ "cantidad_asir, cantidad_marketin, cantidad_finanzas, eliminado) VALUES ("
+							+ idEmpresa + ", '"+ necesidad.getConvocatoria() + "',"
+							+ necesidad.getCantidadDam() + ", "
+							+ necesidad.getCantidadDaw() + ", "
+							+ necesidad.getCantidadAsir() + ", "
+							+ necesidad.getCantidadMarketing() + ", "
+							+ necesidad.getCantidadFinazas() + ", "
+							+ "0)");
+			if (valor == 1) {
+				JOptionPane.showMessageDialog(null, "Necesidad insertada correcatamente", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Error al insertar necesidad", "Info", JOptionPane.ERROR_MESSAGE);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void actualizarNecesidad(Necesidad necesidad, int idNecesidad) {
+		Connection conexion = null;
+		Statement statement = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+
+			int valor = statement.executeUpdate(
+					"update necesidad set convocatoria = '" + necesidad.getConvocatoria() + "', "
+					 +"cantidad_dam = "+ necesidad.getCantidadDam() + ", "
+					 +"cantidad_daw = "+ necesidad.getCantidadDaw() + ", "
+					 +"cantidad_asir = "+ necesidad.getCantidadAsir() + ", "
+					 +"cantidad_marketin = "+ necesidad.getCantidadMarketing() + ", "
+					 +"cantidad_finanzas = "+ necesidad.getCantidadFinazas() + ", "
+					 + " where id_necesidad = " + idNecesidad);
+			if (valor == 1) {
+				JOptionPane.showMessageDialog(null, "Necesidad modificada correcatamente", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Error al modificar la necesidad", "Info",
+						JOptionPane.ERROR_MESSAGE);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public Necesidad obtenerNecesidad(String idEmpresa) {
+		Necesidad necesidad = null; // Initialize id to null
+	    Connection conexion = null;
+	    PreparedStatement statement = null;
+	    ResultSet rs = null;
+
+	    try {
+	        conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+
+	        String query = "SELECT * FROM necesidad WHERE id_empresa = "+ idEmpresa +" AND eliminado = 0";
+	        statement = conexion.prepareStatement(query);
+	        rs = statement.executeQuery();
+
+	        if (rs.next()) {
+	        	necesidad = new Necesidad();
+	            necesidad.setIdNecesidad(rs.getInt("id_necesidad"));
+	            necesidad.setIdEmpresa(rs.getInt("id_empresa"));
+	            necesidad.setConvocatoria(rs.getString("convocatoria"));
+	            necesidad.setCantidadDam(rs.getInt("cantidad_dam"));
+	            necesidad.setCantidadDaw(rs.getInt("cantidad_daw"));
+	            necesidad.setCantidadAsir(rs.getInt("cantidad_asir"));
+	            necesidad.setCantidadMarketing(rs.getInt("cantidad_marketin"));
+	            necesidad.setCantidadFinazas(rs.getInt("cantidad_finanzas"));
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) {
+	                rs.close();
+	            }
+	            if (statement != null) {
+	                statement.close();
+	            }
+	            if (conexion != null) {
+	                conexion.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    return necesidad;
 	}
 	
 	

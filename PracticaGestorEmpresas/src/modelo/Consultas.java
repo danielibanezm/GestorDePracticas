@@ -1983,7 +1983,7 @@ public class Consultas {
 					 +"cantidad_daw = "+ necesidad.getCantidadDaw() + ", "
 					 +"cantidad_asir = "+ necesidad.getCantidadAsir() + ", "
 					 +"cantidad_marketin = "+ necesidad.getCantidadMarketing() + ", "
-					 +"cantidad_finanzas = "+ necesidad.getCantidadFinazas() + ", "
+					 +"cantidad_finanzas = "+ necesidad.getCantidadFinazas()
 					 + " where id_necesidad = " + idNecesidad);
 			System.out.println(query);
 			int valor = statement.executeUpdate(query);

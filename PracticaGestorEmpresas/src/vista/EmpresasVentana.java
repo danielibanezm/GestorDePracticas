@@ -304,11 +304,12 @@ public class EmpresasVentana extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				int filaSeleccionada = jtResultados.getSelectedRow();
 				if (filaSeleccionada != -1) {
+					Empresa empresa = new Empresa();
+					empresa.setCIF((String) modeloTabla.getValueAt(filaSeleccionada, 0));
+					empresa.setDuenno((String) modeloTabla.getValueAt(filaSeleccionada, 1));
+					empresa.setEmail_empresa((String) modeloTabla.getValueAt(filaSeleccionada, 4));
 					if(c.obtenerNecesidad(c.obtenerIdEmpresa(empresa)) == null) {
-						Empresa empresa = new Empresa();
-						empresa.setCIF((String) modeloTabla.getValueAt(filaSeleccionada, 0));
-						empresa.setDuenno((String) modeloTabla.getValueAt(filaSeleccionada, 1));
-						empresa.setEmail_empresa((String) modeloTabla.getValueAt(filaSeleccionada, 4));
+						
 						InsertarNecesidad dialog = new InsertarNecesidad(Integer.parseInt(c.obtenerIdEmpresa(empresa)), esAdmin);
 						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 						dialog.setVisible(true);

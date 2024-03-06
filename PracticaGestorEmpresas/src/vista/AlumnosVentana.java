@@ -1,35 +1,26 @@
 package vista;
 
-import javax.swing.JPanel;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import java.awt.Color;
-
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
+import javax.swing.border.EtchedBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+
+import modales.EditarAlumno;
+import modales.InsertarAlumno;
+import modelo.Alumno;
+import modelo.Consultas;
 
 public class AlumnosVentana extends JPanel {
 
@@ -46,14 +37,15 @@ public class AlumnosVentana extends JPanel {
 	private JButton btnNuevaAlumnos;
 	private JButton btnEditarAlumnos;
 	private JButton btnBorrarAlumnos;
+	private EditarAlumno editarAlumno;
+	private Consultas bd = new Consultas();
+
 	private JTable jtResultados;
 	private int filaTabla;
 
-//	private BaseDeDatos bd = new BaseDeDatos();
-//	private Errores err = new Errores();
-
+	
 	public AlumnosVentana(Ventana ventana, boolean esAdmin, int idCentro) {
-		
+		InsertarAlumno insertarAlumno = new InsertarAlumno(idCentro, modeloTabla, ventana, esAdmin);
 		setBackground(new Color(255, 255, 255));
 		setLayout(null);
 
@@ -88,13 +80,12 @@ public class AlumnosVentana extends JPanel {
 
 		// -- AÑADIR SOCIO --
 		btnNuevaAlumnos = new JButton("Nuevo alumno");
-		btnNuevaAlumnos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnNuevaAlumnos.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if (insertarAlumno != null) {
+					insertarAlumno.setVisible(true);
+				}			
 			}
 		});
 		// ----------------------------------------------
@@ -106,17 +97,40 @@ public class AlumnosVentana extends JPanel {
 		btnNuevaAlumnos.setBounds(1134, 258, 130, 37);
 		add(btnNuevaAlumnos);
 
-		// -- EDITAR SOCIO --
+		// -- EDITAR ALUMNO --
 		btnEditarAlumnos = new JButton("Editar alumno");
 		btnEditarAlumnos.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				filaTabla = jtResultados.getSelectedRow();
 				if (filaTabla != -1) { // Se ha seleccionado una fila
-
+					
+					String alumno = (String) modeloTabla.getValueAt(filaTabla, 0);
+	                String centro = (String) modeloTabla.getValueAt(filaTabla, 1);
+	                String dni = (String) modeloTabla.getValueAt(filaTabla, 2);
+	                String valido = (String) modeloTabla.getValueAt(filaTabla, 3);
+	                String ss = (String) modeloTabla.getValueAt(filaTabla, 4);
+	                String ciclo = (String) modeloTabla.getValueAt(filaTabla, 5);
+	                String anio = (String) modeloTabla.getValueAt(filaTabla, 6);	                
+	                
+	                Alumno alumnoSeleccionado = new Alumno();
+	                alumnoSeleccionado.setAlumno(alumno);
+	                
+	                //int idC = bd.buscaIDCentro(centro);	                
+	                alumnoSeleccionado.setCentro(centro);	                
+	                alumnoSeleccionado.setValido(valido);
+	                alumnoSeleccionado.setDni(dni);
+	                alumnoSeleccionado.setSs(ss);
+	                alumnoSeleccionado.setCiclo(ciclo);
+	                alumnoSeleccionado.setAnio(anio);
+	               
+	                
+	                editarAlumno = new EditarAlumno(alumnoSeleccionado, modeloTabla, filaTabla, esAdmin);
+	                editarAlumno.setVisible(true);
+					
 				} else {
 					// No se ha seleccionado ningún socio por lo tanto se muestra un error.
-					JOptionPane.showMessageDialog(null, "Seleccione un socio para editarlo", "Error",
+					JOptionPane.showMessageDialog(null, "Seleccione un alumno para editarlo", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -130,18 +144,35 @@ public class AlumnosVentana extends JPanel {
 		btnEditarAlumnos.setBounds(1134, 396, 130, 37);
 		add(btnEditarAlumnos);
 
-		// -- BOTÓN ELIMINAR SOCIO --
+		// -- BOTÓN ELIMINAR ALUMNO --
 		btnBorrarAlumnos = new JButton("Borrar alumno");
 		btnBorrarAlumnos.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				filaTabla = jtResultados.getSelectedRow();
+				if (filaTabla != -1) {
+					String alumno = (String) modeloTabla.getValueAt(filaTabla, 0);
+	                String centro = (String) modeloTabla.getValueAt(filaTabla, 1);
+	                String dni = (String) modeloTabla.getValueAt(filaTabla, 2);
+	                String valido = (String) modeloTabla.getValueAt(filaTabla, 3);
+	                String ss = (String) modeloTabla.getValueAt(filaTabla, 4);
+	                String ciclo = (String) modeloTabla.getValueAt(filaTabla, 5);
+	                String anio = (String) modeloTabla.getValueAt(filaTabla, 6);
+	                
+					Alumno alumnoO = new Alumno(alumno, centro, dni, valido, ss, ciclo,
+							anio, false);
+					int idAlumno = bd.obtenerIdAlumno(alumnoO);
 
-				if (filaTabla != -1) { // Se ha seleccionado una fila
-
-				} else {
+					if (idAlumno != -1) {
+						bd.borrarAlumnoLogico(idAlumno);
+						modeloTabla.removeRow(filaTabla);
+					} else {
+						JOptionPane.showMessageDialog(null, "No se pudo obtener el ID del alumno", "Error",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				}  else {
 					// No se ha seleccionado ningún libro por lo tanto se muestra un error.
-					JOptionPane.showMessageDialog(null, "Seleccione un socio para poder eliminarlo.", "Error",
+					JOptionPane.showMessageDialog(null, "Seleccione un alumno para poder eliminarlo.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -178,19 +209,22 @@ public class AlumnosVentana extends JPanel {
 		scrollPane.setViewportView(jtResultados);
 		
 		//poner las columnas necesarias
-		modeloTabla.setColumnIdentifiers(new Object[] {"Id", "", "Alumno", "Centro", "Valido", "Ciclo", "Año"});
+		modeloTabla.setColumnIdentifiers(new Object[] {"Alumno", "Centro", "DNI", "Valido", "Seg.Social", "Ciclo", "Año"});
 
 		jtResultados.setModel(modeloTabla);
 
-		jtResultados.getColumnModel().getColumn(0).setMaxWidth(0);
-		jtResultados.getColumnModel().getColumn(1).setMaxWidth(0);
-		jtResultados.getColumnModel().getColumn(0).setMinWidth(0);
-		jtResultados.getColumnModel().getColumn(1).setMinWidth(0);
+		jtResultados.getColumnModel().getColumn(0).setPreferredWidth(100);
+		jtResultados.getColumnModel().getColumn(1).setPreferredWidth(100);
+		jtResultados.getColumnModel().getColumn(2).setPreferredWidth(100);
+		jtResultados.getColumnModel().getColumn(3).setPreferredWidth(120);
+		jtResultados.getColumnModel().getColumn(4).setPreferredWidth(80);
+		jtResultados.getColumnModel().getColumn(5).setPreferredWidth(100);
+		jtResultados.getColumnModel().getColumn(6).setPreferredWidth(100);
 		
-		jtResultados.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
-		jtResultados.getTableHeader().getColumnModel().getColumn(1).setMaxWidth(0);
-		jtResultados.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
-		jtResultados.getTableHeader().getColumnModel().getColumn(1).setMinWidth(0);
+//		jtResultados.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
+//		jtResultados.getTableHeader().getColumnModel().getColumn(1).setMaxWidth(0);
+//		jtResultados.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
+//		jtResultados.getTableHeader().getColumnModel().getColumn(1).setMinWidth(0);
 
 		JTableHeader encabezado = jtResultados.getTableHeader();
 		Color rojoClaro = new Color(255, 157, 157);
@@ -209,6 +243,18 @@ public class AlumnosVentana extends JPanel {
 
 	public void rellenaTabla(int idCentro) {
 		modeloTabla.setRowCount(0);
+
+		ArrayList<Alumno> alumnos = bd.cogeAlumno();
+
+		for (Alumno alumno : alumnos) {
+			if (!alumno.isEliminado()) { // Solo añade empresas que no estén marcadas como eliminadas
+				modeloTabla.addRow(new Object[] {alumno.getAlumno(), alumno.getCentro(), alumno.getDni(),
+						alumno.getValido(), alumno.getSs(), alumno.getCiclo(),
+						alumno.getAnio()});
+			}
+		}
+
+		modeloTabla.fireTableDataChanged();
 	}
 
 

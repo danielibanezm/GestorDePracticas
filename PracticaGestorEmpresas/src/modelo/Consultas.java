@@ -1535,4 +1535,300 @@ public class Consultas {
 		}
 		return anexoStream;
 	}
+	
+	
+	public String buscaCentro(int idCentro) {
+		Connection conexion = null;
+		Statement statement = null;
+		String centro = "";
+		
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+			ResultSet rs = statement.executeQuery(
+					"select nombre from centro WHERE id_centro = "	+ idCentro + ";");
+
+			if (rs.next()) {
+				centro = rs.getString("nombre");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return centro;
+		
+	}
+	
+	
+	public int buscaIDCentro(String centro) {
+		Connection conexion = null;
+		Statement statement = null;
+		int id = -1;
+		
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+			ResultSet rs = statement.executeQuery(
+					"select id_centro from centro WHERE nombre = '"	+ centro + "'");
+
+			if (rs.next()) {
+				id = rs.getInt("id_centro");
+				System.out.println(id);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return id;
+		
+	}
+	
+	public int obtenerIdAlumno(Alumno alumno) {
+	    int id = -1; // Initialize id to null
+	    Connection conexion = null;
+	    PreparedStatement statement = null;
+	    ResultSet resultSet = null;
+
+	    try {
+	        conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+
+	        
+	        System.out.println("SELECT id_alumno FROM alumno WHERE nombre =" +  alumno.getAlumno() + " AND dni =" + alumno.getDni() + " AND ss = " + alumno.getSs() + "AND eliminado = 0");
+	        
+	        String query = "SELECT id_alumno FROM alumno WHERE nombre = ? AND dni = ? AND ss = ? AND eliminado = 0";
+	        statement = conexion.prepareStatement(query);
+	        statement.setString(1, alumno.getAlumno());
+	        statement.setString(2, alumno.getDni());
+	        statement.setString(3, alumno.getSs());
+
+	        resultSet = statement.executeQuery();
+
+	        if (resultSet.next()) {
+	            id = resultSet.getInt("id_alumno");
+	        }
+	        
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (resultSet != null) {
+	                resultSet.close();
+	            }
+	            if (statement != null) {
+	                statement.close();
+	            }
+	            if (conexion != null) {
+	                conexion.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    return id;
+	}
+	
+	public ArrayList<Alumno> cogeAlumno() {
+	    ArrayList<Alumno> arrlAlumno = new ArrayList<>();
+	    Connection conexion = null;
+	    Statement consultita = null;
+	    ResultSet registro = null;
+
+	    try {
+	        conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+	        consultita = conexion.createStatement();
+
+	        registro = consultita.executeQuery("SELECT id_centro, nombre, dni, valido, ss, ciclo, año FROM alumno WHERE eliminado != 1");
+
+	        if (!registro.next()) {
+	            String titulo = "Error";
+	            JOptionPane.showMessageDialog(null, "La base de datos está vacía.", titulo, JOptionPane.ERROR_MESSAGE);
+	        } else {
+	            do {
+	                Alumno nuevoAlumno= new Alumno();
+	                
+	                String centro = buscaCentro(registro.getInt("id_centro"));
+	                
+	                nuevoAlumno.setCentro(centro);
+	                nuevoAlumno.setAlumno(registro.getString("nombre"));
+	                nuevoAlumno.setDni(registro.getString("dni"));
+	                
+	                if (registro.getBoolean("valido") == true) {
+	                	nuevoAlumno.setValido("Si");
+	                }else {
+	                	nuevoAlumno.setValido("No");
+	                }
+	                
+	                nuevoAlumno.setSs(registro.getString("ss"));
+	                nuevoAlumno.setCiclo(registro.getString("ciclo"));
+	                nuevoAlumno.setAnio(registro.getString("año"));
+
+	                arrlAlumno.add(nuevoAlumno);
+	            } while (registro.next());
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (conexion != null) {
+	                conexion.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return arrlAlumno;
+	}
+
+
+	
+	public void insertaAlumno(Alumno alumno) {
+		Connection conexion = null;
+		Statement consulta = null;
+
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			consulta = conexion.createStatement();			
+			
+			int idCentro = buscaIDCentro(alumno.getCentro());
+			
+			System.out.println("INSERT INTO alumno (id_centro, nombre, dni, valido, ss, ciclo, año, eliminado) "
+					+ "VALUES (" + idCentro + ", '" + alumno.getAlumno() + "', '"
+					+ alumno.getDni() + "', '" + alumno.getValido() + "', '"
+					+ alumno.getSs() + "', '" + alumno.getCiclo() + "', '"
+					+ alumno.getAnio() + "', 0)");
+			
+			consulta.executeUpdate(
+					"INSERT INTO alumno (id_centro, nombre, dni, valido, ss, ciclo, año, eliminado) "
+							+ "VALUES (" + idCentro + ", '" + alumno.getAlumno() + "', '"
+							+ alumno.getDni() + "', '" + alumno.getValido() + "', '"
+							+ alumno.getSs() + "', '" + alumno.getCiclo() + "', '"
+							+ alumno.getAnio() + "', 0)");
+
+			
+			
+			// err.confirmarInsert();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			// err.baseDatosNoConexion();
+		} finally {
+			try {
+				conexion.close();
+			} catch (SQLException e) {
+			} catch (NullPointerException e) {
+			}
+		}
+
+	}
+	
+	
+	public void borrarAlumnoLogico(int idAlumno) {
+	    Connection conexion = null;
+	    PreparedStatement statement = null;
+	    try {
+	        conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+
+	        String query = "UPDATE alumno SET eliminado = 1 WHERE id_alumno = ?";
+	        
+	        statement = conexion.prepareStatement(query);
+	        statement.setInt(1, idAlumno);
+	        
+	        int rowsAffected = statement.executeUpdate();
+
+	        if (rowsAffected == 1) {
+	            JOptionPane.showMessageDialog(null, "Alumno borrado correctamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+	        } else {
+	            JOptionPane.showMessageDialog(null, "Error al borrar alumno", "Error", JOptionPane.ERROR_MESSAGE);
+	        }
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (statement != null) {
+	                statement.close();
+	            }
+	            if (conexion != null) {
+	                conexion.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
+	
+public void actualizaAlumno(Alumno alumno, int idAlumno) {
+		
+		System.out.println("EL id del alumno es: " + idAlumno);
+		
+	    Connection conexion = null;
+	    PreparedStatement statement = null;
+	    try {
+	        conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+	        
+	        int id = buscaIDCentro(alumno.getCentro());
+
+	        
+	        System.out.println("UPDATE alumno SET id_centro=" + id + ", nombre=" + alumno.getAlumno() +" dni= " + alumno.getDni() + " valido=" + alumno.getValido()
+	                     + "ss= " + alumno.getSs() +" ciclo=" + alumno.getCiclo() + "año=" +  alumno.getAnio()
+	                     + "WHERE id_alumno=" + idAlumno + ")");
+
+	        String query = "UPDATE alumno SET id_centro=?, nombre=?, dni=?, valido=?, "
+	                     + "ss=?, ciclo=?, año=? "
+	                     + "WHERE id_alumno=?";
+	        
+	        statement = conexion.prepareStatement(query);
+	        
+	        
+	        statement.setInt(1, id);
+	        statement.setString(2, alumno.getAlumno());
+	        statement.setString(3, alumno.getDni());
+	        
+	        if (alumno.getValido().equalsIgnoreCase("si")){
+	        	statement.setInt(4, 1);
+	        }else {
+	        	statement.setInt(4, 0);
+
+	        }
+	        
+	        statement.setString(5, alumno.getSs());
+	        statement.setString(6, alumno.getCiclo());
+	        statement.setString(7, alumno.getAnio());
+	        statement.setInt(8, idAlumno);
+	        
+	        int valor = statement.executeUpdate();
+
+	        if (valor == 1) {
+	            JOptionPane.showMessageDialog(null, "Empresa modificada correctamente", "Info",
+	                    JOptionPane.INFORMATION_MESSAGE);
+	        } else {
+	            JOptionPane.showMessageDialog(null, "Error al modificar empresa", "Info", JOptionPane.ERROR_MESSAGE);
+	        }
+	        
+	        conexion.close();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();	    
+	    }
+	}
+	
+	
 }

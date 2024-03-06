@@ -2,9 +2,9 @@ package modales;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.TextArea;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -16,8 +16,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import modelo.Consultas;
 import modelo.Alumno;
+import modelo.Consultas;
 import vista.Ventana;
 
 public class InsertarAlumno extends JDialog {
@@ -25,7 +25,6 @@ public class InsertarAlumno extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtAlumno;
-	private JTextField txtCentro;
 	private JTextField txtDNI;
 	private JTextField txtss;
 	private JTextField txtciclo;
@@ -33,7 +32,8 @@ public class InsertarAlumno extends JDialog {
 	private Alumno nuevoAlumno = new Alumno();
 	private Consultas bd = new Consultas();
 	private JComboBox comboBox;
-
+	private JComboBox comboBox2;
+	
 	public InsertarAlumno(int idCentro, DefaultTableModel modeloTabla, Ventana ventana, boolean esAdmin) {
 		setResizable(false);
 		setModal(true);
@@ -53,22 +53,22 @@ public class InsertarAlumno extends JDialog {
 		
 		JLabel lblCentro = new JLabel("Centro:");
 		lblCentro.setFont(new Font("Verdana", Font.PLAIN, 12));
-		lblCentro.setBounds(66, 211, 134, 19);
+		lblCentro.setBounds(383, 395, 67, 19);
 		contentPanel.add(lblCentro);
 		
 		JLabel lblDNI = new JLabel("DNI:");
 		lblDNI.setFont(new Font("Verdana", Font.PLAIN, 12));
-		lblDNI.setBounds(66, 252, 73, 19);
+		lblDNI.setBounds(66, 212, 73, 19);
 		contentPanel.add(lblDNI);
 		
 		JLabel lblSS = new JLabel("Seguridad Social:");
 		lblSS.setFont(new Font("Verdana", Font.PLAIN, 12));
-		lblSS.setBounds(542, 169, 120, 19);
+		lblSS.setBounds(66, 262, 120, 19);
 		contentPanel.add(lblSS);
 		
 		JLabel lblCiclo = new JLabel("Ciclo:");
 		lblCiclo.setFont(new Font("Verdana", Font.PLAIN, 12));
-		lblCiclo.setBounds(608, 252, 73, 19);
+		lblCiclo.setBounds(608, 170, 73, 19);
 		contentPanel.add(lblCiclo);
 		
 		JLabel lblAnio = new JLabel("Año:");
@@ -88,28 +88,22 @@ public class InsertarAlumno extends JDialog {
 		txtAlumno.setBounds(244, 168, 212, 20);
 		contentPanel.add(txtAlumno);
 		
-		txtCentro = new JTextField();
-		txtCentro.setFont(new Font("Verdana", Font.PLAIN, 12));
-		txtCentro.setColumns(10);
-		txtCentro.setBounds(244, 210, 212, 20);
-		contentPanel.add(txtCentro);
-		
 		txtDNI = new JTextField();
 		txtDNI.setFont(new Font("Verdana", Font.PLAIN, 12));
 		txtDNI.setColumns(10);
-		txtDNI.setBounds(244, 251, 212, 20);
+		txtDNI.setBounds(244, 211, 212, 20);
 		contentPanel.add(txtDNI);
 		
 		txtss = new JTextField();
 		txtss.setFont(new Font("Verdana", Font.PLAIN, 12));
 		txtss.setColumns(10);
-		txtss.setBounds(680, 168, 212, 20);
+		txtss.setBounds(244, 261, 212, 20);
 		contentPanel.add(txtss);
 		
 		txtciclo = new JTextField();
 		txtciclo.setFont(new Font("Verdana", Font.PLAIN, 12));
 		txtciclo.setColumns(10);
-		txtciclo.setBounds(680, 251, 212, 20);
+		txtciclo.setBounds(680, 169, 212, 20);
 		contentPanel.add(txtciclo);
 		
 		txtanio = new JTextField();
@@ -134,7 +128,7 @@ public class InsertarAlumno extends JDialog {
 		JButton btnAceptar = new JButton("Continuar");
 		btnAceptar.setForeground(Color.BLACK);
 		btnAceptar.setBackground(new Color(254, 86, 86));
-		btnAceptar.setBounds(735, 512, 103, 23);
+		btnAceptar.setBounds(735, 512, 110, 23);
 		contentPanel.add(btnAceptar);
 		
 		btnAceptar.addMouseListener(new MouseAdapter() {
@@ -162,10 +156,29 @@ public class InsertarAlumno extends JDialog {
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"VALIDO", "NO VALIDO"}));
 		comboBox.setBounds(459, 349, 110, 22);
 		contentPanel.add(comboBox);
+		
+
+		comboBox2 = new JComboBox<>();
+		comboBox2.setBounds(460, 394, 110, 22);
+		contentPanel.add(comboBox2);
+        llenarCentros();
+
 	}
 	
+	private void llenarCentros() {
+		Consultas consultas = new Consultas();
+        // Limpia el JComboBox
+		comboBox2.removeAllItems();
+
+        // Llena el JComboBox usando la instancia de Consultas
+        ArrayList<String> nombresCentros = consultas.obtenerNombresCentros();
+        for (String nombreCentro : nombresCentros) {
+        	comboBox2.addItem(nombreCentro);
+        }
+    }
+	
 	public boolean camposLlenos() {
-		return !(txtAlumno.getText().isEmpty() || txtCentro.getText().isEmpty() || txtDNI.getText().isEmpty()
+		return !(txtAlumno.getText().isEmpty() || txtDNI.getText().isEmpty()
 				|| txtss.getText().isEmpty() || txtciclo.getText().isEmpty() || txtanio.getText().isEmpty());
 	}
 	
@@ -174,7 +187,7 @@ public class InsertarAlumno extends JDialog {
 
 		
 		alumno.setAlumno(txtAlumno.getText());		
-		alumno.setCentro(txtCentro.getText());
+		alumno.setCentro(comboBox2.getSelectedItem().toString());
 		alumno.setDni(txtDNI.getText());
 		alumno.setSs(txtss.getText());
 		alumno.setCiclo(txtciclo.getText());

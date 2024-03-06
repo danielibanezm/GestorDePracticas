@@ -1778,7 +1778,7 @@ public class Consultas {
 	    }
 	}
 	
-public void actualizaAlumno(Alumno alumno, int idAlumno) {
+	public void actualizaAlumno(Alumno alumno, int idAlumno) {
 		
 		System.out.println("EL id del alumno es: " + idAlumno);
 		
@@ -1831,6 +1831,107 @@ public void actualizaAlumno(Alumno alumno, int idAlumno) {
 	    } catch (SQLException e) {
 	        e.printStackTrace();	    
 	    }
+	}
+
+	public ArrayList<String> obtenerNombresCentros() {
+	    ArrayList<String> nombresCentros = new ArrayList<>();
+	    Connection conexion = null;
+	    Statement statement = null;
+	    ResultSet resultSet = null;
+	
+	    try {
+	        conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+	
+	        statement = conexion.createStatement();
+	
+	        resultSet = statement.executeQuery("SELECT nombre FROM centro");
+	
+	        while (resultSet.next()) {
+	            String nombreCentro = resultSet.getString("nombre");
+	            nombresCentros.add(nombreCentro);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (resultSet != null) {
+	                resultSet.close();
+	            }
+	            if (statement != null) {
+	                statement.close();
+	            }
+	            if (conexion != null) {
+	                conexion.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	
+	    return nombresCentros;
+	}
+	
+	public void insertaCV(int idCentro, int idAlumno, File convenio) {
+		Connection conexion = null;
+		Statement statement = null;
+		FileInputStream convenioStream = null;
+		Random random = new Random();
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+
+			convenioStream = new FileInputStream(convenio);
+			PreparedStatement preparedStatement = conexion.prepareStatement(
+					"UPDATE alumno SET cv = ? WHERE id_alumno =" + idAlumno );
+			preparedStatement.setBinaryStream(1, convenioStream);
+			int valor = preparedStatement.executeUpdate();
+			if (valor == 1) {
+				JOptionPane.showMessageDialog(null, "CV insertado", "Info", JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Error al insertar el CV", "Info", JOptionPane.ERROR_MESSAGE);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public InputStream obtenCV(int idAlumno) {
+		Connection conexion = null;
+		Statement statement = null;
+		InputStream anexoStream = null;
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+			ResultSet rs = statement.executeQuery(
+					"select cv from alumno WHERE id_alumno = "	+ idAlumno + ";");
+
+			if (rs.next()) {
+				anexoStream = rs.getBinaryStream("cv");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conexion.close();
+				anexoStream.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return anexoStream;
 	}
 	
 	

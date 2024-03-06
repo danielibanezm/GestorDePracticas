@@ -1,12 +1,18 @@
 package vista;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -19,8 +25,10 @@ import javax.swing.table.JTableHeader;
 
 import modales.EditarAlumno;
 import modales.InsertarAlumno;
+import modales.InsertarCV;
 import modelo.Alumno;
 import modelo.Consultas;
+import modelo.Empresa;
 
 public class AlumnosVentana extends JPanel {
 
@@ -42,6 +50,10 @@ public class AlumnosVentana extends JPanel {
 
 	private JTable jtResultados;
 	private int filaTabla;
+	private JButton btnVerCv;
+
+	protected File cv;
+	private Desktop abreFichero = Desktop.getDesktop();
 
 	
 	public AlumnosVentana(Ventana ventana, boolean esAdmin, int idCentro) {
@@ -94,7 +106,7 @@ public class AlumnosVentana extends JPanel {
 		btnNuevaAlumnos.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnNuevaAlumnos.setBorder(null);
 		btnNuevaAlumnos.setBackground(new Color(254, 86, 86));
-		btnNuevaAlumnos.setBounds(1134, 258, 130, 37);
+		btnNuevaAlumnos.setBounds(1134, 285, 130, 37);
 		add(btnNuevaAlumnos);
 
 		// -- EDITAR ALUMNO --
@@ -141,7 +153,7 @@ public class AlumnosVentana extends JPanel {
 		btnEditarAlumnos.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnEditarAlumnos.setBorder(null);
 		btnEditarAlumnos.setBackground(new Color(254, 86, 86));
-		btnEditarAlumnos.setBounds(1134, 396, 130, 37);
+		btnEditarAlumnos.setBounds(1134, 386, 130, 37);
 		add(btnEditarAlumnos);
 
 		// -- BOTÓN ELIMINAR ALUMNO --
@@ -183,7 +195,7 @@ public class AlumnosVentana extends JPanel {
 		btnBorrarAlumnos.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnBorrarAlumnos.setBorder(null);
 		btnBorrarAlumnos.setBackground(new Color(254, 86, 86));
-		btnBorrarAlumnos.setBounds(1134, 525, 130, 37);
+		btnBorrarAlumnos.setBounds(1134, 483, 130, 37);
 		add(btnBorrarAlumnos);
 
 		// -------------------------- JTABLE --------------------------------------
@@ -212,6 +224,63 @@ public class AlumnosVentana extends JPanel {
 		modeloTabla.setColumnIdentifiers(new Object[] {"Alumno", "Centro", "DNI", "Valido", "Seg.Social", "Ciclo", "Año"});
 
 		jtResultados.setModel(modeloTabla);
+		
+		JButton btnInsertarCv = new JButton("Insertar CV");
+		btnInsertarCv.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int filaSeleccionada = jtResultados.getSelectedRow();
+				if (filaSeleccionada != -1) {
+	
+					Alumno alumno = new Alumno();
+					alumno.setAlumno((String) modeloTabla.getValueAt(filaSeleccionada, 0));
+					alumno.setDni((String) modeloTabla.getValueAt(filaSeleccionada, 2));
+					alumno.setSs((String) modeloTabla.getValueAt(filaSeleccionada, 4));
+					InsertarCV dialog = new InsertarCV(idCentro, bd.obtenerIdAlumno(alumno));
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+				}
+				
+			}
+		});
+		btnInsertarCv.setForeground(new Color(9, 3, 62));
+		btnInsertarCv.setFont(new Font("Verdana", Font.PLAIN, 12));
+		btnInsertarCv.setBorder(null);
+		btnInsertarCv.setBackground(new Color(254, 86, 86));
+		btnInsertarCv.setBounds(1134, 589, 130, 37);
+		add(btnInsertarCv);
+		
+		btnVerCv = new JButton("Ver CV");
+		btnVerCv.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int filaSeleccionada = jtResultados.getSelectedRow();
+				if (filaSeleccionada != -1) {
+					Alumno alumno = new Alumno();
+					alumno.setAlumno((String) modeloTabla.getValueAt(filaSeleccionada, 0));
+					alumno.setDni((String) modeloTabla.getValueAt(filaSeleccionada, 2));
+					alumno.setSs((String) modeloTabla.getValueAt(filaSeleccionada, 4));
+					cv = bd.leeFichero("cv.pdf", 							
+							bd.obtenCV(bd.obtenerIdAlumno(alumno)));
+					try {
+						abreFichero.open(cv);
+					} catch (IOException e1) {
+						// TODO Bloque catch generado automáticamente
+						e1.printStackTrace();
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Seleccione una empresa para ver el CV", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+				
+				
+			}
+		});
+		btnVerCv.setForeground(new Color(9, 3, 62));
+		btnVerCv.setFont(new Font("Verdana", Font.PLAIN, 12));
+		btnVerCv.setBorder(null);
+		btnVerCv.setBackground(new Color(254, 86, 86));
+		btnVerCv.setBounds(1134, 189, 130, 37);
+		add(btnVerCv);
 
 		jtResultados.getColumnModel().getColumn(0).setPreferredWidth(100);
 		jtResultados.getColumnModel().getColumn(1).setPreferredWidth(100);
@@ -256,7 +325,4 @@ public class AlumnosVentana extends JPanel {
 
 		modeloTabla.fireTableDataChanged();
 	}
-
-
-	
 }

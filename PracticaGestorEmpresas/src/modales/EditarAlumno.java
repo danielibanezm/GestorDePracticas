@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -60,7 +61,7 @@ public class EditarAlumno extends JDialog {
 
         JLabel lblCentro = new JLabel("Centro:");
         lblCentro.setFont(new Font("Verdana", Font.PLAIN, 12));
-        lblCentro.setBounds(282, 442, 54, 19);
+        lblCentro.setBounds(405, 424, 54, 19);
         contentPanel.add(lblCentro);
 
         JLabel lblDNI= new JLabel("DNI:");
@@ -111,18 +112,18 @@ public class EditarAlumno extends JDialog {
 		
 		JLabel lblValido = new JLabel("Valido:");
 		lblValido.setFont(new Font("Verdana", Font.PLAIN, 12));
-		lblValido.setBounds(282, 380, 54, 19);
+		lblValido.setBounds(405, 362, 54, 19);
 		contentPanel.add(lblValido);
 
         comboBox = new JComboBox<>();
         comboBox.setModel(new DefaultComboBoxModel<>(new String[]{"VALIDO", "NO VALIDO"}));
-        comboBox.setBounds(387, 380, 99, 20);
+        comboBox.setBounds(510, 362, 99, 20);
         contentPanel.add(comboBox);
         
         comboBox2 = new JComboBox<>();
-        comboBox.setModel(new DefaultComboBoxModel<>(new String[]{"Alberto32", "NO VALIDO"}));
-        comboBox2.setBounds(387, 442, 99, 19);
+        comboBox2.setBounds(510, 424, 99, 19);
         contentPanel.add(comboBox2);
+        llenarCentros();
         
         
      // -- RELLENAMOS LOS TEXTFIELD --
@@ -156,9 +157,6 @@ public class EditarAlumno extends JDialog {
         btnAceptar.setBounds(735, 512, 99, 23);
         contentPanel.add(btnAceptar);
         
-       
-
-
         btnAceptar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -168,8 +166,18 @@ public class EditarAlumno extends JDialog {
             }
         });
         
-        
-        
+    }
+    
+    private void llenarCentros() {
+		Consultas consultas = new Consultas();
+        // Limpia el JComboBox
+		comboBox2.removeAllItems();
+
+        // Llena el JComboBox usando la instancia de Consultas
+        ArrayList<String> nombresCentros = consultas.obtenerNombresCentros();
+        for (String nombreCentro : nombresCentros) {
+        	comboBox2.addItem(nombreCentro);
+        }
     }
     
 

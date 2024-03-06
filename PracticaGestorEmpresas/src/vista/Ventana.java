@@ -40,7 +40,7 @@ public class Ventana extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setResizable(true);
+		setResizable(false);
 		
 		setContentPane(contentPane);
 		contentPane.setLayout(new CardLayout(0, 0));

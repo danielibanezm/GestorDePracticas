@@ -160,7 +160,7 @@ public class Consultas {
 			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
 			statement = conexion.createStatement();
 			ResultSet rs = statement
-					.executeQuery("select distinct * from Usuarios WHERE eliminado != 1 AND id_centro = " + idCentro);
+					.executeQuery("select distinct * from Usuarios WHERE eliminado != 1;");
 
 			while (rs.next()) {
 				tabla.addRow(new Object[] { rs.getInt("id_usuario"), rs.getInt("id_centro"), rs.getString("email"),
@@ -1246,7 +1246,10 @@ public class Consultas {
 		} finally {
 			try {
 				os.close();
-				anexoStream.close();
+				if(anexoStream != null) {
+					
+					anexoStream.close();
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -1522,8 +1525,11 @@ public class Consultas {
 			e.printStackTrace();
 		} finally {
 			try {
+				if(anexoStream != null) {
+					anexoStream.close();
+					
+				}
 				conexion.close();
-				anexoStream.close();
 			} catch (NullPointerException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {

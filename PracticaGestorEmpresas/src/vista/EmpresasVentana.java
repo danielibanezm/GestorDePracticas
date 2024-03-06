@@ -19,6 +19,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
@@ -243,15 +244,21 @@ public class EmpresasVentana extends JPanel {
 					empresa.setCIF((String) modeloTabla.getValueAt(filaSeleccionada, 0));
 					empresa.setDuenno((String) modeloTabla.getValueAt(filaSeleccionada, 1));
 					empresa.setEmail_empresa((String) modeloTabla.getValueAt(filaSeleccionada, 4));
-					convenio = c.leeFichero("anexo8.pdf", c.obtenConvenio(c.cogeIdConvenioPorIdEmpresa(Integer.parseInt(c.obtenerIdEmpresa(empresa)))));
-					try {
-						abreFichero.open(convenio);
-					} catch (IOException e1) {
-						// TODO Bloque catch generado automáticamente
-						e1.printStackTrace();
+					InputStream is = c.obtenConvenio(c.cogeIdConvenioPorIdEmpresa(Integer.parseInt(c.obtenerIdEmpresa(empresa))));
+					if(is != null) {
+						convenio = c.leeFichero("anexo8.pdf", is);
+						try {
+							abreFichero.open(convenio);
+						} catch (IOException e1) {
+							// TODO Bloque catch generado automáticamente
+							e1.printStackTrace();
+						}
+					}else {
+						JOptionPane.showMessageDialog(null, "La empresa seleccionada no tiene un convenio.", "Error",
+								JOptionPane.ERROR_MESSAGE);
 					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Seleccione una empresa para ver el convenio", "Error",
+					JOptionPane.showMessageDialog(null, "Seleccione una empresa para ver el convenio.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -278,7 +285,7 @@ public class EmpresasVentana extends JPanel {
 					dialog.setVisible(true);
 
 				} else {
-					JOptionPane.showMessageDialog(null, "Seleccione una empresa para ver el convenio", "Error",
+					JOptionPane.showMessageDialog(null, "Seleccione una empresa para insertar el convenio", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}

@@ -184,12 +184,12 @@ public class EditarAlumno extends JDialog {
     public Alumno rellenaObjeto() {
         Alumno nuevoAlumno = new Alumno();
         nuevoAlumno.setAlumno(txtAlumno.getText());
-       // nuevoAlumno.setCentro(txtCentro.getText());
         nuevoAlumno.setDni(txtDNI.getText());
         nuevoAlumno.setSs(txtss.getText());
         nuevoAlumno.setCiclo(txtciclo.getText());
         nuevoAlumno.setAnio(txtanio.getText());
         nuevoAlumno.setValido(comboBox.getSelectedItem().toString());
+        nuevoAlumno.setCentro(comboBox2.getSelectedItem().toString());
         return nuevoAlumno;
     }
 

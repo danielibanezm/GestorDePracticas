@@ -1704,24 +1704,30 @@ public class Consultas {
 	public void insertaAlumno(Alumno alumno) {
 		Connection conexion = null;
 		Statement consulta = null;
-
+		int valido;
 		try {
 			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
 			consulta = conexion.createStatement();			
 			
 			int idCentro = buscaIDCentro(alumno.getCentro());
 			
-			System.out.println("INSERT INTO alumno (id_centro, nombre, dni, valido, ss, ciclo, año, eliminado) "
+			System.out.println("INSERT INTO alumno (id_centro, nombre, dni, valido, cv, ss, ciclo, año, eliminado) "
 					+ "VALUES (" + idCentro + ", '" + alumno.getAlumno() + "', '"
-					+ alumno.getDni() + "', '" + alumno.getValido() + "', '"
-					+ alumno.getSs() + "', '" + alumno.getCiclo() + "', '"
+					+ alumno.getDni() + "', '" + alumno.getValido() + "', "
+					+ "NULL, '" +alumno.getSs() + "', '" + alumno.getCiclo() + "', '"
 					+ alumno.getAnio() + "', 0)");
 			
+			if (alumno.getValido().equalsIgnoreCase("VALIDO")) {
+				valido = 0;
+			}else {
+				valido = 1;
+			}
+			
 			consulta.executeUpdate(
-					"INSERT INTO alumno (id_centro, nombre, dni, valido, ss, ciclo, año, eliminado) "
+					"INSERT INTO alumno (id_centro, nombre, dni, valido, cv, ss, ciclo, año, eliminado) "
 							+ "VALUES (" + idCentro + ", '" + alumno.getAlumno() + "', '"
-							+ alumno.getDni() + "', '" + alumno.getValido() + "', '"
-							+ alumno.getSs() + "', '" + alumno.getCiclo() + "', '"
+							+ alumno.getDni() + "', " + valido + ", "
+							+ "NULL, '" +alumno.getSs() + "', '" + alumno.getCiclo() + "', '"
 							+ alumno.getAnio() + "', 0)");
 
 			

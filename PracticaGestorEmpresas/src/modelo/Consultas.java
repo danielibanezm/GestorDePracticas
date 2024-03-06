@@ -357,7 +357,7 @@ public class Consultas {
 		return id;
 	}
 
-	public void rellenarPracticasActuales(DefaultTableModel tabla, int idCentro) {
+	public void rellenarPracticasActuales(DefaultTableModel tabla) {
 		Connection conexion = null;
 		Statement statement = null;
 

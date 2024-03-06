@@ -42,8 +42,12 @@ public class ModificarAnexos extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public ModificarAnexos(PracticasVentana ventana, InsertarPractica dialogAterior, int idCentro, int idAnexo) {
+	public ModificarAnexos(PracticasVentana ventana, int idAnexo, int idPractica) {
 		setModal(true);
+		anexo2_1 = c.leeFichero("anexo2_1.pdf", c.obtenAnexo2_1(idPractica));
+		anexo2_2 = c.leeFichero("anexo2_2.pdf", c.obtenAnexo2_2(idPractica));
+		anexo3 = c.leeFichero("anexo3.pdf", c.obtenAnexo3(idPractica));
+		anexo8 = c.leeFichero("anexo8.pdf", c.obtenAnexo8(idPractica));
 		setBounds(100, 100, 791, 603);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(new Color(255, 255, 255));
@@ -63,7 +67,7 @@ public class ModificarAnexos extends JDialog {
 		lblAnexo2_1.setBounds(99, 207, 93, 25);
 		contentPanel.add(lblAnexo2_1);
 
-		JLabel lblAnexo2_1Seleccionado = new JLabel("");
+		JLabel lblAnexo2_1Seleccionado = new JLabel(anexo2_1.getName());
 		lblAnexo2_1Seleccionado.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblAnexo2_1Seleccionado.setBounds(202, 207, 172, 25);
 		contentPanel.add(lblAnexo2_1Seleccionado);
@@ -73,7 +77,7 @@ public class ModificarAnexos extends JDialog {
 		lblAnexo2_2.setBounds(99, 270, 93, 25);
 		contentPanel.add(lblAnexo2_2);
 
-		JLabel lblAnexo2_2Seleccionado = new JLabel("");
+		JLabel lblAnexo2_2Seleccionado = new JLabel(anexo2_2.getName());
 		lblAnexo2_2Seleccionado.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblAnexo2_2Seleccionado.setBounds(202, 270, 172, 25);
 		contentPanel.add(lblAnexo2_2Seleccionado);
@@ -83,7 +87,7 @@ public class ModificarAnexos extends JDialog {
 		lblAnexo3.setBounds(99, 321, 85, 25);
 		contentPanel.add(lblAnexo3);
 
-		JLabel lblAnexo3Seleccionado = new JLabel("");
+		JLabel lblAnexo3Seleccionado = new JLabel(anexo3.getName());
 		lblAnexo3Seleccionado.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblAnexo3Seleccionado.setBounds(202, 321, 172, 25);
 		contentPanel.add(lblAnexo3Seleccionado);
@@ -93,7 +97,7 @@ public class ModificarAnexos extends JDialog {
 		lblAnexo8.setBounds(99, 378, 85, 25);
 		contentPanel.add(lblAnexo8);
 
-		JLabel lblAnexo8Seleccionado = new JLabel("");
+		JLabel lblAnexo8Seleccionado = new JLabel(anexo8.getName());
 		lblAnexo8Seleccionado.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblAnexo8Seleccionado.setBounds(202, 378, 172, 25);
 		contentPanel.add(lblAnexo8Seleccionado);
@@ -141,12 +145,11 @@ public class ModificarAnexos extends JDialog {
 		lblSubTitulo.setBounds(194, 80, 359, 92);
 		contentPanel.add(lblSubTitulo);
 
-		JButton btnAtras = new JButton("Atras");
+		JButton btnAtras = new JButton("Cancelar");
 		btnAtras.setForeground(new Color(0, 0, 0));
 		btnAtras.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				dialogAterior.setVisible(true);
 			}
 		});
 		btnAtras.setBackground(new Color(255, 157, 157));
@@ -159,9 +162,8 @@ public class ModificarAnexos extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				// Insertar la practica y los anexos
 				c.modificarAnexos(anexo2_1, anexo2_2, anexo3, anexo8, idAnexo);
-				dialogAterior.dispose();
 				dispose();
-				ventana.rellenaTablaActual(idCentro);
+				ventana.rellenaTablaActual();
 
 			}
 		});

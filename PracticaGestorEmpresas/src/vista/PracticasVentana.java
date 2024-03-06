@@ -12,6 +12,7 @@ import javax.swing.table.JTableHeader;
 
 import modales.InsertarAnexosSemanal;
 import modales.InsertarPractica;
+import modales.ModificarAnexos;
 import modales.VerAnexos;
 import modelo.Consultas;
 
@@ -125,7 +126,11 @@ public class PracticasVentana extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				filaTabla = jtResultados.getSelectedRow();
 				if (filaTabla != -1) { // Se ha seleccionado una fila
-
+					ModificarAnexos dialog = new ModificarAnexos(ventanaActual,
+							Integer.parseInt(jtResultados.getValueAt(filaTabla, 1).toString()),
+							Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()));
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
 				} else {
 					// No se ha seleccionado ningún socio por lo tanto se muestra un error.
 					JOptionPane.showMessageDialog(null, "Seleccione una practica para editarla", "Error",
@@ -153,7 +158,7 @@ public class PracticasVentana extends JPanel {
 
 				if (filaTabla != -1) { // Se ha seleccionado una fila
 					c.borradoLogicoPractica(Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()));
-					rellenaTablaActual(idCentro);
+					rellenaTablaActual();
 				} else {
 					// No se ha seleccionado ningún libro por lo tanto se muestra un error.
 					JOptionPane.showMessageDialog(null, "Seleccione una practica para poder eliminarla.", "Error",
@@ -284,7 +289,7 @@ public class PracticasVentana extends JPanel {
 
 		btnResetFiltros.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				rellenaTablaActual(idCentro);
+				rellenaTablaActual();
 				textFieldAlumnos.setText("");
 				comboBox.setSelectedIndex(0);
 			}
@@ -313,15 +318,15 @@ public class PracticasVentana extends JPanel {
 		jtResultados.getTableHeader().setResizingAllowed(false);
 		jtResultados.getTableHeader().setReorderingAllowed(false);
 
-		rellenaTablaActual(idCentro);
+		rellenaTablaActual();
 		rellenarComboCentros(comboBox);
 
 		// -------------------------------------------------------------
 	}
 
-	public void rellenaTablaActual(int idCentro) {
+	public void rellenaTablaActual() {
 		modeloTabla.setRowCount(0);
-		c.rellenarPracticasActuales(modeloTabla, idCentro);
+		c.rellenarPracticasActuales(modeloTabla);
 	}
 
 	public void rellenaTablaActualPorNombre(int idCentro, String nombre) {

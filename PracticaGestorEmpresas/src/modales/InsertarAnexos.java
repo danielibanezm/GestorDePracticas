@@ -163,7 +163,7 @@ public class InsertarAnexos extends JDialog {
 					c.insertarPractica(idAnexo, dialogAterior.getIdAlumno(), dialogAterior.getIdEmpresa(), dialogAterior.getFechaInicio(), dialogAterior.getFechaFinal());
 					dialogAterior.dispose();
 					dispose();
-					ventana.rellenaTablaActual(idCentro);
+					ventana.rellenaTablaActual();
 				}else {
 					JOptionPane.showMessageDialog(null, "Error al insertar los anexos", "Error", JOptionPane.ERROR_MESSAGE);
 				}

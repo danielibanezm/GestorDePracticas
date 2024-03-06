@@ -1,15 +1,12 @@
 package modelo;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -22,10 +19,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import com.mysql.jdbc.Blob;
 
 public class Consultas {
 	private java.util.Date hoy = java.sql.Date.from(Instant.now());
@@ -369,8 +364,7 @@ public class Consultas {
 		try {
 			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
 			statement = conexion.createStatement();
-			String consulta = "SELECT practica.id_practica, practica.id_anexo, empresa.nombre_empresa, alumno.nombre, practica.inicio, practica.final from practica, alumno, empresa WHERE practica.eliminado != 1 AND alumno.id_centro = "
-					+ idCentro + ";";
+			String consulta = "SELECT practica.id_practica, practica.id_anexo, empresa.nombre_empresa, alumno.nombre, practica.inicio, practica.final FROM practica, alumno, empresa WHERE practica.id_alumno = alumno.id_alumno AND practica.id_empresa = empresa.id_empresa AND practica.eliminado != 1;";
 			System.out.println(consulta);
 			ResultSet rs = statement.executeQuery(consulta);
 
@@ -385,37 +379,6 @@ public class Consultas {
 
 			}
 		} catch (SQLException e) {
-		} finally {
-			try {
-				conexion.close();
-			} catch (NullPointerException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-	}
-
-	public void rellenarPracticasTotales(DefaultTableModel tabla, int idCentro) {
-		Connection conexion = null;
-		Statement statement = null;
-
-		try {
-			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
-			statement = conexion.createStatement();
-			String consulta = "SELECT practica.id_practica, practica.id_anexo, empresa.nombre_empresa, alumno.nombre, practica.inicio, practica.final from practica, alumno, empresa WHERE practica.eliminado != 1 AND alumno.id_centro = "
-					+ idCentro + ";";
-			System.out.println(consulta);
-			ResultSet rs = statement.executeQuery(consulta);
-
-			while (rs.next()) {
-				tabla.addRow(new Object[] { rs.getInt("practica.id_practica"), rs.getInt("practica.id_anexo"),
-						rs.getString("alumno.nombre"), rs.getString("empresa.nombre_empresa"), rs.getDate("inicio"),
-						rs.getDate("final") });
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			try {
 				conexion.close();
@@ -1440,10 +1403,46 @@ public class Consultas {
 //			String consulta = "SELECT practica.id_practica, practica.id_anexo, empresa.nombre_empresa, alumno.nombre, practica.inicio, practica.final from practica, alumno, empresa"
 //					+ "WHERE practica.eliminado != 1 AND alumno.id_centro = "
 //					+ idCentro + " AND alumno.nombre LIKE '%" + nombreAlumno +"%';";
-			String consulta = "SELECT practica.id_practica, practica.id_anexo, empresa.nombre_empresa, alumno.nombre, practica.inicio, practica.final from practica, alumno, empresa "
-					+ "WHERE practica.eliminado != 1 AND alumno.id_centro = (SELECT id_centro FROM convenio where id_centro = " + idCentro + ") AND "
-					+ "empresa.id_empresa = (SELECT id_empresa FROM convenio where id_centro = " + idCentro + ") AND "
+			String consulta = "SELECT practica.id_practica, practica.id_anexo, empresa.nombre_empresa, alumno.nombre, practica.inicio, practica.final FROM practica, alumno, empresa WHERE practica.id_alumno = alumno.id_alumno AND practica.id_empresa = empresa.id_empresa AND practica.eliminado != 1 AND "
 					+ "alumno.nombre LIKE '%" + nombreAlumno +"%';";
+			System.out.println(consulta);
+			ResultSet rs = statement.executeQuery(consulta);
+
+			while (rs.next()) {
+
+				tabla.addRow(new Object[] { rs.getInt("practica.id_practica"),
+						rs.getInt("practica.id_anexo"),
+						rs.getString("alumno.nombre"), 
+						rs.getString("empresa.nombre_empresa"), 
+						rs.getDate("inicio"),
+						rs.getDate("final") });
+
+			}
+		} catch (SQLException e) {
+		} finally {
+			try {
+				conexion.close();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+	
+	public void rellenarPracticasActualesPorEmpresa(DefaultTableModel tabla, int idCentro, String nombreEmpresa) {
+		Connection conexion = null;
+		Statement statement = null;
+
+		try {
+			conexion = DriverManager.getConnection(baseDeDatos, user, contrasenna);
+			statement = conexion.createStatement();
+//			String consulta = "SELECT practica.id_practica, practica.id_anexo, empresa.nombre_empresa, alumno.nombre, practica.inicio, practica.final from practica, alumno, empresa"
+//					+ "WHERE practica.eliminado != 1 AND alumno.id_centro = "
+//					+ idCentro + " AND alumno.nombre LIKE '%" + nombreAlumno +"%';";
+			String consulta = "SELECT practica.id_practica, practica.id_anexo, empresa.nombre_empresa, alumno.nombre, practica.inicio, practica.final FROM practica, alumno, empresa WHERE practica.id_alumno = alumno.id_alumno AND practica.id_empresa = empresa.id_empresa AND practica.eliminado != 1 AND "
+					+ "empresa.nombre_empresa = '" + nombreEmpresa +"';";
 			System.out.println(consulta);
 			ResultSet rs = statement.executeQuery(consulta);
 

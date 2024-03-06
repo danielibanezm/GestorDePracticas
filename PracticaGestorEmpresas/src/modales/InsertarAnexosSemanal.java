@@ -108,7 +108,7 @@ public class InsertarAnexosSemanal extends JDialog {
 		btnFinalizar.setBounds(597, 515, 89, 23);
 		contentPanel.add(btnFinalizar);
 		
-		JLabel lblSemana = new JLabel("Semana: ");
+		JLabel lblSemana = new JLabel("Semana: " + c.cogeCantidadSemanal(idPractica));
 		lblSemana.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblSemana.setBounds(99, 405, 115, 36);
 		contentPanel.add(lblSemana);

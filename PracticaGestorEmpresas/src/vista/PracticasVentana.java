@@ -66,7 +66,7 @@ public class PracticasVentana extends JPanel {
 	private PracticasVentana ventanaActual;
 
 	public PracticasVentana(Ventana ventana, boolean esAdmin, int idCentro) {
-		
+
 		setBackground(new Color(255, 255, 255));
 		setLayout(null);
 
@@ -141,9 +141,9 @@ public class PracticasVentana extends JPanel {
 		btnEditarPractica.setBackground(new Color(254, 86, 86));
 		btnEditarPractica.setBounds(1134, 396, 130, 37);
 		add(btnEditarPractica);
-		
-		JToggleButton tglbtnMostrarPracticas = new JToggleButton("Mostrar todas");
-		
+
+		JButton btnResetFiltros = new JButton("Borrar filtros");
+
 		// -- BOTÓN ELIMINAR SOCIO --
 		btnBorrarPractica = new JButton("Borrar práctica");
 		btnBorrarPractica.addMouseListener(new MouseAdapter() {
@@ -153,11 +153,7 @@ public class PracticasVentana extends JPanel {
 
 				if (filaTabla != -1) { // Se ha seleccionado una fila
 					c.borradoLogicoPractica(Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()));
-					if (tglbtnMostrarPracticas.isSelected()) {
-						rellenaTablaTodos(idCentro);
-					}else {
-						rellenaTablaActual(idCentro);
-					}
+					rellenaTablaActual(idCentro);
 				} else {
 					// No se ha seleccionado ningún libro por lo tanto se muestra un error.
 					JOptionPane.showMessageDialog(null, "Seleccione una practica para poder eliminarla.", "Error",
@@ -182,7 +178,6 @@ public class PracticasVentana extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-
 			}
 		});
 		// ------------------
@@ -195,45 +190,51 @@ public class PracticasVentana extends JPanel {
 
 		jtResultados.setRowHeight(30);
 		scrollPane.setViewportView(jtResultados);
-		
+
 		lblEmpresa = new JLabel("Empresa");
 		lblEmpresa.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblEmpresa.setBounds(99, 124, 87, 25);
 		add(lblEmpresa);
-		
+
 		JComboBox comboBox = new JComboBox();
 		comboBox.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
+				if(!comboBox.getSelectedItem().toString().equals(comboBox.getItemAt(0).toString())) {
+					rellenaTablaActualPorEmpresa(idCentro, comboBox.getSelectedItem().toString());
+					textFieldAlumnos.setText("");
+				}
 			}
 		});
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"---EMPRESAS---"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] { "---EMPRESAS---" }));
 		comboBox.setBounds(196, 129, 130, 22);
 		add(comboBox);
-		
+
 		JLabel lblAlumnos = new JLabel("Buscar por alumnos");
 		lblAlumnos.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblAlumnos.setBounds(503, 124, 187, 25);
 		add(lblAlumnos);
-		
+
 		textFieldAlumnos = new JTextField();
 		textFieldAlumnos.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				rellenaTablaActualPorNombre(idCentro, textFieldAlumnos.getText());
+				comboBox.setSelectedIndex(0);
 			}
 		});
 		textFieldAlumnos.setBounds(719, 129, 227, 20);
 		add(textFieldAlumnos);
 		textFieldAlumnos.setColumns(10);
-		
+
 		JButton btnVerAnexos = new JButton("Ver anexos");
 		btnVerAnexos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//ver anexos
+				// ver anexos
 				filaTabla = jtResultados.getSelectedRow();
 
 				if (filaTabla != -1) { // Se ha seleccionado una fila
-					VerAnexos dialog = new VerAnexos(Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()));
+					VerAnexos dialog = new VerAnexos(
+							Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()));
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 				} else {
@@ -249,15 +250,15 @@ public class PracticasVentana extends JPanel {
 		btnVerAnexos.setBackground(new Color(254, 86, 86));
 		btnVerAnexos.setBounds(252, 634, 130, 37);
 		add(btnVerAnexos);
-		
-		
+
 		JButton btnInsertar = new JButton("Insertar seguimiento semanal");
 		btnInsertar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				filaTabla = jtResultados.getSelectedRow();
 
 				if (filaTabla != -1) { // Se ha seleccionado una fila
-					InsertarAnexosSemanal dialog = new InsertarAnexosSemanal(ventanaActual, Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()));
+					InsertarAnexosSemanal dialog = new InsertarAnexosSemanal(ventanaActual,
+							Integer.parseInt(jtResultados.getValueAt(filaTabla, 0).toString()));
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 				} else {
@@ -265,7 +266,7 @@ public class PracticasVentana extends JPanel {
 					JOptionPane.showMessageDialog(null, "Seleccione una practica para poder eliminarla.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
-				
+
 			}
 		});
 		btnInsertar.setForeground(new Color(9, 3, 62));
@@ -275,31 +276,28 @@ public class PracticasVentana extends JPanel {
 		btnInsertar.setBounds(629, 634, 227, 37);
 		add(btnInsertar);
 
-		//poner las columnas necesarias
-		modeloTabla.setColumnIdentifiers(new Object[] {"id practicas", "id anexo", "Alumno", "Empresa", "Inicio", "Final"});
-		
+		// poner las columnas necesarias
+		modeloTabla.setColumnIdentifiers(
+				new Object[] { "id practicas", "id anexo", "Alumno", "Empresa", "Inicio", "Final" });
+
 		jtResultados.setModel(modeloTabla);
-		
-		
-		tglbtnMostrarPracticas.addActionListener(new ActionListener() {
+
+		btnResetFiltros.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (tglbtnMostrarPracticas.isSelected()) {
-					rellenaTablaTodos(idCentro);
-				}else {
-					rellenaTablaActual(idCentro);
-				}
+				rellenaTablaActual(idCentro);
+				textFieldAlumnos.setText("");
+				comboBox.setSelectedIndex(0);
 			}
 		});
-		tglbtnMostrarPracticas.setBackground(new Color(254, 86, 86));
-		tglbtnMostrarPracticas.setBounds(1134, 122, 130, 37);
-		add(tglbtnMostrarPracticas);
-		
-		
+		btnResetFiltros.setBackground(new Color(254, 86, 86));
+		btnResetFiltros.setBounds(1134, 122, 130, 37);
+		add(btnResetFiltros);
+
 		jtResultados.getColumnModel().getColumn(0).setMaxWidth(0);
 		jtResultados.getColumnModel().getColumn(1).setMaxWidth(0);
 		jtResultados.getColumnModel().getColumn(0).setMinWidth(0);
 		jtResultados.getColumnModel().getColumn(1).setMinWidth(0);
-		
+
 		jtResultados.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
 		jtResultados.getTableHeader().getColumnModel().getColumn(1).setMaxWidth(0);
 		jtResultados.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
@@ -314,7 +312,7 @@ public class PracticasVentana extends JPanel {
 
 		jtResultados.getTableHeader().setResizingAllowed(false);
 		jtResultados.getTableHeader().setReorderingAllowed(false);
-		
+
 		rellenaTablaActual(idCentro);
 		rellenarComboCentros(comboBox);
 
@@ -325,16 +323,17 @@ public class PracticasVentana extends JPanel {
 		modeloTabla.setRowCount(0);
 		c.rellenarPracticasActuales(modeloTabla, idCentro);
 	}
-	public void rellenaTablaTodos(int idCentro) {
-		modeloTabla.setRowCount(0);
-		c.rellenarPracticasTotales(modeloTabla, idCentro);
-	}
-	
+
 	public void rellenaTablaActualPorNombre(int idCentro, String nombre) {
 		modeloTabla.setRowCount(0);
 		c.rellenarPracticasActualesPorNombre(modeloTabla, idCentro, nombre);
 	}
-	
+
+	public void rellenaTablaActualPorEmpresa(int idCentro, String nombre) {
+		modeloTabla.setRowCount(0);
+		c.rellenarPracticasActualesPorEmpresa(modeloTabla, idCentro, nombre);
+	}
+
 	private void rellenarComboCentros(JComboBox comboCentro) {
 		ArrayList<String> arrlEmpresas = c.cogeNombreEmpresas();
 		for (String empresa : arrlEmpresas) {
